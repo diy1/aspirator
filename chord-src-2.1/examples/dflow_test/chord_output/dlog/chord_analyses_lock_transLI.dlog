@@ -1,0 +1,29 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=transLI-dlog
+
+.include "I.dom"
+.include "L.dom"
+
+.bddvarorder L0xL1_I0
+
+###
+# Relations
+###
+
+LI(l:L0,i:I0) input
+LL(l1:L0,l2:L1) input
+
+transLI(l:L0,i:I0) output
+
+###
+# Constraints
+###
+
+transLI(l,i) :- LI(l,i).
+transLI(l,i) :- LL(l,l2), transLI(l2,i).
+

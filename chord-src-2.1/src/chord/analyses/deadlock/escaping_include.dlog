@@ -1,0 +1,40 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=deadlock-escaping-include-dlog
+
+.include "M.dom"
+.include "V.dom"
+.include "L.dom"
+.include "P.dom"
+.include "T.dom"
+.include "F.dom"
+.include "H.dom"
+
+.bddvarorder F0_M0xP0_L0_T0_V0_H0
+
+###
+# Relations
+###
+
+PL(p:P0,l:L0) input
+syncLV(l:L0,v:V0) input
+syncLM(l:L0,m:M0) input
+thisMV(m:M0,v:V0) input
+MPhead(m:M0,p:P0) input
+escPVH(p:P0,v:V0,o:H0) input
+TM(t:T0,m:M0) input
+escLH(l:L0,o:H0) output
+
+###
+# Constraints
+###
+
+#escLH(l,o) :- syncLM(l,m), statM(m), TM(t,m), clsTF(t,f), FC(f,o).
+
+escLH(l,o) :- syncLV(l,v), PL(p,l), escPVH(p,v,o).
+escLH(l,o) :- syncLM(l,m), thisMV(m,v), MPhead(m,p), escPVH(p,v,o).
+

@@ -1,0 +1,13 @@
+# name=checkExcludedE-dlog
+
+.include "M.dom"
+.include "E.dom"
+
+.bddvarorder E0_M0
+
+checkExcludedM(m:M0) input
+ME(m:M0,e:E0) input
+checkExcludedE(e:E0) output
+
+checkExcludedE(e) :- ME(m,e), checkExcludedM(m).
+

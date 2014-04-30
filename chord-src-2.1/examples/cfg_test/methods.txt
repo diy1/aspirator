@@ -1,0 +1,8 @@
+<clinit>:()V@java.lang.Object
+main:([Ljava/lang/String;)V@test.CFG_test
+<init>:(I)V@test.Logger
+<init>:()V@test.Dummy_Socket
+test_dataflow:(III)I@test.Dummy_Socket
+send:(ILjava/lang/String;)V@test.Dummy_Socket
+info:()V@test.Logger
+print:(Ljava/lang/String;)V@test.Logger

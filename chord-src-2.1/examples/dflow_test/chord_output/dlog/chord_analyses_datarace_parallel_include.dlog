@@ -1,0 +1,24 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=datarace-parallel-include-dlog
+
+.include "A.dom"
+.include "E.dom"
+.include "P.dom"
+
+.bddvarorder E0_A0xA1_P0
+
+###
+# Relations
+###
+
+PE(p:P0,e:E0) input
+mhp(p:P0,t1:A0,t2:A1) input
+mhe(e:E0,t1:A0,t2:A1) output
+
+mhe(e,t1,t2) :- mhp(p,t1,t2), PE(p,e).
+

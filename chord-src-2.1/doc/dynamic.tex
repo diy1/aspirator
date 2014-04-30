@@ -1,0 +1,280 @@
+\xname{dynamic}
+\chapter{Dynamic Analysis}
+\label{chap:dynamic}
+
+This chapter describes all aspect of dynamic analysis in Chord.  Section
+\ref{sec:writing-dynamic} describes how to write a dynamic analysis, Section
+\ref{sec:running-dynamic} describes how to compile and run it, and Section
+\ref{sec:instr-events} describes common dynamic analysis events supported in
+Chord.
+
+\section{Writing a Dynamic Analysis}
+\label{sec:writing-dynamic}
+
+Follow the following steps to write your own dynamic analysis.
+
+Create a class extending \code{chord.project.analyses.DynamicAnalysis} and override
+the appropriate methods in it.
+The only methods that must be compulsorily overridden are method \code{getInstrScheme()},
+which must return an instance of the ``instrumentation scheme" required by
+your dynamic analysis (i.e., the kind and format of events to be generated during an
+instrumented program's execution)
+plus each \code{process<event>(<args>)} method that corresponds to event {\tt <event>}
+with format {\tt <args>} enabled by the chosen instrumentation scheme.
+See Section \ref{sec:instr-events} for the kinds of supported events and their formats.
+
+A sample such class \code{MyDynamicAnalysis} is shown below:
+
+\texonly{\newpage}
+
+\begin{framed}
+{\small
+\begin{verbatim}
+    import chord.project.Chord;
+    import chord.project.analyses.DynamicAnalysis;
+    import chord.instr.InstrScheme;
+
+    // ***TODO***: analysis won't be recognized by Chord without this annotation
+    @Chord(name = "<ANALYSIS_NAME>")    
+    public class MyDynamicAnalysis extends DynamicAnalysis {
+        InstrScheme scheme;
+        @Override
+        public InstrScheme getInstrScheme() {
+            if (scheme != null)
+                return scheme;
+            scheme = new InstrScheme();
+            // ***TODO***: Choose (<event1>, <args1>), ... (<eventN>, <argsN>)
+            // depending upon the kind and format of events required by this
+            // dynamic analysis to be generated for this during an instrumented
+            // program's execution.
+            scheme.set<event1>(<args1>);
+            ...
+            scheme.set<eventN>(<argsN>);
+            return scheme;
+        }
+        @Override
+        public void initAllPasses() {
+            // ***TODO***: User code to be executed once and for all
+            // before all instrumented program runs start.
+        }
+        @Override
+        public void doneAllPasses() {
+            // ***TODO***: User code to be executed once and for all
+            // after all instrumented program runs finish.
+        }
+        @Override
+        public void initPass() {
+            // ***TODO***: User code to be executed once before each instrumented program run starts.
+        }
+        @Override
+        public void donePass() {
+            // ***TODO***: User code to be executed once after each instrumented program run finishes.
+        }
+        @Override
+        public void process<event1>(<args1>) {
+            // ***TODO***: User code for handling events of kind <event1> with format <args1>.
+        }
+        ...
+        @Override
+        public void process<eventN>(<argsN>) {
+            // ***TODO***: User code for handling events of kind <eventN> with format <argsN>.
+        }
+    }
+\end{verbatim}
+}
+\end{framed}
+
+\section{Compiling and Running a Dynamic Analysis}
+\label{sec:running-dynamic}
+
+Compile the analysis by placing the directory containing class \code{MyDynamicAnalysis} created
+above in the path defined by property \code{chord.ext.java.analysis.path}.
+
+Provide the IDs of program runs to be generated (say 1, 2, ..., M) and the command-line arguments to be
+used for the program in each of those runs (say \code{<args1>}, ..., \code{<argsM>}) via properties
+\code{chord.run.ids=1,2,...,N} and \code{chord.args.1=<args1>}, ..., \code{chord.args.M=<argsM>}.
+By default, \code{chord.run.ids=0} and \code{chord.args.0=""}, that is, the program will be run only
+once (using run ID 0) with no command-line arguments.
+
+To run the analysis, set property \code{chord.run.analyses} to
+\code{<ANALYSIS_NAME>} (recall that \code{<ANALYSIS_NAME>} is the name provided
+in the \code{@Chord} annotation for class \code{MyDynamicAnalysis} created
+above).
+
+{\bf Note:} The IBM J9 JVM on Linux is highly recommended if you intend to use Chord for
+dynamic program analysis, as it allows you to instrument the entire JDK; using any other
+platform will likely require excluding large parts of the JDK from being instrumented.
+Additionally, if you intend to use online (load-time) bytecode instrumentation in
+your dynamic program analysis, then you will need JDK 6 or higher, since this functionality
+requires the \code{java.lang.instrument} API with class retransformation support (the latter
+support is available only in JDK 6 and higher).
+
+You can change the default values of various properties for configuring your dynamic analysis;
+see Section \ref{sec:scope-props} and Section \ref{sec:instr-props} in Chapter \ref{chap:properties}.
+For instance:
+\begin{itemize}
+\item
+You can set property \code{chord.scope.kind} to {\tt dynamic} so that the program scope
+is computed dynamically (i.e., by running the program) instead of statically.
+\item
+You can exclude certain classes (e.g., JDK classes) from being instrumented by setting
+properties \code{chord.std.scope.exclude}, \code{chord.ext.scope.exclude}, and
+\code{chord.scope.exclude}.
+\item
+You can choose between online (i.e. load-time) and offline bytecode instrumentation by
+setting property \code{chord.instr.kind} to {\tt online} or {\tt offline}.
+\item
+You can require the event-generating and event-handling JVMs to be one and the same (by setting
+property \code{chord.trace.kind} to {\tt none}),
+or to be separate (by setting property {\tt chord.trace.kind} to {\tt full} or {\tt pipe}, depending upon
+whether you want the two JVMs to exchange events by a regular file or a POSIX pipe, respectively).
+Using a single JVM can cause correctness/performance issues if event-handling Java code itself is instrumented
+(e.g., say the event-handling code uses class \code{java.util.ArrayList} which is not excluded from program scope).
+Using separate JVMs prevents such issues since the event-handling JVM runs uninstrumented bytecode (only
+the event-generating JVM runs instrumented bytecode).
+If a regular file is used to exchange events between the two JVMs, then the JVMs run serially:
+the event-generating JVM first runs to completion, dumps the entire dynamic trace to the regular file,
+and then the event-handling JVM processes the dynamic trace.
+If a POSIX pipe is used to exchange events between the two JVMs, then the JVMs run in lockstep.
+Obviously, a pipe is more efficient for very long traces, but it 
+not portable (e.g., it does not currently work on Windows/Cygwin), and the traces cannot be reused
+across Chord runs (see the following item).
+\item
+You can reuse dynamic traces from a previous Chord run by setting property
+\code{chord.reuse.traces} to {\tt true}.  In this case, you must also set property
+{\tt chord.trace.kind} to {\tt full}.
+\item
+You can set property \code{chord.dynamic.haltonerr} to {\tt false} to prevent Chord from terminating
+even if the program on which dynamic analysis is being performed crashes.
+\end{itemize}
+
+Chord offers much more flexibility in crafting dynamic analyses.
+You can define your own instrumentor (by subclassing \code{chord.instr.CoreInstrumentor}
+instead of using the default \code{chord.instr.Instrumentor}) and your own event handler (by subclassing \code{chord.runtime.CoreEventHandler}
+instead of using the default \code{chord.runtime.EventHandler}).
+You can ask the dynamic analysis to use your custom instrumentor and/or your custom event handler by overriding
+methods \code{getInstrumentor()} and \code{getEventHandler()}, respectively, defined in \code{chord.project.analyses.CoreDynamicAnalysis}.
+Finally, you can define your own dynamic analysis template by subclassing \code{chord.project.analyses.CoreDynamicAnalysis}
+instead of subclassing the default \code{chord.project.analyses.DynamicAnalysis}.
+
+\section{Common Dynamic Analysis Events}
+\label{sec:instr-events}
+
+Chord provides support for instrumenting common dynamic analysis events.
+The below table describes these events.
+
+\begin{mytable}{|l|p{4.3in}|} 
+\hline
+{\bf Event Kind} & {\bf Description} \\
+\hline
+EnterMainMethod(\bt) & After thread \bt\ enters method \bm\ (in domain M).
+\\
+\hline
+EnterMethod(\bm, \bt) & After thread \bt\ enters method \bm\ (in domain M).
+\\
+\hline
+LeaveMethod(\bm, \bt) & Before thread \bt\ leaves method \bm\ (in domain M).
+\\
+\hline
+EnterLoop(\bb, \bt) & Before thread \bt\ begins loop \bb\ (in domain B).
+\\
+\hline
+LoopIteration(\bb, \bt) & Before thread \bt\ starts a new iteration of loop \bb\ (in domain B).
+\\
+\hline
+LeaveLoop(\bb, \bt) & After thread \bt\ finishes loop \bb\ (in domain B).
+\\
+\hline
+BasicBlock(\bb, \bt) & Before thread \bt\ enters basic block \bb\ (in domain B).
+\\
+\hline
+Quad(\bp, \bt) & Before thread \bt\ executes quad at program point \bp\ (in domain P).
+\\
+\hline
+BefMethodCall(\bi, \bt, \bo) & 
+\begin{tabular}{p{4.3in}}
+Before thread \bt\ executes the method invocation statement at program point \bi\ (in domain I) with this argument as object \bo. \\
+{\bf Note:} Not generated before constructor calls; use BefNew event.
+\end{tabular}
+\\
+\hline
+AftMethodCall(\bi, \bt, \bo) &
+\begin{tabular}{p{4.3in}}
+After thread \bt\ executes the method invocation statement at program point \bi\ (in domain I) with this argument as object \bo. \\
+{\bf Note:} Not generated after constructor calls; use AftNew event.
+\end{tabular}
+\\
+\hline
+BefNew(\bh, \bt, \bo) & Before thread \bt\ executes a \code{new} bytecode instruction and allocates fresh object \bo\ at program point \bh\ (in domain H).
+\\
+\hline
+AftNew(\bh, \bt, \bo) & After thread \bt\ executes a \code{new} bytecode instruction and allocates fresh object \bo\ at program point \bh\ (in domain H).
+\\
+\hline
+NewArray(\bh, \bt, \bo) & After thread \bt\ executes a \code{newarray} bytecode instruction and allocates fresh object \bo\ at program point \bh\ (in domain H).
+\\
+\hline
+GetstaticPrimitive(\be, \bt, \bg) & After thread \bt\ reads primitive-typed static field \bg\ (in domain F) at program point \be\ (in domain E).
+\\
+\hline
+GetstaticReference(\be, \bt, \bg, \bo) & After thread \bt\ reads object \bo\ from reference-typed static field \bg\ (in domain F) at program point \be\ (in domain E).
+\\
+\hline
+PutstaticPrimitive(\be, \bt, \bg) & After thread \bt\ writes primitive-typed static field \bg\ (in domain F) at program point \be\ (in domain E).
+\\
+\hline
+PutstaticReference(\be, \bt, \bg, \bo) & After thread \bt\ writes object \bo\ to reference-typed static field \bg\ (in domain F) at program point \be\ (in domain E).
+\\
+\hline
+GetfieldPrimitive(\be, \bt, \bb, \bg) & After thread \bt\ reads primitive-typed instance field \bg\ (in domain F) of object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+GetfieldReference(\be, \bt, \bb, \bg, \bo) & After thread \bt\ reads object \bo\ from reference-typed instance field \bg\ (in domain F) of object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+PutfieldPrimitive(\be, \bt, \bb, \bg) & After thread \bt\ writes primitive-typed instance field \bg\ (in domain F) of object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+PutfieldReference(\be, \bt, \bb, \bg, \bo) & After thread \bt\ writes object \bo\ to reference-typed instance field \bg\ (in domain F) of object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+AloadPrimitive(\be, \bt, \bb, \bi) & After thread \bt\ reads the primitive-typed element at index \bi\ of array object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+AloadReference(\be, \bt, \bb, \bi, \bo) & After thread \bt\ reads object \bo\ from the reference-typed element at index \bi\ of array object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+AstorePrimitive(\be, \bt, \bb, \bi) & After thread \bt\ writes the primitive-typed element at index \bi\ of array object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+AstoreReference(\be, \bt, \bb, \bi, \bo) & After thread \bt\ writes object \bo\ to the reference-typed element at index \bi\ of array object \bb\ at program point \be\ (in domain E).
+\\
+\hline
+%ReturnPrimitive(\bp, \bt) & Not yet supported.
+%\\
+%ReturnReference(\bp, \bt) & Not yet supported.
+%\\
+%ExplicitThrow(\bp, \bt, \bo) & Not yet supported.
+%\\
+%ImplicitThrow(\bp, \bt, \bo) & Not yet supported.
+%\\
+ThreadStart(\bi, \bt, \bo) & Before thread \bt\ calls the \code{start()} method of \code{java.lang.Thread} at program point \bi\ (in domain I) and spawns a thread \bo.
+\\
+\hline
+ThreadJoin(\bi, \bt, \bo) & Before thread \bt\ calls the \code{join()} method of \code{java.lang.Thread} at program point \bi\ (in domain I) to join with thread \bo.
+\\
+\hline
+AcquireLock(\bl, \bt, \bo) & After thread \bt\ executes a statement of the form ``monitorenter \bo'' or enters a method synchronized on \bo\ at program point \bl\ (in domain L).
+\\
+\hline
+ReleaseLock(\br, \bt, \bo) & Before thread \bt\ executes a statement of the form ``monitorexit \bo'' or leaves a method synchronized on \bo\ at program point \br\ (in domain R).
+\\
+\hline
+Wait(\bi, \bt, \bo) & Before thread \bt\ calls the \code{wait()} method of \code{java.lang.Object} on object \bo\ at program point \bi\ (in domain I).
+\\
+\hline
+Notify(\bi, \bt, \bo) & Before thread \bt\ calls the \code{notify()} or \code{notifyAll()} method of \code{java.lang.Object} on object \bo\ at program point \bi\ (in domain I).
+\T \\
+\hline
+\end{mytable}
+

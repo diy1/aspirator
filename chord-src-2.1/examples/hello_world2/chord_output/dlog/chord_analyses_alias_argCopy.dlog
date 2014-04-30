@@ -1,0 +1,40 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=argCopy-dlog
+
+.include "I.dom"
+.include "M.dom"
+.include "V.dom"
+.include "Z.dom"
+
+.bddvarorder I0xM0_V0xV1_Z0xZ1
+
+###
+# Relations
+###
+
+IM(i:I,m:M) input
+IinvkArg(i:I0,n:Z0,v:V1) input
+MmethArg(m:M0,n:Z0,v:V0) input
+kobjSenM(m:M) input
+epsilonV(v:V) input
+
+MspcMethArg(m:M,v:V) output
+MordMethArg(m:M,z:Z,v:V) output
+
+argCopy(i:I0,u:V1,m:M0,v:V0) output
+
+###
+# Constraints
+###
+
+MspcMethArg(m,v)   :- MmethArg(m,0,v), kobjSenM(m), !epsilonV(v).
+MordMethArg(m,0,v) :- MmethArg(m,0,v), !MspcMethArg(m,v).
+MordMethArg(m,z,v) :- MmethArg(m,z,v), z!=0.
+
+argCopy(i,u,m,v) :- IM(i,m), IinvkArg(i,z,u), MordMethArg(m,z,v).
+

@@ -1,0 +1,466 @@
+Chord run initiated at: Jan 28, 2014 5:02:46 PM
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+WARNING: cannot load method
+Method found: getDataNode:()Lorg/apache/hadoop/hdfs/server/datanode/DataNode;@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB1 (EXIT)
+Method found: close:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+  Basic Block: BB4
+  Basic Block: BB5
+  Basic Block: BB6
+  Basic Block: BB7
+  Basic Block: BB8
+  Basic Block: BB9
+  Basic Block: BB10
+    Quad: 22: INVOKEVIRTUAL_V flush:()V@java.io.DataOutputStream, (T29) at LINE: 274 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB11
+  Basic Block: BB12
+    Quad: 32: CHECKCAST T37, T36, java.io.FileOutputStream at LINE: 278 throws exception: java.lang.ClassCastException
+    Quad: 34: INVOKEVIRTUAL_V force:(Z)V@java.nio.channels.FileChannel, (T38, T39) at LINE: 278 throws exception: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.lang.Throwable
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB13
+    Quad: 46: INVOKEVIRTUAL_V close:()V@java.io.FilterOutputStream, (T48) at LINE: 283 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB15
+  Basic Block: BB17
+  Basic Block: BB18
+  Basic Block: BB16
+  Basic Block: BB14
+  Basic Block: BB19
+  Basic Block: BB20
+    Quad: 67: INVOKEVIRTUAL_V flush:()V@java.io.OutputStream, (T64) at LINE: 296 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB21
+  Basic Block: BB22
+    Quad: 77: CHECKCAST T72, T71, java.io.FileOutputStream at LINE: 300 throws exception: java.lang.ClassCastException
+    Quad: 79: INVOKEVIRTUAL_V force:(Z)V@java.nio.channels.FileChannel, (T73, T74) at LINE: 300 throws exception: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.lang.Throwable
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB23
+    Quad: 91: INVOKEVIRTUAL_V close:()V@java.io.OutputStream, (T83) at LINE: 305 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB25
+  Basic Block: BB27
+  Basic Block: BB28
+  Basic Block: BB26
+  Basic Block: BB24
+  Basic Block: BB29
+  Basic Block: BB30
+  Basic Block: BB31
+  Basic Block: BB33
+  Basic Block: BB32
+    Quad: 114: INVOKEVIRTUAL_V checkDiskError:(Ljava/lang/Exception;)V@org.apache.hadoop.hdfs.server.datanode.DataNode, (T98, R95) at LINE: 319 throws exception: java.io.IOException
+    Quad: 115: THROW_A R95 at LINE: 320 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Method found: flushOrSync:(Z)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+    Quad: 7: INVOKEVIRTUAL_V flush:()V@java.io.DataOutputStream, (T16) at LINE: 332 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB4
+  Basic Block: BB5
+    Quad: 16: CHECKCAST T23, T22, java.io.FileOutputStream at LINE: 336 throws exception: java.lang.ClassCastException
+    Quad: 18: INVOKEVIRTUAL_V force:(Z)V@java.nio.channels.FileChannel, (T24, T25) at LINE: 336 throws exception: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+DEBUG: Exception java.lang.ClassCastException will be simply propagated to the caller (this method throws: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB6
+  Basic Block: BB7
+  Basic Block: BB8
+    Quad: 33: INVOKEVIRTUAL_V flush:()V@java.io.OutputStream, (T37) at LINE: 343 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB9
+  Basic Block: BB10
+    Quad: 42: CHECKCAST T44, T43, java.io.FileOutputStream at LINE: 347 throws exception: java.lang.ClassCastException
+    Quad: 44: INVOKEVIRTUAL_V force:(Z)V@java.nio.channels.FileChannel, (T45, T46) at LINE: 347 throws exception: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+DEBUG: Exception java.lang.ClassCastException will be simply propagated to the caller (this method throws: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB11
+  Basic Block: BB12
+  Basic Block: BB13
+  Basic Block: BB14
+  Basic Block: BB15
+  Basic Block: BB16
+  Basic Block: BB1 (EXIT)
+Method found: handleMirrorOutError:(Ljava/io/IOException;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 9: INVOKEVIRTUAL_A T13, getDNRegistrationForBP:(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/server/protocol/DatanodeRegistration;@org.apache.hadoop.hdfs.server.datanode.DataNode, (T12, R3) at LINE: 366 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB4
+  Basic Block: BB3
+    Quad: 25: THROW_A R1 at LINE: 369 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Method found: verifyChunks:(Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 3: INVOKEVIRTUAL_V verifyChunkedSums:(Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;Ljava/lang/String;J)V@org.apache.hadoop.util.DataChecksum, (T11, R1, R2, T12, T5) at LINE: 384 throws exception: org.apache.hadoop.fs.ChecksumException
+Debug: exception org.apache.hadoop.fs.ChecksumException is handled!
+The thrown exception: org.apache.hadoop.fs.ChecksumException will be handled by SUPERCLASS: org.apache.hadoop.fs.ChecksumException
+  Basic Block: BB4
+  Basic Block: BB5
+  Basic Block: BB6
+    Quad: 44: INVOKEVIRTUAL_V reportRemoteBadBlock:(Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;)V@org.apache.hadoop.hdfs.server.datanode.DataNode, (T41, T42, T43) at LINE: 392 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB8
+  Basic Block: BB7
+  Basic Block: BB9
+    Quad: 79: THROW_A T59 at LINE: 398 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB3
+  Basic Block: BB10
+  Basic Block: BB1 (EXIT)
+Method found: translateChunks:(Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB1 (EXIT)
+Method found: shouldVerifyChecksum:()Z@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+  Basic Block: BB4
+  Basic Block: BB6
+  Basic Block: BB5
+  Basic Block: BB7
+  Basic Block: BB1 (EXIT)
+Method found: receivePacket:()I@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 3: INVOKEVIRTUAL_V receiveNextPacket:(Ljava/io/InputStream;)V@org.apache.hadoop.hdfs.protocol.datatransfer.PacketReceiver, (T38, T39) at LINE: 435 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB3
+  Basic Block: BB4
+  Basic Block: BB6
+  Basic Block: BB8
+  Basic Block: BB9
+  Basic Block: BB10
+  Basic Block: BB11
+  Basic Block: BB12
+  Basic Block: BB13
+  Basic Block: BB14
+  Basic Block: BB15
+  Basic Block: BB16
+    Quad: 60: CHECKCAST T120, T119, org.apache.hadoop.hdfs.server.datanode.BlockReceiver$PacketResponder at LINE: 476 throws exception: java.lang.ClassCastException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+DEBUG: Exception java.lang.ClassCastException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB17
+  Basic Block: BB18
+  Basic Block: BB19
+    Quad: 69: INVOKEVIRTUAL_V mirrorPacketTo:(Ljava/io/DataOutputStream;)V@org.apache.hadoop.hdfs.protocol.datatransfer.PacketReceiver, (T124, T125) at LINE: 483 throws exception: java.io.IOException
+    Quad: 71: INVOKEVIRTUAL_V flush:()V@java.io.DataOutputStream, (T126) at LINE: 484 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB21
+    Quad: 74: INVOKESTATIC_V handleMirrorOutError:(Ljava/io/IOException;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0, R128) at LINE: 486 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB20
+  Basic Block: BB22
+  Basic Block: BB23
+  Basic Block: BB28
+  Basic Block: BB30
+  Basic Block: BB31
+    Quad: 96: INVOKESTATIC_V verifyChunks:(Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0, R131, R17) at LINE: 513 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB33
+  Basic Block: BB34
+    Quad: 103: CHECKCAST T163, T162, org.apache.hadoop.hdfs.server.datanode.BlockReceiver$PacketResponder at LINE: 518 throws exception: java.lang.ClassCastException
+    Quad: 106: INVOKESTATIC_V sleep:(J)V@java.lang.Thread, (T165) at LINE: 523 throws exception: java.lang.InterruptedException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.lang.InterruptedException
+Debug: exception java.lang.InterruptedException is handled!
+The thrown exception: java.lang.InterruptedException will be handled by SUPERCLASS: java.lang.InterruptedException
+  Basic Block: BB36
+  Basic Block: BB35
+  Basic Block: BB37
+    Quad: 121: THROW_A T168 at LINE: 526 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB32
+  Basic Block: BB38
+  Basic Block: BB39
+  Basic Block: BB40
+  Basic Block: BB41
+  Basic Block: BB42
+    Quad: 136: INVOKESTATIC_V adjustCrcFilePosition:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0) at LINE: 547 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB43
+  Basic Block: BB44
+    Quad: 171: INVOKESTATIC_V computePartialChunkCrc:(JJI)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (T211, R24, R28, T29) at LINE: 558 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB45
+    Quad: 184: INVOKEVIRTUAL_V write:([BII)V@java.io.OutputStream, (T220, T221, R31, R32) at LINE: 567 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB51
+    Quad: 205: INVOKEVIRTUAL_V write:([BII)V@java.io.DataOutputStream, (T282, T283, T286, R19) at LINE: 594 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB46
+  Basic Block: BB48
+    Quad: 222: INVOKEVIRTUAL_V write:([B)V@java.io.FilterOutputStream, (T259, R34) at LINE: 584 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB49
+  Basic Block: BB50
+  Basic Block: BB52
+    Quad: 237: INVOKEVIRTUAL_V flushOrSync:(Z)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0, R13) at LINE: 599 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB53
+  Basic Block: BB47
+    Quad: 271: THROW_A T224 at LINE: 573 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB54
+    Quad: 275: INVOKEVIRTUAL_V checkDiskError:(Ljava/lang/Exception;)V@org.apache.hadoop.hdfs.server.datanode.DataNode, (T293, R292) at LINE: 610 throws exception: java.io.IOException
+    Quad: 276: THROW_A R292 at LINE: 611 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB29
+    Quad: 293: THROW_A T142 at LINE: 506 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB24
+  Basic Block: BB25
+  Basic Block: BB26
+  Basic Block: BB27
+    Quad: 308: INVOKEVIRTUAL_V flushOrSync:(Z)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0, T304) at LINE: 499 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB55
+  Basic Block: BB56
+  Basic Block: BB57
+  Basic Block: BB58
+    Quad: 318: CHECKCAST T309, T308, org.apache.hadoop.hdfs.server.datanode.BlockReceiver$PacketResponder at LINE: 618 throws exception: java.lang.ClassCastException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+DEBUG: Exception java.lang.ClassCastException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB59
+  Basic Block: BB60
+  Basic Block: BB61
+  Basic Block: BB63
+  Basic Block: BB62
+  Basic Block: BB64
+  Basic Block: BB7
+    Quad: 354: THROW_A T82 at LINE: 450 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB5
+    Quad: 379: THROW_A T59 at LINE: 445 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Method found: manageWriterOsCache:(J)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+  Basic Block: BB4
+  Basic Block: BB5
+    Quad: 14: INVOKESTATIC_V syncFileRangeIfPossible:(Ljava/io/FileDescriptor;JJI)V@org.apache.hadoop.io.nativeio.NativeIO$POSIX, (T21, T6, T8, T9) at LINE: 643 throws exception: org.apache.hadoop.io.nativeio.NativeIOException
+UNREACHABLE: org.apache.hadoop.io.nativeio.NativeIOException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for org.apache.hadoop.io.nativeio.NativeIOException; exception: java.lang.RuntimeException
+The thrown exception: org.apache.hadoop.io.nativeio.NativeIOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB6
+  Basic Block: BB7
+  Basic Block: BB8
+    Quad: 27: INVOKESTATIC_V posixFadviseIfPossible:(Ljava/lang/String;Ljava/io/FileDescriptor;JJI)V@org.apache.hadoop.io.nativeio.NativeIO$POSIX, (T28, T29, T30, R11, T13) at LINE: 660 throws exception: org.apache.hadoop.io.nativeio.NativeIOException
+UNREACHABLE: org.apache.hadoop.io.nativeio.NativeIOException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for org.apache.hadoop.io.nativeio.NativeIOException; exception: java.lang.RuntimeException
+The thrown exception: org.apache.hadoop.io.nativeio.NativeIOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB9
+  Basic Block: BB11
+  Basic Block: BB10
+  Basic Block: BB12
+  Basic Block: BB1 (EXIT)
+Method found: receiveBlock:(Ljava/io/DataOutputStream;Ljava/io/DataInputStream;Ljava/io/DataOutputStream;Ljava/lang/String;Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;[Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+  Basic Block: BB4
+  Basic Block: BB5
+  Basic Block: BB6
+    Quad: 26: INVOKESTATIC_I T32, receivePacket:()I@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0) at LINE: 693 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB8
+  Basic Block: BB9
+    Quad: 32: CHECKCAST T36, T35, org.apache.hadoop.hdfs.server.datanode.BlockReceiver$PacketResponder at LINE: 699 throws exception: java.lang.ClassCastException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.io.IOException
+UNREACHABLE: java.lang.ClassCastException actual state: 0 expected state: 3
+ERROR: Failed to get superclass for java.lang.ClassCastException; exception: java.lang.RuntimeException
+The thrown exception: java.lang.ClassCastException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB10
+  Basic Block: BB11
+  Basic Block: BB12
+    Quad: 39: INVOKEVIRTUAL_V close:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0) at LINE: 708 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB14
+    Quad: 50: INVOKEINTERFACE_V finalizeBlock:(Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;)V@org.apache.hadoop.hdfs.server.datanode.fsdataset.FsDatasetSpi, (T51, T52) at LINE: 717 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB13
+    Quad: 54: INVOKEINTERFACE_A T49, convertTemporaryToRbw:(Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;)Lorg/apache/hadoop/hdfs/server/datanode/ReplicaInPipelineInterface;@org.apache.hadoop.hdfs.server.datanode.fsdataset.FsDatasetSpi, (T47, T48) at LINE: 713 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB15
+  Basic Block: BB16
+  Basic Block: BB17
+  Basic Block: BB18
+  Basic Block: BB19
+    Quad: 65: INVOKESTATIC_V cleanupBlock:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0) at LINE: 731 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB20
+  Basic Block: BB21
+    Quad: 72: INVOKEVIRTUAL_V join:(J)V@java.lang.Thread, (T58, T61) at LINE: 735 throws exception: java.lang.InterruptedException
+Debug: exception java.lang.InterruptedException is handled!
+The thrown exception: java.lang.InterruptedException will be handled by SUPERCLASS: java.lang.InterruptedException
+  Basic Block: BB23
+  Basic Block: BB25
+  Basic Block: BB39
+  Basic Block: BB22
+    Quad: 106: THROW_A T84 at LINE: 740 throws exception: java.io.IOException
+==========================================
+WARNING 1: exception: java.io.IOException is not handled!
+Thrown at line:  740, File: "org/apache/hadoop/hdfs/server/datanode/BlockReceiver.java"
+  by quad: 106: THROW_A T84
+In method: receiveBlock:(Ljava/io/DataOutputStream;Ljava/io/DataInputStream;Ljava/io/DataOutputStream;Ljava/lang/String;Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;[Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  There is exception handler for this BB for the follwing exceptions: java.lang.InterruptedException: no sub-super class relationship with: java.io.IOException
+==========================================
+
+  Basic Block: BB24
+    Quad: 115: THROW_A T89 at LINE: 744 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB7
+  Basic Block: BB26
+    Quad: 129: THROW_A R93 at LINE: 724 throws exception: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB27
+  Basic Block: BB28
+  Basic Block: BB29
+  Basic Block: BB30
+  Basic Block: BB31
+    Quad: 138: INVOKESTATIC_V cleanupBlock:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver, (R0) at LINE: 731 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB32
+  Basic Block: BB33
+    Quad: 145: INVOKEVIRTUAL_V join:(J)V@java.lang.Thread, (T106, T109) at LINE: 735 throws exception: java.lang.InterruptedException
+Debug: exception java.lang.InterruptedException is handled!
+The thrown exception: java.lang.InterruptedException will be handled by SUPERCLASS: java.lang.InterruptedException
+  Basic Block: BB35
+  Basic Block: BB37
+  Basic Block: BB38
+  Basic Block: BB34
+    Quad: 178: THROW_A T132 at LINE: 740 throws exception: java.io.IOException
+==========================================
+WARNING 2: exception: java.io.IOException is not handled!
+Thrown at line:  740, File: "org/apache/hadoop/hdfs/server/datanode/BlockReceiver.java"
+  by quad: 178: THROW_A T132
+In method: receiveBlock:(Ljava/io/DataOutputStream;Ljava/io/DataInputStream;Ljava/io/DataOutputStream;Ljava/lang/String;Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;[Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  There is exception handler for this BB for the follwing exceptions: java.lang.InterruptedException: no sub-super class relationship with: java.io.IOException
+==========================================
+
+  Basic Block: BB36
+    Quad: 187: THROW_A T137 at LINE: 744 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Method found: cleanupBlock:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+    Quad: 6: INVOKEINTERFACE_V unfinalizeBlock:(Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;)V@org.apache.hadoop.hdfs.server.datanode.fsdataset.FsDatasetSpi, (T5, T3) at LINE: 756 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB4
+  Basic Block: BB1 (EXIT)
+Method found: adjustCrcFilePosition:()V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+    Quad: 4: INVOKEVIRTUAL_V flush:()V@java.io.OutputStream, (T6) at LINE: 766 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB4
+  Basic Block: BB5
+    Quad: 8: INVOKEVIRTUAL_V flush:()V@java.io.DataOutputStream, (T8) at LINE: 769 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB6
+    Quad: 14: INVOKEINTERFACE_V adjustCrcChannelPosition:(Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/ReplicaOutputStreams;I)V@org.apache.hadoop.hdfs.server.datanode.fsdataset.FsDatasetSpi, (T10, T2, T3, T4) at LINE: 773 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Method found: checksum2long:([B)J@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+  Basic Block: BB5
+  Basic Block: BB1 (EXIT)
+  Basic Block: BB4
+Method found: computePartialChunkCrc:(JJI)V@org.apache.hadoop.hdfs.server.datanode.BlockReceiver
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+    Quad: 38: INVOKEINTERFACE_A T51, getTmpInputStreams:(Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;JJ)Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/ReplicaInputStreams;@org.apache.hadoop.hdfs.server.datanode.fsdataset.FsDatasetSpi, (T49, T50, R1, R2) at LINE: 811 throws exception: java.io.IOException
+    Quad: 41: INVOKESTATIC_V readFully:(Ljava/io/InputStream;[BII)V@org.apache.hadoop.io.IOUtils, (T53, R12, T54, R7) at LINE: 812 throws exception: java.io.IOException
+    Quad: 45: INVOKESTATIC_V readFully:(Ljava/io/InputStream;[BII)V@org.apache.hadoop.io.IOUtils, (T55, R13, T56, T18) at LINE: 815 throws exception: java.io.IOException
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.lang.Throwable
+  Basic Block: BB5
+  Basic Block: BB6
+  Basic Block: BB4
+  Basic Block: BB7
+  Basic Block: BB9
+  Basic Block: BB8
+    Quad: 98: THROW_A T92 at LINE: 833 throws exception: java.io.IOException
+DEBUG: Exception java.io.IOException will be simply propagated to the caller (this method throws: java.io.IOException
+  Basic Block: BB1 (EXIT)
+Chord run completed at: Jan 28, 2014 5:02:48 PM
+Total time: 00:00:01:470 hh:mm:ss:ms

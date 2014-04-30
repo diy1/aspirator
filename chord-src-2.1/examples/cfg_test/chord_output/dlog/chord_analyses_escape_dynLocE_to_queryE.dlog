@@ -1,0 +1,19 @@
+# name=dynLocE-queryE-dlog
+
+.include "E.dom"
+
+.bddvarorder E0
+
+###
+# Relations
+###
+
+dynLocE(e:E0) input
+queryE(e:E0) output
+
+###
+# Constraints
+###
+
+queryE(e) :- dynLocE(e).
+

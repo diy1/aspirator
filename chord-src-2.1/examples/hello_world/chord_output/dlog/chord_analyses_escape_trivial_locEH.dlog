@@ -1,0 +1,25 @@
+# name=trivial-locEH-dlog
+
+.include "H.dom"
+.include "E.dom"
+.include "M.dom"
+
+.bddvarorder E0_M0_H0
+
+###
+# Relations
+###
+
+queryE(e:E) input
+reachableM(m:M) input
+MH(m:M,h:H) input
+reachableH(h:H)
+locEH(e:E,h:H) output
+
+###
+# Constraints
+###
+
+reachableH(h) :- reachableM(m), MH(m,h).
+locEH(e,h) :- queryE(e), reachableH(h).
+

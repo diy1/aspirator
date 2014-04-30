@@ -1,0 +1,47 @@
+Chord run initiated at: Jan 21, 2014 10:01:48 AM
+Method found: main:([Ljava/lang/String;)V@test.Exception_test
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB3
+    Quad: 7: INVOKEVIRTUAL_I T4, send:()I@test.Dummy_Socket, (T10) at LINE: 39 throws exception: java.io.IOException
+Debug: exception java.io.IOException is handled!
+The thrown exception: java.io.IOException will be handled by SUPERCLASS: java.io.IOException
+  Basic Block: BB5
+  Basic Block: BB4
+  Basic Block: BB6
+  Basic Block: BB1 (EXIT)
+Method found: <init>:()V@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+  Basic Block: BB1 (EXIT)
+Method found: send:()I@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0) at LINE: 20 throws exception: java.io.IOException
+==========================================
+WARNING: exception: java.io.IOException is not handled!
+Thrown at line:  20, File: "test/Exception_test.java"
+  by quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0)
+In method: send:()I@test.Dummy_Socket
+  There is exception handler for this BB for the follwing exceptions: java.net.SocketTimeoutException: which is only a subclass of: java.io.IOException
+==========================================
+
+  Basic Block: BB4
+  Basic Block: BB3
+  Basic Block: BB5
+  Basic Block: BB1 (EXIT)
+Method found: send_internal:()I@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 5: THROW_A T1 at LINE: 14 throws exception: java.io.EOFException
+==========================================
+WARNING: exception: java.io.EOFException is not handled!
+Thrown at line:  14, File: "test/Exception_test.java"
+  by quad: 5: THROW_A T1
+In method: send_internal:()I@test.Dummy_Socket
+  There is simply no any exception handler for this bb in this method!
+==========================================
+
+  Basic Block: BB1 (EXIT)
+Chord run completed at: Jan 21, 2014 10:01:49 AM
+Total time: 00:00:01:223 hh:mm:ss:ms

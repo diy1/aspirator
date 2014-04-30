@@ -1,0 +1,14 @@
+<!ELEMENT targets (target)*>
+<!ATTLIST targets
+	java_analysis_path	CDATA	#REQUIRED
+	dlog_analysis_path	CDATA	#REQUIRED>
+<!ELEMENT target (producer)*>
+<!ATTLIST target
+	name			CDATA	#REQUIRED
+	kind			CDATA	#REQUIRED
+	producer_name	CDATA	#REQUIRED
+	producer_url	CDATA	#REQUIRED>
+<!ELEMENT producer EMPTY>
+<!ATTLIST producer
+	name	CDATA	#REQUIRED
+	url		CDATA	#REQUIRED>

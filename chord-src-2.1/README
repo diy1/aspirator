@@ -1,0 +1,197 @@
+==============
+Simplex: A Simple checker for exception handler bugs
+==============
+
+- Simplex is built on Chord. The later part of this documents describes
+  how to install chord. A copy of the Chord source is included here.
+
+- After Chord is installed, the following three analysis can be used to
+  detect bugs in exception handling code: 
+  -- exception-empty-handler-java: detecting empty exception handler
+  -- terminating-handler-java: detecting unexpected abort in exception overcatch
+  -- exception-todo-in-handler-java: detecting "TODO" and "FIXME" in exception handler
+
+- We also extended Chord to easier analyze big real-world project by adding a few
+  more options. As an example, in the example/cassandra directory, there is a
+  chord.properties file showing how to run the "exception-empty-hanler-java" analysis
+  on Cassandra.  
+
+===============
+OBTAINING CHORD
+===============
+
+You can either obtain pre-built binaries of Chord or you can obtain the source
+code of Chord and build it yourself.  Both these options are described below.
+
+===================
+BINARY INSTALLATION
+===================
+
+To obtain Chord's pre-built binaries, download and uncompress file
+http://jchord.googlecode.com/files/chord-bin-2.1.tar.gz.  It primarily contains
+the following files:
+
+- chord.jar, which contains the class files of Chord and of libraries used by
+  Chord.
+- libbuddy.so, buddy.dll, and libbuddy.dylib: you can keep one of these files
+  depending upon whether you intend to run Chord on Linux, Windows/Cygwin, or
+  MacOS, respectively.  These files are needed only if you want the high
+  performance BDD library BuDDy to be used when the BDD-based Datalog solver
+  bddbddb in Chord runs analyses written in Datalog.
+- libchord_instr_agent.so: this file is needed only if you want the JVMTI-based
+  bytecode instrumentation agent to be used when Chord runs dynamic analyses.
+
+Novice users can ignore items (2) and (3) until they become more familiar with
+Chord.  The binaries mentioned in items (2) and (3) might not be compatible with
+your machine, in which case you can either forgo using them (with hardly any
+noticeable difference in functionality), or you can download the sources and
+build them yourself, as described below.
+
+===================
+SOURCE INSTALLATION
+===================
+
+To obtain Chord's source code, download and uncompress file
+http://jchord.googlecode.com/files/chord-src-2.1.tar.gz.  It contains Chord's
+source code and jars of libraries used by Chord.
+
+If you also want the source code of libraries used by Chord (e.g., joeq,
+javassist, bddbddb, etc.), download and uncompress file
+http://jchord.googlecode.com/files/chord-libsrc-2.1.tar.gz.
+
+Alternatively, you can obtain the latest development snapshot from the SVN
+repository by running the following command:
+
+svn checkout http://jchord.googlecode.com/svn/trunk/ chord
+
+Instead of checking out the entire trunk/, which contains several
+sub-directories, you can check out specific sub-directories:
+
+- main/ contains Chord's source code and jars of libraries used by Chord.
+- libsrc/ contains the source code of libraries used by Chord (e.g., joeq,
+  javassist, bddbddb, etc.).
+- test/ contains Chord's regression tests.
+- many more; these might eventually move into main/.
+
+Files chord-2.1-src.tar.gz and chord-2.1-libsrc.tar.gz mentioned above are
+essentially stable releases of the main/ and libsrc/ directories, respectively.
+
+=========================
+COMPILING THE SOURCE CODE
+=========================
+
+Compiling Chord's source code requires the following software:
+
+- A JVM with JDK 5 or higher, e.g. IBM J9 or Oracle HotSpot.
+- Apache Ant, a Java build tool.
+
+Chord's main directory contains a file named build.xml which is interpreted by
+Apache Ant.  To see the various possible targets, simply run command "ant" in
+that directory.
+
+To compile Chord, run command "ant compile" in the same directory.  This will
+compile Chord's Java sources from src/ to class files in classes/, as well as
+build a jar file chord.jar that contains these class files as well as the those
+in the jars of libraries that are used by Chord and are provided under lib/
+(e.g., joeq.jar, javassist.jar, bddbddb.jar, etc.).  Additionally:
+
+- If system property chord.use.buddy is set to true, then the C source code of
+  BDD library BuDDy from directory bdd/ will be compiled to a shared library
+  named libbuddy.so on Linux, buddy.dll on Windows, and libbuddy.dylib on MacOS;
+  this library is used by BDD-based Datalog solver bddbddb in Chord for running
+  analyses written in Datalog.
+
+- If system property chord.use.jvmti is set to true, then the C++ source code of
+  the JVMTI-based bytecode instrumentation agent from directory agent/ will be
+  compiled to a shared library named libchord_instr_agent.so on all
+  architectures; this agent is used in Chord for computing analysis scope
+  dynamically and for running dynamic analyses.
+
+Properties chord.use.buddy and chord.use.jvmti are defined in file
+chord.properties in Chord's main directory.  The default value of both these
+properties is false.  If you set either of them to true, then you will also need
+a utility like GNU Make (to run the Makefile's in directories bdd/ and agent/)
+and a C++ compiler.
+
+=============
+RUNNING CHORD
+=============
+
+Running Chord requires a JVM with JDK 5 or higher. There are two equivalent ways
+to run Chord.  One way, which is available only in the source installation of
+Chord, is to run the following command:
+
+ant -f <CHORD_MAIN_DIR>/build.xml -D<key1>=<val1> ... -D<keyN>=<valN> run
+
+The above requires Apache Ant (a Java build tool) to be installed on your
+machine.  The alternative, which does not require Apache Ant and is available in
+both the source and binary installations of Chord, is to run the following
+command:
+
+java -cp <CHORD_MAIN_DIR>/chord.jar -D<key1>=<val1> ... -D<keyN>=<valN> chord.project.Boot
+
+where <CHORD_MAIN_DIR> denotes the directory containing file chord.jar; that
+directory is also expected to contain any other binaries in Chord's installation
+(e.g., libbuddy.so and libchord_instr_agent.so).
+
+Each "-D<key>=<val>" argument above sets the system property named <key> to the
+value denoted by <val>.  The only way to specify inputs to Chord is via system
+properties; there is no command-line argument processing.  All system properties
+recognized by Chord are described at
+http://chord.stanford.edu/user_guide/properties.html.
+
+QUICK START
+===========
+
+To ensure that Chord is installed successfully, run it on a provided example
+Java program as follows.  First run command "ant" in directory
+examples/hello_world/.  This will compile the Java source code of that example.
+Then, run the following command:
+
+java -cp <CHORD_MAIN_DIR>/chord.jar -Dchord.work.dir=<CHORD_MAIN_DIR>/examples/hello_world \
+     -Dchord.run.analyses=cipa-0cfa-dlog chord.project.Boot
+
+This will run a basic may-alias and call-graph analysis (called 0CFA) on the
+example Java program.  It will produce somewhat verbose output of the form:
+
+     Chord run initiated at: Mar 13, 2011 10:31:08 PM
+     ENTER: cipa-0cfa-dlog
+     ... (truncated here for brevity)
+     LEAVE: cipa-0cfa-dlog
+     Chord run completed at: Mar 13, 2011 10:31:36 PM
+     Total time: 00:00:27:671 hh:mm:ss:ms
+
+To reduce the verbosity of Chord's output, set -Dchord.verbose=0 on the command
+line.
+
+The names and descriptions of analyses besides cipa-0cfa-dlog that are provided
+in Chord are available here:
+
+http://chord.stanford.edu/user_guide/predefined.html
+
+To setup your own Java program for analysis using Chord, see here:
+
+http://chord.stanford.edu/user_guide/setup.html
+
+To write your own analyses, possibly atop provided ones, see here:
+
+http://chord.stanford.edu/user_guide/writing.html
+
+FURTHER DOCUMENTATION
+=====================
+
+Chord's User Guide is available at:
+
+http://chord.stanford.edu/user_guide/
+
+The Javadoc of Chord's source code is available at:
+
+http://chord.stanford.edu/javadoc/
+
+For questions about Chord, send email to <chord-discuss@googlegroups.com>, or
+browse previous postings at:
+
+http://groups.google.com/group/chord-discuss/
+
+Posting does not require membership but posts by non-members are moderated to
+avoid spamming group members.

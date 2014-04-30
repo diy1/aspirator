@@ -1,0 +1,84 @@
+<style type="text/css">
+
+table {
+}
+
+table.summary {
+	border-collapse: collapse;
+}
+table.summary td.head1 {
+    padding-bottom: 10px;
+	padding-top: 10px;
+	font-family: Tahoma;
+	background-color: #990000;
+	font-size: 16pt;
+	color: white;
+}
+table.summary td.head2 {
+	background-color: #990000;
+	font-size: 12pt;
+	color: white;
+}
+table.summary td.head2center {
+	font-size: 12pt;
+	text-align: center;
+}
+table.summary td.head3 {
+    background-color: #FFFFBF;
+	font-size: 12pt;
+}
+table.summary td.head4 {
+    background-color: #CCCC66;
+}
+table.summary td.head4center {
+    background-color: #CCCC66;
+	text-align: center;
+}
+
+table.summary td {
+    padding: 4px;
+    border-width: 1px;
+    border-style: solid;
+	border-color: gray;
+	vertical-align: top;
+	font-size: 12pt;
+    background-color: white;
+}
+
+table.details {
+	border-collapse: collapse;
+	width: 100%;
+}
+table.details td.head1 {
+    padding-bottom: 10px;
+	padding-top: 10px;
+	background-color: #990000;
+	color: white;
+	font-family: Tahoma;
+	font-size: 16pt;
+}
+table.details td.head2 {
+    background-color: #FFFFBF;
+	font-size: 12pt;
+}
+table.details td.head3 {
+    background-color: #FFFFBF;
+	font-size: 12pt;
+	text-align: center;
+}
+table.details td.head4 {
+    background-color: #CCCC66;
+	text-align: center;
+}
+
+table.details td {
+    padding: 4px;
+    border-width: 1px;
+    border-style: solid;
+	border-color: gray;
+	vertical-align:top;
+	font-size: 12pt;
+    background-color: white;
+}
+
+</style>

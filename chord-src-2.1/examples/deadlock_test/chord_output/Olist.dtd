@@ -1,0 +1,5 @@
+<!ELEMENT Olist (O)*>
+<!ELEMENT O ANY>
+<!ATTLIST O
+	id		ID		#REQUIRED
+	Hids	IDREFS	#IMPLIED>

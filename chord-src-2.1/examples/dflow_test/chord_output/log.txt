@@ -1,0 +1,128 @@
+Chord run initiated at: Jan 6, 2014 8:58:55 PM
+ENTER: cfg-test-java at Mon Jan 06 20:58:56 EST 2014
+ENTER: M at Mon Jan 06 20:58:56 EST 2014
+SAVING dom M size: 1
+LEAVE: M
+Exclusive time: 00:00:00:139 hh:mm:ss:ms
+Inclusive time: 00:00:00:139 hh:mm:ss:ms
+Ding: TestCFG analysis: method: main@test/DFlow_test.java
+Basic Block: BB0 (ENTRY), size: 0
+  The predecessors of this bb are: []
+  The successors of this bb are: [BB2]
+
+
+Basic Block: BB2, size: 11
+  Location: 1!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:30)
+  The predecessors of this bb are: [BB0 (ENTRY)]
+  The successors of this bb are: [BB3]
+    quad[0]: 1!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:30) [1: MOVE_I R9, IConst: 0]
+       -- Used registers: 
+       -- Defined registers: [R9]
+    quad[1]: 2!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:31) [2: NEW T10, test.Logger]
+       -- Used registers: 
+       -- Defined registers: [T10]
+    quad[2]: 5!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:31) [3: MOVE_A T11, T10]
+       -- Used registers: T10; 
+       -- Defined registers: [T11]
+    quad[3]: 7!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:31) [5: MOVE_I T4, IConst: 5]
+       -- Used registers: 
+       -- Defined registers: [T4]
+    quad[4]: 7!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:31) [4: INVOKESTATIC_V <init>:(I)V@test.Logger, (T11, T4)]
+       -- Used registers: T11; T4; 
+       -- Defined registers: []
+    quad[5]: 10!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:31) [6: PUTSTATIC_A T10, .log]
+       -- Used registers: T10; 
+       -- Defined registers: []
+    quad[6]: 13!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:32) [7: NEW T12, test.Dummy_Socket]
+       -- Used registers: 
+       -- Defined registers: [T12]
+    quad[7]: 16!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:32) [8: MOVE_A T13, T12]
+       -- Used registers: T12; 
+       -- Defined registers: [T13]
+    quad[8]: 17!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:32) [9: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T13)]
+       -- Used registers: T13; 
+       -- Defined registers: []
+    quad[9]: 20!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:32) [10: PUTSTATIC_A T12, .socket]
+       -- Used registers: T12; 
+       -- Defined registers: []
+    quad[10]: 24!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:34) [11: MOVE_I R14, IConst: 0]
+       -- Used registers: 
+       -- Defined registers: [R14]
+
+
+Basic Block: BB3, size: 2
+  Location: -35!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:0)
+  The predecessors of this bb are: [BB2, BB6]
+  The successors of this bb are: [BB4, BB7]
+    quad[0]: -35!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:0) [35: PHI R15, (R14, R19), { BB2, BB6 }]
+       -- Used registers: R14; R19; 
+       -- Defined registers: [R15]
+    quad[1]: 27!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:34) [24: IFCMP_I R15, IConst: 5, GE, BB7]
+       -- Used registers: R15; 
+       -- Defined registers: []
+
+
+Basic Block: BB7, size: 1
+  Location: 57!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:40)
+  The predecessors of this bb are: [BB3]
+  The successors of this bb are: [BB1 (EXIT)]
+    quad[0]: 57!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:40) [30: RETURN_V]
+       -- Used registers: 
+       -- Defined registers: []
+
+
+Basic Block: BB1 (EXIT), size: 0
+  The predecessors of this bb are: [BB7]
+  The successors of this bb are: []
+
+
+Basic Block: BB4, size: 5
+  Location: 30!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:35)
+  The predecessors of this bb are: [BB3]
+  The successors of this bb are: [BB5, BB6]
+    quad[0]: 30!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:35) [25: GETSTATIC_A T16, .socket]
+       -- Used registers: 
+       -- Defined registers: [T16]
+    quad[1]: 36!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:35) [27: MOVE_A T7, AConst: "test string"]
+       -- Used registers: 
+       -- Defined registers: [T7]
+    quad[2]: 36!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:35) [26: INVOKEVIRTUAL_I T6, send:(ILjava/lang/String;)I@test.Dummy_Socket, (T16, R15, T7)]
+       -- Used registers: T16; R15; T7; 
+       -- Defined registers: [T6]
+    quad[3]: 39!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:35) [28: MOVE_I R17, T6]
+       -- Used registers: T6; 
+       -- Defined registers: [R17]
+    quad[4]: 41!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:36) [29: IFCMP_I R17, IConst: 0, EQ, BB6]
+       -- Used registers: R17; 
+       -- Defined registers: []
+
+
+Basic Block: BB5, size: 2
+  Location: 44!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:37)
+  The predecessors of this bb are: [BB4]
+  The successors of this bb are: [BB6]
+    quad[0]: 44!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:37) [31: GETSTATIC_A T18, .log]
+       -- Used registers: 
+       -- Defined registers: [T18]
+    quad[1]: 48!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:37) [32: INVOKEVIRTUAL_V info:(I)V@test.Logger, (T18, R17)]
+       -- Used registers: T18; R17; 
+       -- Defined registers: []
+
+
+Basic Block: BB6, size: 2
+  Location: 51!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:34)
+  The predecessors of this bb are: [BB4, BB5]
+  The successors of this bb are: [BB3]
+    quad[0]: 51!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:34) [33: ADD_I R19, R15, IConst: 1]
+       -- Used registers: R15; 
+       -- Defined registers: [R19]
+    quad[1]: 54!main:([Ljava/lang/String;)V@test.DFlow_test (test/DFlow_test.java:34) [34: GOTO BB3]
+       -- Used registers: 
+       -- Defined registers: []
+
+
+LEAVE: cfg-test-java
+Exclusive time: 00:00:00:003 hh:mm:ss:ms
+Inclusive time: 00:00:00:142 hh:mm:ss:ms
+Chord run completed at: Jan 6, 2014 8:58:56 PM
+Total time: 00:00:01:142 hh:mm:ss:ms

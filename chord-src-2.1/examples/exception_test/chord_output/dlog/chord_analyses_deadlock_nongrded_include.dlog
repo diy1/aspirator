@@ -1,0 +1,59 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=deadlock-nongrded-include-dlog
+
+.include "I.dom"
+.include "M.dom"
+.include "V.dom"
+.include "A.dom"
+.include "L.dom"
+.include "H.dom"
+
+.bddvarorder A0xA1_I0xM0xM1_L0_V0_H0xH1_L1
+
+###
+# Relations
+###
+
+threadAM(a:A0,m:M0) input
+reachableAM(a:A0,m:M0) input
+threadStartI(i:I0) input
+MI(m:M0,i:I0) input
+IM(i:I0,m:M0) input
+ML(m:M0,l:L0) input
+syncLH(l:L0,h:H0) input
+transLL(l1:L0,l2:L1) input
+transLI(l:L0,i:I0) input
+
+syncH(h:H0)
+invkLock(i:I0,o:H0)
+unguardedM(a:A0,m:M0,o:H0)
+unguardedI(a:A0,i:I0,o:H0)
+guardedM(a:A0,m:M0,o:H0)
+guardedL(a:A0,n:L0,o:H0)
+
+# Threads t1, t2 may hold a common lock when they execute l1, l2 respectively.
+guarded(t1:A0,t2:A1,l1:L0,l2:L1) output
+
+###
+# Constraints
+###
+
+syncH(o) :- syncLH(_,o).
+invkLock(i,o) :- transLI(l,i), syncLH(l,o).
+
+unguardedM(t,m,o) :- syncH(o), threadAM(t,m).
+unguardedI(t,i,o) :- unguardedM(t,m,o), MI(m,i), !invkLock(i,o), !threadStartI(i).
+unguardedM(t,n,o) :- unguardedI(t,i,o), IM(i,n).
+
+guardedM(t,m,o) :- syncH(o), reachableAM(t,m), !unguardedM(t,m,o).
+
+guardedL(t,l,o) :- ML(m,l), guardedM(t,m,o).
+guardedL(_,l,o) :- transLL(l1,l), syncLH(l1,o).
+
+guarded(t1,t2,l1,l3) :- guardedL(t1,l1,o), guardedL(t2,l3,o).
+

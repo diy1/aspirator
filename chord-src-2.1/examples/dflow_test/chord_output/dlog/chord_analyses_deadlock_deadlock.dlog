@@ -1,0 +1,49 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=deadlock-dlog
+
+.include "A.dom"
+.include "L.dom"
+.include "M.dom"
+.include "H.dom"
+
+.bddvarorder A0xA1_M0_H0_L0_L1_L2_L3
+
+###
+# Relations
+###
+
+escLH(l:L0,o:H0) input
+mhpTLTL(t1:A0,l1:L0,t2:A1,l2:L1) input
+syncTLL(t:A0,l1:L0,l2:L1) input
+guarded(t1:A0,t2:A1,l1:L0,l3:L1) input
+escLL(l1:L0,l2:L3)
+
+deadlock1(l1:L0,l2:L1,l3:L2,l4:L3) 
+deadlock2(t1:A0,l1:L0,l2:L1,t2:A1,l3:L2,l4:L3)
+deadlock3(t1:A0,l1:L0,l2:L1,t2:A1,l3:L2,l4:L3)
+deadlock4(t1:A0,l1:L0,l2:L1,t2:A1,l3:L2,l4:L3)
+deadlock (t1:A0,l1:L0,l2:L1,t2:A1,l3:L2,l4:L3) output
+
+###
+# Constraints
+###
+
+escLL(l1,l2) :- escLH(l1,o), escLH(l2,o).
+
+deadlock1(l1,l2,l3,l4) :- escLL(l1,l4), escLL(l2,l3).
+
+deadlock2(t1,l1,l2,t2,l3,l4) :- deadlock1(l1,l2,l3,l4), syncTLL(t1,l1,l2), syncTLL(t2,l3,l4).
+
+deadlock3(t1,l1,l2,t2,l3,l4) :- deadlock2(t1,l1,l2,t2,l3,l4), mhpTLTL(t2,l4,t1,l2).
+
+deadlock4(t1,l1,l2,t2,l3,l4) :- deadlock3(t1,l1,l2,t2,l3,l4), !guarded(t1,t2,l1,l3).
+
+deadlock(t1,l1,l2,t2,l3,l4) :- deadlock4(t1,l1,l2,t2,l3,l4), t1<t2.
+deadlock(t1,l1,l2,t2,l3,l4) :- deadlock4(t1,l1,l2,t2,l3,l4), t1=t2, l1<l3.
+deadlock(t1,l1,l2,t2,l3,l4) :- deadlock4(t1,l1,l2,t2,l3,l4), t1=t2, l1=l3, l2<=l4.
+

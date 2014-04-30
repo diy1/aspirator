@@ -1,0 +1,68 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=deadlock-nonreent-include-dlog
+
+.include "M.dom"
+.include "V.dom"
+.include "A.dom"
+.include "L.dom"
+.include "I.dom"
+.include "H.dom"
+
+.bddvarorder A0_M0xI0_L0xL1_V0_H0
+
+###
+# Relations
+###
+
+ML(m:M0,l:L0) input
+MI(m:M0,i:I0) input
+threadAM(a:A0,m:M0) input
+IM(i:I0,n:M0) input
+threadStartI(i:I0) input
+syncLH(l:L0,o:H0) input
+transLL(l1:L0,l2:L1) input
+transLI(l:L0,i:I0) input
+
+mayAliasedUptoL(n:L0)
+notAliasedUptoL(n:L0)
+
+mayAliasedUptoLI(n:L0,i:I0)
+notAliasedUptoLI(n:L0,i:I0)
+
+syncML(m:M0,n:L0)
+syncIL(i:I0,n:L0)
+
+syncMLL(m:M0,l1:L0,l2:L1)
+syncILL(i:I0,l1:L0,l2:L1)
+syncTLL(t:A0,l1:L0,l2:L1) output
+
+###
+# Constraints
+###
+
+mayAliasedUptoLI(n,i) :- transLI(l2,i), syncLH(n,o), syncLH(l2,o).
+mayAliasedUptoL(n) :- transLL(l1,n), syncLH(l1,o), syncLH(n,o).
+
+notAliasedUptoLI(n,i) :- !mayAliasedUptoLI(n,i).
+notAliasedUptoL(n) :- !mayAliasedUptoL(n).
+
+syncML(m,l) :- notAliasedUptoL(l), ML(m,l).
+syncIL(i,l) :- IM(i,m), syncML(m,l), !threadStartI(i).
+syncML(m,l) :- syncIL(i,l), MI(m,i), notAliasedUptoLI(l,i).
+
+syncMLL(m,l1,l2) :- transLI(l1,i), MI(m,i), syncIL(i,l2), notAliasedUptoLI(l2,i), notAliasedUptoL(l1).
+ 
+syncMLL(m,l1,l2) :- transLL(l1,l2), ML(m,l1), ML(m,l2), notAliasedUptoL(l1), notAliasedUptoL(l2).
+
+syncILL(i,l1,l2) :- IM(i,m), syncMLL(m,l1,l2), !threadStartI(i).
+
+syncMLL(m,l1,l2) :- MI(m,i), syncILL(i,l1,l2), notAliasedUptoLI(l1,i), notAliasedUptoLI(l2,i).
+
+syncTLL(t,l1,l2) :- threadAM(t,m), syncMLL(m,l1,l2).
+
+

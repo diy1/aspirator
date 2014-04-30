@@ -1,0 +1,19 @@
+<!ENTITY % Hlist SYSTEM "Hlist.dtd">
+<!ENTITY % Mlist SYSTEM "Mlist.dtd">
+<!ENTITY % Elist SYSTEM "Elist.dtd">
+<!ELEMENT results (escapelist, Hlist, Mlist, Elist)>
+<!ELEMENT escapelist (pathEsc|fullEsc|fullLoc)*>
+<!ELEMENT pathEsc EMPTY> 
+<!ELEMENT fullEsc EMPTY> 
+<!ELEMENT fullLoc EMPTY> 
+<!ATTLIST pathEsc
+	Eid		IDREF	#REQUIRED>
+<!ATTLIST fullEsc
+	Eid		IDREF	#REQUIRED
+	Hids	IDREFS	#REQUIRED>
+<!ATTLIST fullLoc
+	Eid		IDREF	#REQUIRED
+	Hids	IDREFS	#REQUIRED>
+%Hlist;
+%Mlist;
+%Elist;

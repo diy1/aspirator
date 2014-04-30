@@ -1,0 +1,35 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=reachableAM-dlog
+
+.include "M.dom"
+.include "I.dom"
+.include "A.dom"
+
+.bddvarorder A0_I0xI1xM0xM1
+
+###
+# Relations
+###
+
+IM(i:I0,m:M0) input
+threadAM(t:A0,m:M0) input
+MI(m:M0,i:I0) input
+threadStartI(i:I0) input
+
+reachableAM(t:A0,m:M0) output
+threadReachableM(m:M0) output
+
+###
+# Constraints
+###
+
+reachableAM(t,m) :- threadAM(t,m).
+reachableAM(t,n) :- reachableAM(t,m), MI(m,i), IM(i,n), !threadStartI(i).
+
+threadReachableM(m) :- reachableAM(_,m).
+

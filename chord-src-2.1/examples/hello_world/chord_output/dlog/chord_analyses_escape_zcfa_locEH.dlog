@@ -1,0 +1,26 @@
+# name=zcfa-locEH-dlog
+
+.include "V.dom"
+.include "H.dom"
+.include "F.dom"
+.include "E.dom"
+
+.bddvarorder E0_V0_H0xH1_F0
+
+###
+# Relations
+###
+
+queryE(e:E) input
+VH(v:V0,h:H0) input
+HFH(h1:H,f:F,h2:H) input
+EV(e:E,v:V) input
+locEH(e:E,h:H) output
+
+###
+# Constraints
+###
+
+locEH(e,h) :- queryE(e), EV(e,v), VH(v,h).
+locEH(e,h) :- locEH(e,h2), HFH(h,_,h2).
+

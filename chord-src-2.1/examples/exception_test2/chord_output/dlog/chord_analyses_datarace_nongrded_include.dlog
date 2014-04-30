@@ -1,0 +1,55 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=datarace-nongrded-include-dlog
+
+.include "A.dom"
+.include "H.dom"
+.include "I.dom"
+.include "M.dom"
+.include "E.dom"
+.include "L.dom"
+
+.bddvarorder L0_E0_A0_I0xM0_H0
+
+###
+# Relations
+###
+
+MI(m:M0,i:I0) input
+ME(m:M0,e:E0) input
+IM(i:I0,m:M0) input
+threadAM(t:A0,m:M0) input
+transLI(l:L0,i:I0) input
+transLE(l:L0,e:E0) input
+threadStartI(i:I) input
+
+invkLock(i:I0,h:H0)
+elemLock(e:E0,h:H0)
+syncH(h:H0)
+
+syncLH(l:L0,h:H0) input
+
+unlockedM(t:A0,m:M0,h:H0) 
+unlockedI(t:A0,i:I0,h:H0) 
+unlockedE(t:A0,e:E0,h:H0) output
+
+###
+# Constraints
+###
+
+syncH(h) :- syncLH(_,h).
+
+invkLock(i,o) :- transLI(l,i), syncLH(l,o).
+elemLock(e,o) :- transLE(l,e), syncLH(l,o).
+
+unlockedM(t,m,o) :- syncH(o), threadAM(t,m).
+
+unlockedI(t,i,o) :- unlockedM(t,m,o), MI(m,i), !invkLock(i,o), !threadStartI(i).
+unlockedM(t,n,o) :- unlockedI(t,i,o), IM(i,n).
+
+unlockedE(t,e,o) :- unlockedM(t,m,o), ME(m,e), !elemLock(e,o).
+

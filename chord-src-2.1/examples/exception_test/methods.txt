@@ -1,0 +1,4 @@
+main:([Ljava/lang/String;)V@test.Exception_test
+<init>:()V@test.Dummy_Socket
+send:()I@test.Dummy_Socket
+send_internal:()I@test.Dummy_Socket

@@ -1,0 +1,21 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=datarace-parallel-exclude-dlog
+
+.include "A.dom"
+.include "E.dom"
+
+.bddvarorder E0_A0xA1
+
+###
+# Relations
+###
+
+mhe(e:E0,t1:A0,t2:A1) output
+
+mhe(_,_,_).
+

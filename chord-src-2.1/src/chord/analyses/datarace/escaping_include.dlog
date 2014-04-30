@@ -1,0 +1,26 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=datarace-escaping-include-dlog
+
+.include "H.dom"
+.include "E.dom"
+.include "V.dom"
+.include "P.dom"
+
+.bddvarorder E0_P0_V0_H0
+
+###
+# Relations
+###
+
+escPVH(p:P0,v:V0,h:H0) input
+PE(p:P0,e:E0) input
+EV(e:E0,v:V0) input
+EH(e:E0,h:H0) output
+
+EH(e,h) :- PE(p,e), EV(e,v), escPVH(p,v,h).
+

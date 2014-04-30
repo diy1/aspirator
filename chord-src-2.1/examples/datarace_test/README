@@ -1,0 +1,22 @@
+To run this example:
+
+1. Run the following command in the current directory:
+
+   ant
+
+   This will compile the Java source code of the example.
+
+2. Run the following command in Chord's main directory:
+
+   java -cp chord.jar -Dchord.work.dir=examples/datarace_test -Dchord.run.analyses=datarace-java chord.project.Boot
+
+   This will produce files dataces_by_fld.html and dataraces_by_obj.html in directory examples/datarace_test/chord_output/.
+   For reference, these files are provided in the web/ sub-directory of the current directory.
+
+   By default, 0-CFA is used for alias analysis, call-graph construction, etc.  To use 1-object-sensitive analysis instead, run:
+
+   java -cp chord.jar -Dchord.work.dir=examples/datarace_test -Dchord.run.analyses=datarace-java -Dchord.kobj.k=1 -Dchord.inst.ctxt.kind=co chord.project.Boot
+
+   To use 2-object-sensitive analysis instead, run:
+
+   java -cp chord.jar -Dchord.work.dir=examples/datarace_test -Dchord.run.analyses=datarace-java -Dchord.kobj.k=2 -Dchord.inst.ctxt.kind=co chord.project.Boot

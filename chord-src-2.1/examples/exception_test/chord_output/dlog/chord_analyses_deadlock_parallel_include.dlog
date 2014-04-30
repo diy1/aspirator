@@ -1,0 +1,30 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=deadlock-parallel-include-dlog
+
+.include "A.dom"
+.include "L.dom"
+.include "P.dom"
+
+.bddvarorder A0xA1_L0_L1_P0
+
+###
+# Relations
+###
+
+PL(p:P0,l:L0) input
+mhp(p:P0,t1:A0,t2:A1) input
+mhl(l:L0,t1:A0,t2:A1) 
+mhpTLTL(t1:A0,l1:L0,t2:A1,l2:L1) output
+
+###
+# Constraints
+###
+
+mhl(l,t1,t2) :- mhp(p,t1,t2), PL(p,l).
+mhpTLTL(t1,l1,t2,l2) :- mhl(l1,t1,t2), mhl(l2,t2,t1).
+

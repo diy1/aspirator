@@ -1,0 +1,235 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# k-object-sensitive may-alias/call-graph analysis.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=cspa-kobj-dlog
+
+.include "F.dom"
+.include "H.dom"
+.include "I.dom"
+.include "M.dom"
+.include "T.dom"
+.include "V.dom"
+.include "Z.dom"
+.include "C.dom"
+
+.bddvarorder F0_I0xM0xM1_T0_V0xV1_T1_H0_C0xC1xC2_Z0
+
+###
+# Relations
+###
+
+HT(h:H0,t:T1) input
+cha(n:M1,t:T1,m:M0) input
+sub(t1:T1,t2:T0) input
+MI(m:M,i:I) input
+statIM(i:I,m:M) input
+specIM(i:I,m:M) input
+virtIM(i:I,m:M) input
+
+MobjValAsgnInst(m:M,l:V,h:H) input
+MobjVarAsgnInst(m:M,l:V,r:V) input
+MgetInstFldInst(m:M,l:V,b:V,f:F) input
+MputInstFldInst(m:M,b:V,f:F,r:V) input
+MgetStatFldInst(m:M,l:V,f:F) input
+MputStatFldInst(m:M,f:F,r:V) input
+
+clsForNameIT(i:I0,t:T0) input
+objNewInstIH(i:I0,h:H0) input
+objNewInstIM(i:I0,m:M0) input
+conNewInstIH(i:I0,h:H0) input
+conNewInstIM(i:I0,m:M0) input
+aryNewInstIH(i:I0,h:H0) input
+
+RobjValAsgnInst(c:C,l:V,h:H) output
+RobjVarAsgnInst(c:C,l:V,r:V) output
+RgetInstFldInst(c:C,l:V,b:V,f:F) output
+RputInstFldInst(c:C,b:V,f:F,r:V) output
+RgetStatFldInst(c:C,l:V,f:F) output
+RputStatFldInst(c:C,f:F,r:V) output
+
+classT(t:T) input
+staticTM(t:T,m:M) input
+staticTF(t:T,f:F) input
+clinitTM(t:T,m:M) input
+MmethArg(m:M0,n:Z0,v:V0) input
+MspcMethArg(m:M0,v:V0) input
+IinvkArg(i:I0,n:Z0,v:V1) input
+IinvkArg0(i:I0,v:V1) input
+IinvkRet(i:I0,n:Z0,v:V0) input
+argCopy(i:I0,u:V1,m:M0,v:V0) input
+retCopy(i:I0,u:V0,m:M0,v:V1) input
+VCfilter(v:V,c:C) input
+
+CC(c:C,d:C) input
+CH(c:C,h:H) input
+CI(c:C,i:I) input
+epsilonM(m:M) input
+kobjSenM(m:M) input
+ctxtCpyM(m:M) input
+epsilonV(v:V) input
+
+IHM(i:I,h:H,m:M) output
+reachableT(t:T) output
+
+DIC(c:C,i:I,c:C) output
+DIH(c:C,i:I,h:H) output
+DI(c:C,i:I) output
+
+DVDV(c:C0,u:V0,d:C1,v:V1) output
+
+ctxtInsIHM(i:I,h:H,m:M) output
+kobjSenIHM(i:I,h:H,m:M) output
+
+kobjSenICM(i:I,c:C,m:M) output
+
+ctxtInsSpecIM(i:I,m:M) output
+kobjSenSpecIM(i:I,m:M) output
+
+ctxtInsStatIM(i:I,m:M) output
+ctxtCpyStatIM(i:I,m:M) output
+
+reachableCI(c:C,i:I) output
+reachableCM(c:C,m:M) output
+
+rootCM(c:C,m:M) output
+CICM(c:C,i:I,d:C,m:M) output
+CMCM(c:C,m:M,d:C,n:M) output
+
+DVC(c1:C,v:V,c2:C) output
+CVC(c1:C,v:V,c2:C) output
+
+FC(f:F,c:C) output
+CFC(c1:C,f:F,c2:C) output
+
+CIC(c:C,i:I,d:C) output
+CHC(c:C,h:H,d:C) output
+
+###
+# Constraints
+###
+
+CIC(c,i,d) :- CC(c,d), CI(d,i).
+CHC(c,h,d) :- CC(c,d), CH(d,h).
+
+###
+
+IHM(i,h,m2) :- virtIM(i,m1), HT(h,t), cha(m1,t,m2).
+ctxtInsIHM(i,h,m) :- IHM(i,h,m), epsilonM(m).
+kobjSenIHM(i,h,m) :- IHM(i,h,m), kobjSenM(m).
+
+kobjSenICM(i,o,m) :- kobjSenIHM(i,h,m), CH(o,h).
+
+ctxtInsSpecIM(i,m) :- specIM(i,m), epsilonM(m).
+kobjSenSpecIM(i,m) :- specIM(i,m), kobjSenM(m).
+
+ctxtInsStatIM(i,m) :- statIM(i,m), epsilonM(m).
+ctxtCpyStatIM(i,m) :- statIM(i,m), ctxtCpyM(m).
+
+###
+
+reachableCM(0,0).
+reachableCM(0,m) :- clinitTM(t,m), reachableT(t).
+
+reachableCM(c,m) :- CICM(_,_,c,m).
+
+reachableCI(c,i) :- MI(m,i), reachableCM(c,m).
+
+###
+
+DIC(c,i,o) :- IinvkArg0(i,v), DVC(c,v,o).
+DIH(c,i,h) :- DIC(c,i,o), CH(o,h).
+DI(c,i) :- DIH(c,i,_).
+
+###
+
+CICM(c,i,0,m) :- reachableCI(c,i), ctxtInsIHM(i,h,m), DIH(c,i,h).
+CICM(c,i,o,m) :- reachableCI(c,i), kobjSenICM(i,o,m), DIC(c,i,o).
+
+CICM(c,i,0,m) :- reachableCI(c,i), ctxtInsSpecIM(i,m), DI(c,i).
+CICM(c,i,o,m) :- reachableCI(c,i), kobjSenSpecIM(i,m), DIC(c,i,o).
+
+CICM(c,i,0,m) :- reachableCI(c,i), ctxtInsStatIM(i,m).
+CICM(c,i,d,m) :- reachableCI(c,i), ctxtCpyStatIM(i,m), d=c.
+
+###
+
+DVC(c,v,o) :- reachableCM(c,m), MspcMethArg(m,v), o=c.
+
+###
+
+DVDV(d,v,c,u) :- argCopy(i,u,m,v), CICM(c,i,d,m).
+DVDV(c,u,d,v) :- retCopy(i,u,m,v), CICM(c,i,d,m).
+
+DVC(c,u,o) :- DVDV(c,u,d,v), DVC(d,v,o), VCfilter(u,o).
+
+###
+
+RobjValAsgnInst(c,l,h) :- reachableCM(c,m), MobjValAsgnInst(m,l,h).
+DVC(c,l,o) :- RobjValAsgnInst(c,l,h), CHC(c,h,o).
+
+###
+
+RobjVarAsgnInst(c,l,r) :- reachableCM(c,m), MobjVarAsgnInst(m,l,r).
+DVC(c,l,c1) :- RobjVarAsgnInst(c,l,r), DVC(c,r,c1), VCfilter(l,c1).
+
+###
+
+RgetInstFldInst(c,l,b,f) :- reachableCM(c,m), MgetInstFldInst(m,l,b,f).
+DVC(c,l,c2) :- RgetInstFldInst(c,l,b,f), DVC(c,b,c1), CFC(c1,f,c2). split
+
+###
+
+RgetStatFldInst(c,l,f) :- reachableCM(c,m), MgetStatFldInst(m,l,f).
+DVC(c,l,o) :- RgetStatFldInst(c,l,f), FC(f,o).
+
+###
+
+RputInstFldInst(c,b,f,r) :- reachableCM(c,m), MputInstFldInst(m,b,f,r).
+CFC(c1,f,c2) :- RputInstFldInst(c,b,f,r), DVC(c,b,c1), DVC(c,r,c2). split
+
+###
+
+RputStatFldInst(c,f,r) :- reachableCM(c,m), MputStatFldInst(m,f,r).
+FC(f,o) :- RputStatFldInst(c,f,r), DVC(c,r,o).
+
+## reflection handling rules
+
+reachableCM(c,m) :- reachableCI(c,i), objNewInstIM(i,m).
+reachableCM(c,m) :- reachableCI(c,i), conNewInstIM(i,m).
+
+DVC(c,v,o)  :- reachableCI(c,i), objNewInstIM(i,m), MmethArg(m,0,v), objNewInstIH(i,h), CHC(c,h,o).
+DVC(c,v,o)  :- reachableCI(c,i), objNewInstIH(i,h), IinvkRet(i,0,v), CHC(c,h,o).
+DVC(c,v,o2) :- reachableCI(c,i), conNewInstIM(i,m), IinvkArg(i,1,u), MmethArg(m,1,v), DVC(c,u,o), CFC(o,0,o2).
+DVC(c,v,o)  :- reachableCI(c,i), conNewInstIM(i,m), MmethArg(m,0,v), conNewInstIH(i,h), CHC(c,h,o).
+DVC(c,v,o)  :- reachableCI(c,i), conNewInstIH(i,h), IinvkRet(i,0,v), CHC(c,h,o).
+DVC(c,v,o)  :- reachableCI(c,i), aryNewInstIH(i,h), IinvkRet(i,0,v), CHC(c,h,o).
+
+### epsilonV(v): treat v context-insensitively
+
+DVC(_,v,o) :- DVC(_,v,o), epsilonV(v).
+
+### rules propagating reachableT
+
+reachableT(t) :- reachableCI(_,i), conNewInstIH(i,h), HT(h,t).
+reachableT(t) :- reachableCI(_,i), objNewInstIH(i,h), HT(h,t).
+reachableT(t) :- reachableCI(_,i), clsForNameIT(i,t).
+
+reachableT(t) :- reachableCM(_,m), MobjValAsgnInst(m,_,h), HT(h,t).
+reachableT(t) :- reachableCM(_,m), staticTM(t,m).
+reachableT(t) :- reachableCM(_,m), MputStatFldInst(m,f,_), staticTF(t,f).
+reachableT(t) :- reachableCM(_,m), MgetStatFldInst(m,_,f), staticTF(t,f).
+reachableT(t) :- classT(t), reachableT(s), sub(s,t).
+
+### CVC <- DVC (clean up context-insensitive stuff)
+
+CVC(0,v,o) :- DVC(_,v,o),  epsilonV(v).
+CVC(c,v,o) :- DVC(c,v,o), !epsilonV(v).
+
+rootCM(0,0).
+rootCM(0,m) :- reachableT(t), clinitTM(t,m).
+CMCM(c,m,d,n) :- CICM(c,i,d,n), MI(m,i).

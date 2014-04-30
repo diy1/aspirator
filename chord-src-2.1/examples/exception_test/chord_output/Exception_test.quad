@@ -1,0 +1,113 @@
+Chord run initiated at: Jan 7, 2014 10:21:38 AM
+*** Class: test.Exception_test
+Method: <init>:()V@test.Exception_test
+	1#1
+	4#2
+Control flow graph for <init>:()V@test.Exception_test:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB1 (EXIT))
+1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0)
+2: RETURN_V
+
+BB1 (EXIT)	(in: BB2, out: <none>)
+
+Exception handlers: []
+Register factory: Registers: 1
+Method: main:([Ljava/lang/String;)V@test.Exception_test
+	1#1
+	2#2
+	5#3
+	6#4
+	9#5
+	12#6
+	15#7
+	18#8
+	-1#9
+	30#10
+	31#11
+	34#12
+	37#13
+	38#14
+	43#16
+	43#15
+	47#17
+	50#18
+	53#19
+	-1#20
+	67#21
+	68#22
+	73#24
+	73#23
+	77#25
+	56#26
+	61#28
+	61#27
+	64#29
+	19#30
+	24#32
+	24#31
+	27#33
+	78#34
+Control flow graph for main:([Ljava/lang/String;)V@test.Exception_test:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB3)
+1: MOVE_I R8, IConst: 0
+2: NEW T9, test.Dummy_Socket
+3: MOVE_A T10, T9
+4: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T10)
+5: PUTSTATIC_A T9, .socket
+
+BB3	(in: BB2, out: BB4)
+	exception handlers: Type: java.io.IOException Entry: BB5, Type: java.lang.Throwable Entry: BB7
+6: GETSTATIC_A T11, .socket
+7: INVOKEVIRTUAL_I T4, send:()I@test.Dummy_Socket, (T11)
+8: MOVE_I R12, T4
+
+BB5	(in: <none>, out: BB6)
+	exception handlers: Type: java.lang.Throwable Entry: BB7
+9: GET_EXCEPTION T15
+10: MOVE_A R5, T15
+11: GETSTATIC_A T16, .out
+12: NEW T17, java.lang.StringBuilder
+13: MOVE_A T18, T17
+14: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T18)
+16: MOVE_A T19, AConst: "IOException is thrown"
+15: INVOKEVIRTUAL_A T20, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T17, T19)
+17: INVOKEVIRTUAL_A T21, append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T20, R5)
+18: INVOKEVIRTUAL_A T22, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T21)
+19: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T16, T22)
+
+BB7	(in: <none>, out: BB8)
+	exception handlers: Type: java.lang.Throwable Entry: BB7
+20: GET_EXCEPTION T25
+21: MOVE_A R7, T25
+
+BB8	(in: BB7, out: BB1 (EXIT))
+22: GETSTATIC_A T26, .out
+24: MOVE_A T27, AConst: "Finally..."
+23: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T26, T27)
+25: THROW_A R7
+
+BB6	(in: BB5, out: BB9)
+26: GETSTATIC_A T23, .out
+28: MOVE_A T24, AConst: "Finally..."
+27: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T23, T24)
+29: GOTO BB9
+
+BB4	(in: BB3, out: BB9)
+30: GETSTATIC_A T13, .out
+32: MOVE_A T14, AConst: "Finally..."
+31: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T13, T14)
+33: GOTO BB9
+
+BB9	(in: BB4, BB6, out: BB1 (EXIT))
+34: RETURN_V
+
+BB1 (EXIT)	(in: BB8, BB9, out: <none>)
+
+Exception handlers: [Type: java.lang.Throwable Entry: BB7, Type: java.lang.Throwable Entry: BB7, Type: java.lang.Throwable Entry: BB7, Type: java.io.IOException Entry: BB5]
+Register factory: Registers: 28
+Chord run completed at: Jan 7, 2014 10:21:44 AM
+Total time: 00:00:05:877 hh:mm:ss:ms

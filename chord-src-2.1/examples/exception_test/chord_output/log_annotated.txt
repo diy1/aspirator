@@ -1,0 +1,71 @@
+Chord run initiated at: Jan 20, 2014 10:58:23 AM
+Method found: main:([Ljava/lang/String;)V@test.Exception_test
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 4: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T9) at LINE: 36 throws exception: java.lang.RuntimeException
+    Quad: 4: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T9) at LINE: 36 throws exception: java.lang.Error
+  --- No exception handler for this. It seems anything can throw "RuntimeException" and "java.lang.Error".
+
+  Basic Block: BB3
+    Quad: 7: INVOKEVIRTUAL_I T4, send:()I@test.Dummy_Socket, (T10) at LINE: 39 throws exception: java.lang.RuntimeException
+    Quad: 7: INVOKEVIRTUAL_I T4, send:()I@test.Dummy_Socket, (T10) at LINE: 39 throws exception: java.lang.Error
+    Quad: 7: INVOKEVIRTUAL_I T4, send:()I@test.Dummy_Socket, (T10) at LINE: 39 throws exception: java.io.IOException
+  The exception handler for this bb: Type: java.io.IOException Entry: BB5
+  --- clearly tells the exception handler!
+
+
+  Basic Block: BB5
+    Quad: 14: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T15) at LINE: 41 throws exception: java.lang.RuntimeException
+    Quad: 14: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T15) at LINE: 41 throws exception: java.lang.Error
+    Quad: 15: INVOKEVIRTUAL_A T17, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T14, T16) at LINE: 41 throws exception: java.lang.RuntimeException
+    Quad: 15: INVOKEVIRTUAL_A T17, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T14, T16) at LINE: 41 throws exception: java.lang.Error
+    Quad: 17: INVOKEVIRTUAL_A T18, append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T17, R5) at LINE: 41 throws exception: java.lang.RuntimeException
+    Quad: 17: INVOKEVIRTUAL_A T18, append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T17, R5) at LINE: 41 throws exception: java.lang.Error
+    Quad: 18: INVOKEVIRTUAL_A T19, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T18) at LINE: 41 throws exception: java.lang.RuntimeException
+    Quad: 18: INVOKEVIRTUAL_A T19, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T18) at LINE: 41 throws exception: java.lang.Error
+    Quad: 19: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T13, T19) at LINE: 41 throws exception: java.lang.RuntimeException
+    Quad: 19: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T13, T19) at LINE: 41 throws exception: java.lang.Error
+   --- Exception handler. 
+
+  Basic Block: BB4
+  Basic Block: BB6
+  Basic Block: BB1 (EXIT)
+Method found: <init>:()V@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0) at LINE: 9 throws exception: java.lang.RuntimeException
+    Quad: 1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0) at LINE: 9 throws exception: java.lang.Error
+  Basic Block: BB1 (EXIT)
+
+Method found: send:()I@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0) at LINE: 20 throws exception: java.lang.RuntimeException
+    Quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0) at LINE: 20 throws exception: java.lang.Error
+    Quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0) at LINE: 20 throws exception: java.io.IOException
+  The exception handler for this bb: Type: java.net.SocketTimeoutException Entry: BB4
+  --- So it's clear that this bb throws "IOException", but the handler only handles "SocektTimeoutException"!
+
+  Basic Block: BB4
+    Quad: 7: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T10) at LINE: 22 throws exception: java.lang.RuntimeException
+    Quad: 7: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T10) at LINE: 22 throws exception: java.lang.Error
+    Quad: 8: INVOKEVIRTUAL_A T12, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T9, T11) at LINE: 22 throws exception: java.lang.RuntimeException
+    Quad: 8: INVOKEVIRTUAL_A T12, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T9, T11) at LINE: 22 throws exception: java.lang.Error
+    Quad: 10: INVOKEVIRTUAL_A T13, append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T12, R3) at LINE: 22 throws exception: java.lang.RuntimeException
+    Quad: 10: INVOKEVIRTUAL_A T13, append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T12, R3) at LINE: 22 throws exception: java.lang.Error
+    Quad: 11: INVOKEVIRTUAL_A T14, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T13) at LINE: 22 throws exception: java.lang.RuntimeException
+    Quad: 11: INVOKEVIRTUAL_A T14, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T13) at LINE: 22 throws exception: java.lang.Error
+    Quad: 12: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T8, T14) at LINE: 22 throws exception: java.lang.RuntimeException
+    Quad: 12: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T8, T14) at LINE: 22 throws exception: java.lang.Error
+  Basic Block: BB3
+  Basic Block: BB5
+  Basic Block: BB1 (EXIT)
+Method found: send_internal:()I@test.Dummy_Socket
+  Basic Block: BB0 (ENTRY)
+  Basic Block: BB2
+    Quad: 3: INVOKESTATIC_V <init>:(Ljava/lang/String;)V@java.io.EOFException, (T2, T3) at LINE: 14 throws exception: java.lang.RuntimeException
+    Quad: 3: INVOKESTATIC_V <init>:(Ljava/lang/String;)V@java.io.EOFException, (T2, T3) at LINE: 14 throws exception: java.lang.Error
+    Quad: 5: THROW_A T1 at LINE: 14 throws exception: java.io.EOFException
+  Basic Block: BB1 (EXIT)
+Chord run completed at: Jan 20, 2014 10:58:24 AM
+Total time: 00:00:01:184 hh:mm:ss:ms

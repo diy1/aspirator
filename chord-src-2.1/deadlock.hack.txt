@@ -1,0 +1,319 @@
+CFG?
+
+Call graph:
+
+Data-flow: 
+
+Flow:
+ DeadlockAnalysis.java
+  DomA: abstract threads
+  DomH: object allocation quad
+  DomI: method invocation quad
+  DomL: all lock acquisition
+  DomM: all methods
+
+----------------------------------------- 
+ parallel_include.dlog
+.include "A.dom" # abstract threads. 
+  * An abstract thread is a triple <tt>(o,c,m)</tt> denoting the thread
+  * whose abstract object is 'o' and which starts at method 'm' in
+  * abstract context 'c'.
+
+.include "L.dom"
+  * Domain of all lock acquire points, including monitorenter
+  * quads and entry basic blocks of synchronized methods.
+
+.include "P.dom"
+ * Domain of quads.
+ * <p>
+ * The 0th element in this domain is the unique entry basic block
+ * of the main method of the program.
+ * <p>
+ * The quads of each method in the program are assigned contiguous
+ * indices in this domain, with the unique basic blocks at the
+ * entry and exit of each method being assigned the smallest and
+ * largest indices, respectively, of all indices assigned to quads
+ * in that method.
+
+.bddvarorder A0xA1_L0_L1_P0
+
+###
+# Relations
+###
+
+PL(p:P0,l:L0) input # lock/RelPL.java
+ * (quad, lock acquire point)
+ * Relation containing each tuple (p,e) such that the quad at
+ * program point p is a heap-accessing quad e that accesses
+ * (reads or writes) an instance field, a static field, or an
+ * array element.
+
+mhp(p:P0,t1:A0,t2:A1) input
+ # (quad, thread, thread)
+ # Thread t1 may reach point p while thread t2 runs in parallel.
+
+mhl(l:L0,t1:A0,t2:A1) 
+mhpTLTL(t1:A0,l1:L0,t2:A1,l2:L1) output
+
+mhl(l,t1,t2) :- mhp(p,t1,t2), PL(p,l).
+ # thread 1 may acquire lock l while thread 2 is running in parallel
+
+mhpTLTL(t1,l1,t2,l2) :- mhl(l1,t1,t2), mhl(l2,t2,t1).
+ # thread 1 may acquire lock l while a parallel thread 2 may acquire t2 
+
+
+----------------------------------------- 
+ deadlock/escaping_exclude.dlog:
+# name=deadlock-escaping-exclude-dlog
+#  escaping_include is a bit complicated, analyze the exclude.dlog first
+
+.include "M.dom" 
+ * Domain of methods.
+ * The 0th element in this domain is the main method of the program.
+ * The 1st element in this domain is the <tt>start()</tt> method
+ * of class <tt>java.lang.Thread</tt>, if this method is reachable
+ * from the main method of the program.
+ * <p>
+ * The above two methods are the entry-point methods of the implicitly
+ * created main thread and each explicitly created thread,
+ * respectively.  Due to Chord's emphasis on concurrency, these
+ * methods are referenced frequently by various pre-defined program
+ * analyses expressed in Datalog, and giving them special indices
+ * makes it convenient to reference them in those analyses.
+
+ 
+.include "V.dom"
+ * Domain of local variables of reference type.
+ * Each local variable declared in each block of each method is
+ * represented by a unique element in this domain.  Local variables
+ * that have the same name but are declared in different methods
+ * or in different blocks of the same method are represented by
+ * different elements in this domain.
+ * 
+ * The set of local variables of a method is the disjoint union of
+ * its argument variables and its temporary variables.  All local
+ * variables of the same method are assigned contiguous indices in
+ * this domain.  The argument variables are assigned contiguous
+ * indices in order followed by the temporary variables.
+
+.include "L.dom"
+  * Domain of all lock acquire points, including monitorenter
+  * quads and entry basic blocks of synchronized methods.
+
+.include "P.dom"
+ * Domain of quads
+
+.include "T.dom"
+ * Domain of classes
+
+.include "F.dom"
+ * Domain of fields.
+ * <p>
+ * The 0th element in this domain (null) denotes a distinguished
+ * hypothetical field that is regarded as accessed whenever an
+ * array element is accessed.  This field can be used by analyses
+ * that do not distinguish between different elements of the
+ * same array.
+
+.include "H.dom"
+ * Domain of object allocation quads.
+ * <p>        
+ * The 0th element of this domain is null and denotes a distinguished hypothetical
+ * object allocation quad that may be used for various purposes.
+
+.bddvarorder F0_M0xP0_L0_T0_V0_H0
+
+PL(p:P0,l:L0) input
+ # (quad, lock acquire point)
+
+syncLV(l:L0,v:V0) input
+ # This is generated from lock/RelSyncLV.java
+ # (lock acquire quad, lock variable)
+
+syncLM(l:L0,m:M0) input
+ # lock/RelSyncLM.java
+ * Relation containing each tuple (l,m) such that method m is
+ * synchronized on the lock it acquires at point l.
+
+thisMV(m:M0,v:V0) input
+ # argret/RelThisMV.java
+ * Relation containing each tuple (m,v) such that local variable
+ * v is the implicit *this* argument variable of instance method m.
+
+MPhead(m:M0,p:P0) input
+ # point/RelMPhead.java
+ * Relation containing each tuple (m,p) such that p is the unique entry basic block of method m.
+
+VH(v:V0,o:H0) input
+ # (variable,allocation) 
+ # I would imagine it is the allocated variables...
+
+escPVH(p:P0,v:V0,o:H0) input
+ # escape/flowins_thresc.dlog:
+ * (quad, variable, allocationPoint) -- any obj allocation point?
+
+
+TM(t:T0,m:M0) input
+ # method/RelTM.java
+ * method m is defined in type (class) t 
+
+escLH(l:L0,o:H0) output
+
+escLH(l,o) :- syncLV(l,v), VH(v,o).
+ # if "lock acquire quad l, lock var v, v is allocated at quad o", 
+ # escLH(quad of lock acquire, quad of lock allocation)
+
+escLH(l,o) :- syncLM(l,m), thisMV(m,v), VH(v,o).
+
+
+----------------------------------------- 
+# name=deadlock-nonreent-exclude-dlog
+
+.include "M.dom" # all methods
+.include "V.dom" # all variables
+.include "A.dom" # all threads
+.include "L.dom" # all lock acquire points
+.include "I.dom" # all method invocation quads. 
+
+.bddvarorder A0_M0xI0_L0xL1_V0
+
+ML(m:M0,l:L0) input
+ * Relation containing each tuple (m,l) such that method m contains
+ * lock acquisition point l.
+
+MI(m:M0,i:I0) input
+ * invk/RelMI.java: /**
+ * Relation containing each tuple (m,i) such that method m contains
+ * method invocation quad i.
+ *
+ * @author Mayur Naik (mhn@cs.stanford.edu)
+ */
+@Chord(
+    name = "MI",
+    sign = "M0,I0:I0xM0"
+)
+public class RelMI extends ProgramRel {
+    public void fill() {
+        DomM domM = (DomM) doms[0];
+        DomI domI = (DomI) doms[1];
+        int numI = domI.size();
+        for (int iIdx = 0; iIdx < numI; iIdx++) {
+            Quad q = (Quad) domI.get(iIdx);
+            jq_Method m = q.getMethod();
+            int mIdx = domM.indexOf(m);
+            assert (mIdx >= 0);
+            add(mIdx, iIdx);
+        }
+    }
+}
+
+threadStartI(i:I0) input
+threadAM(a:A0,m:M0) input
+IM(i:I0,n:M0) input
+transLI(l:L0,i:I0) input
+transLL(l1:L0,l2:L1) input
+
+syncMN(m:M0,n:L0)
+syncIN(i:I0,n:L0)
+
+syncMLL(m:M0,l1:L0,l2:L1)
+syncILL(i:I0,l1:L0,l2:L1)
+syncTLL(t:A0,l1:L0,l2:L1) output
+
+syncML(m,l) :- ML(m,l).
+syncIL(i,l) :- IM(i,m), syncML(m,l), !threadStartI(i).
+syncML(m,l) :- MI(m,i), syncIL(i,l).
+
+syncMLL(m,l1,l2) :- transLL(l1,l2), ML(m,l1), ML(m,l2).
+syncMLL(m,l1,l2) :- transLI(l1,i), MI(m,i), syncIL(i,l2).
+syncMLL(m,l1,l2) :- MI(m,i), syncILL(i,l1,l2).
+
+syncILL(i,l1,l2) :- IM(i,m), syncMLL(m,l1,l2), !threadStartI(i).
+
+syncTLL(t,l1,l2) :- threadAM(t,m), syncMLL(m,l1,l2).
+
+----- scratch --------------------
+   public String toXMLAttrsString(Quad q) {
+        Operator op = q.getOperator();
+        jq_Method m = q.getMethod();
+        String file = m.getDeclaringClass().getSourceFileName();
+        int line = q.getLineNumber();
+
+------------------------
+
+.include "M.dom" # all method
+.include "V.dom" # each local var. declared in each block of each method is represented by a unique element in this domain. 
+.include "L.dom" # all locks
+.include "P.dom" # domain of quads
+.include "T.dom" # domain of classes
+.include "F.dom" # domain of fields
+.include "H.dom" # domain of object allocation quads 
+
+
+.bddvarorder F0_M0xP0_L0_T0_V0_H0 # I don't understand what this is. 
+
+###
+# Relations
+###
+
+PL(p:P0,l:L0) input     # <quad, lock>. This is a program relation built by "lock/RelPL", the ID of quad in DomP of ID of lock in DomL 
+
+syncLV(l:L0,v:V0) input # <lock, variable>. This is a program relation built by "lock/RelSyncLV.java".  
+
+syncLM(l:L0,m:M0) input # <lock, method>. This is a program relation built by "lock/RelSyncLM.java".
+          # each tuple (l,m) such that method m is synchronized on the lock it acquires at point l. 
+
+thisMV(m:M0,v:V0) input # <method, variable>. Built by agret/RelThisMV. local variable v is the implicit argument variable 
+                        # of instance method m.    
+
+MPhead(m:M0,p:P0) input
+escPVH(p:P0,v:V0,o:H0) input # <quad, variable, object allocation>,
+
+
+
+ 
+TM(t:T0,m:M0) input
+escLH(l:L0,o:H0) output
+
+###
+# Constraints
+###
+
+#escLH(l,o) :- syncLM(l,m), statM(m), TM(t,m), clsTF(t,f), FC(f,o).
+
+escLH(l,o) :- syncLV(l,v), PL(p,l), escPVH(p,v,o).
+escLH(l,o) :- syncLM(l,m), thisMV(m,v), MPhead(m,p), escPVH(p,v,o).
+
+
+ escaping_include.dlog
+ nonreent_include.dlog
+ nongrded_include.dlog
+ deadlock.dlog
+
+
+------ Others -------
+
+escape/flowins_thresc.dlog:
+
+VH(v:V0,h:H0) input #
+
+FH(f:F,h:H) input
+HFH(h1:H0,f:F0,h2:H1) input
+MmethArg(m:M,z:Z,v:V) input
+MV(m:M,v:V) input
+MP(m:M,p:P) input
+EV(e:E,v:V) input
+escH(o:H) output
+escPVH(p:P,v:V,h:H) output
+
+###
+# Constraints
+###
+
+escH(h) :- FH(_,h).
+escH(h) :- MmethArg(1,0,v), VH(v,h).
+escH(h2) :- HFH(h1,_,h2), escH(h1).
+
+escPVH(p,v,h) :- VH(v,h), MV(m,v), MP(m,p), escH(h). split
+
+ 

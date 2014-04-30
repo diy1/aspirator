@@ -1,0 +1,128 @@
+Compiled from "BlockReceiver.java"
+class org.apache.hadoop.hdfs.server.datanode.BlockReceiver extends java.lang.Object implements java.io.Closeable{
+public static final org.apache.commons.logging.Log LOG;
+  Signature: Lorg/apache/commons/logging/Log;
+static final org.apache.commons.logging.Log ClientTraceLog;
+  Signature: Lorg/apache/commons/logging/Log;
+static long CACHE_DROP_LAG_BYTES;
+  Signature: J
+private java.io.DataInputStream in;
+  Signature: Ljava/io/DataInputStream;
+private org.apache.hadoop.util.DataChecksum clientChecksum;
+  Signature: Lorg/apache/hadoop/util/DataChecksum;
+private org.apache.hadoop.util.DataChecksum diskChecksum;
+  Signature: Lorg/apache/hadoop/util/DataChecksum;
+private boolean needsChecksumTranslation;
+  Signature: Z
+private java.io.OutputStream out;
+  Signature: Ljava/io/OutputStream;
+private java.io.FileDescriptor outFd;
+  Signature: Ljava/io/FileDescriptor;
+private java.io.OutputStream cout;
+  Signature: Ljava/io/OutputStream;
+private java.io.DataOutputStream checksumOut;
+  Signature: Ljava/io/DataOutputStream;
+private int bytesPerChecksum;
+  Signature: I
+private int checksumSize;
+  Signature: I
+private org.apache.hadoop.hdfs.protocol.datatransfer.PacketReceiver packetReceiver;
+  Signature: Lorg/apache/hadoop/hdfs/protocol/datatransfer/PacketReceiver;
+protected final java.lang.String inAddr;
+  Signature: Ljava/lang/String;
+protected final java.lang.String myAddr;
+  Signature: Ljava/lang/String;
+private java.lang.String mirrorAddr;
+  Signature: Ljava/lang/String;
+private java.io.DataOutputStream mirrorOut;
+  Signature: Ljava/io/DataOutputStream;
+private org.apache.hadoop.util.Daemon responder;
+  Signature: Lorg/apache/hadoop/util/Daemon;
+private org.apache.hadoop.hdfs.util.DataTransferThrottler throttler;
+  Signature: Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;
+private org.apache.hadoop.hdfs.server.datanode.fsdataset.ReplicaOutputStreams streams;
+  Signature: Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/ReplicaOutputStreams;
+private org.apache.hadoop.hdfs.protocol.DatanodeInfo srcDataNode;
+  Signature: Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;
+private java.util.zip.Checksum partialCrc;
+  Signature: Ljava/util/zip/Checksum;
+private final org.apache.hadoop.hdfs.server.datanode.DataNode datanode;
+  Signature: Lorg/apache/hadoop/hdfs/server/datanode/DataNode;
+private volatile boolean mirrorError;
+  Signature: Z
+private boolean dropCacheBehindWrites;
+  Signature: Z
+private long lastCacheManagementOffset;
+  Signature: J
+private boolean syncBehindWrites;
+  Signature: Z
+private final java.lang.String clientname;
+  Signature: Ljava/lang/String;
+private final boolean isClient;
+  Signature: Z
+private final boolean isDatanode;
+  Signature: Z
+private final org.apache.hadoop.hdfs.protocol.ExtendedBlock block;
+  Signature: Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;
+private final org.apache.hadoop.hdfs.server.datanode.ReplicaInPipelineInterface replicaInfo;
+  Signature: Lorg/apache/hadoop/hdfs/server/datanode/ReplicaInPipelineInterface;
+private final org.apache.hadoop.hdfs.protocol.datatransfer.BlockConstructionStage stage;
+  Signature: Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlockConstructionStage;
+private final boolean isTransfer;
+  Signature: Z
+private boolean syncOnClose;
+  Signature: Z
+private static int[] $SWITCH_TABLE$org$apache$hadoop$hdfs$protocol$datatransfer$BlockConstructionStage;
+  Signature: [I
+static final boolean $assertionsDisabled;
+  Signature: Z
+static {};
+  Signature: ()V
+org.apache.hadoop.hdfs.server.datanode.BlockReceiver(org.apache.hadoop.hdfs.protocol.ExtendedBlock, java.io.DataInputStream, java.lang.String, java.lang.String, org.apache.hadoop.hdfs.protocol.datatransfer.BlockConstructionStage, long, long, long, java.lang.String, org.apache.hadoop.hdfs.protocol.DatanodeInfo, org.apache.hadoop.hdfs.server.datanode.DataNode, org.apache.hadoop.util.DataChecksum, org.apache.hadoop.hdfs.server.datanode.CachingStrategy)   throws java.io.IOException;
+  Signature: (Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;Ljava/io/DataInputStream;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlockConstructionStage;JJJLjava/lang/String;Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Lorg/apache/hadoop/util/DataChecksum;Lorg/apache/hadoop/hdfs/server/datanode/CachingStrategy;)V
+org.apache.hadoop.hdfs.server.datanode.DataNode getDataNode();
+  Signature: ()Lorg/apache/hadoop/hdfs/server/datanode/DataNode;
+public void close()   throws java.io.IOException;
+  Signature: ()V
+void flushOrSync(boolean)   throws java.io.IOException;
+  Signature: (Z)V
+private void handleMirrorOutError(java.io.IOException)   throws java.io.IOException;
+  Signature: (Ljava/io/IOException;)V
+private void verifyChunks(java.nio.ByteBuffer, java.nio.ByteBuffer)   throws java.io.IOException;
+  Signature: (Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;)V
+private void translateChunks(java.nio.ByteBuffer, java.nio.ByteBuffer);
+  Signature: (Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;)V
+private boolean shouldVerifyChecksum();
+  Signature: ()Z
+private int receivePacket()   throws java.io.IOException;
+  Signature: ()I
+private void manageWriterOsCache(long);
+  Signature: (J)V
+void receiveBlock(java.io.DataOutputStream, java.io.DataInputStream, java.io.DataOutputStream, java.lang.String, org.apache.hadoop.hdfs.util.DataTransferThrottler, org.apache.hadoop.hdfs.protocol.DatanodeInfo[])   throws java.io.IOException;
+  Signature: (Ljava/io/DataOutputStream;Ljava/io/DataInputStream;Ljava/io/DataOutputStream;Ljava/lang/String;Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;[Lorg/apache/hadoop/hdfs/protocol/DatanodeInfo;)V
+private void cleanupBlock()   throws java.io.IOException;
+  Signature: ()V
+private void adjustCrcFilePosition()   throws java.io.IOException;
+  Signature: ()V
+private static long checksum2long(byte[]);
+  Signature: ([B)J
+private void computePartialChunkCrc(long, long, int)   throws java.io.IOException;
+  Signature: (JJI)V
+static org.apache.hadoop.hdfs.protocol.ExtendedBlock access$0(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Lorg/apache/hadoop/hdfs/protocol/ExtendedBlock;
+static org.apache.hadoop.hdfs.server.datanode.DataNode access$1(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode;
+static boolean access$2(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Z
+static void access$3(org.apache.hadoop.hdfs.server.datanode.BlockReceiver, boolean);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;Z)V
+static org.apache.hadoop.hdfs.server.datanode.ReplicaInPipelineInterface access$4(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Lorg/apache/hadoop/hdfs/server/datanode/ReplicaInPipelineInterface;
+static boolean access$5(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Z
+static java.lang.String access$6(org.apache.hadoop.hdfs.server.datanode.BlockReceiver);
+  Signature: (Lorg/apache/hadoop/hdfs/server/datanode/BlockReceiver;)Ljava/lang/String;
+static int[] $SWITCH_TABLE$org$apache$hadoop$hdfs$protocol$datatransfer$BlockConstructionStage();
+  Signature: ()[I
+}
+

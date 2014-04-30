@@ -1,0 +1,37 @@
+Chord run initiated at: Feb 2, 2014 12:32:26 PM
+ENTER: exception-todo-in-handler-java at Sun Feb 02 12:32:27 EST 2014
+DEBUG: found extraclassfile./classNames.txt
+DEBUG: added extra method:<init>:()V@test.Dummy_Socket
+DEBUG: added extra method:send_internal:()I@test.Dummy_Socket
+DEBUG: added extra method:send:()I@test.Dummy_Socket
+DEBUG: added extra method:<init>:()V@test.Exception_test
+DEBUG: added extra method:main:([Ljava/lang/String;)V@test.Exception_test
+Method found: <init>:()V@test.Dummy_Socket
+Method found: send_internal:()I@test.Dummy_Socket
+    Quad: 5: THROW_A T1 at LINE: 14 throws exception: java.io.EOFException
+Method found: send:()I@test.Dummy_Socket
+    Quad: 1: INVOKEVIRTUAL_I T6, send_internal:()I@test.Dummy_Socket, (R0) at LINE: 19 throws exception: java.io.IOException
+DEBUG: Found exception handler for BB: BB2@line: 19, File: test/Exception_test.java
+DEBUG: Exception handler 0: BB4@line: 22
+DEBUG: Successor of the exception handler: BB4
+DEBUG: fileSearchAndReport: 20-22@/Users/ding/Research/software/chord-src-2.1/examples/exception_test2/src/test/Exception_test.java
+
+==========================================
+WARNING 1: TODO in handler.
+  Line: 21, File: "test/Exception_test.java"
+
+18: 		try {
+19: 			send_internal();
+20: 		} catch  (IOException e) {
+21: 			// TODO
+22: 			System.out.println("send caught socket timeout exception" + e);
+23: 		}
+
+==========================================
+Method found: <init>:()V@test.Exception_test
+Method found: main:([Ljava/lang/String;)V@test.Exception_test
+LEAVE: exception-todo-in-handler-java
+Exclusive time: 00:00:00:175 hh:mm:ss:ms
+Inclusive time: 00:00:00:175 hh:mm:ss:ms
+Chord run completed at: Feb 2, 2014 12:32:27 PM
+Total time: 00:00:01:172 hh:mm:ss:ms

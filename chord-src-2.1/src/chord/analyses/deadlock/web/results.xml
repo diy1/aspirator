@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE results SYSTEM "results.dtd" [
+  <!ENTITY deadlocklist SYSTEM "deadlocklist.xml">
+  <!ENTITY MMlist SYSTEM "MMlist.xml">
+  <!ENTITY Olist SYSTEM "Olist.xml">
+  <!ENTITY Alist SYSTEM "Alist.xml">
+  <!ENTITY Hlist SYSTEM "Hlist.xml">
+  <!ENTITY Ilist SYSTEM "Ilist.xml">
+  <!ENTITY Mlist SYSTEM "Mlist.xml">
+  <!ENTITY Llist SYSTEM "Llist.xml">
+]>
+<results>
+&deadlocklist;
+&MMlist;
+&Olist;
+&Alist;
+&Hlist;
+&Ilist;
+&Mlist;
+&Llist;
+</results>

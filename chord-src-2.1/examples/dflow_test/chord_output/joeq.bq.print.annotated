@@ -1,0 +1,93 @@
+Chord run initiated at: Jan 3, 2014 3:00:07 PM
+*** Class: test.DFlow_test
+Method: <init>:()V@test.DFlow_test
+	1#1
+	4#2
+Control flow graph for <init>:()V@test.DFlow_test:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB1 (EXIT))
+1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0)
+2: RETURN_V
+
+BB1 (EXIT)	(in: BB2, out: <none>)
+
+Exception handlers: []
+Register factory: Registers: 1
+Method: main:([Ljava/lang/String;)V@test.DFlow_test
+	1#1
+	2#2
+	5#3
+	7#5
+	7#4
+	10#6
+	13#7
+	16#8
+	17#9
+	20#10
+	24#11
+	-1#35
+	27#24
+	57#30
+	30#25
+	36#27
+	36#26
+	39#28
+	41#29
+	44#31
+	48#32
+	51#33
+	54#34
+Control flow graph for main:([Ljava/lang/String;)V@test.DFlow_test:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+-------------------------
+BB2	(in: BB0 (ENTRY), out: BB3)
+1: MOVE_I R9, IConst: 0
+  --- R9: result (int)
+  --- int result = 0;
+
+2: NEW T10, test.Logger
+3: MOVE_A T11, T10
+5: MOVE_I T4, IConst: 5
+4: INVOKESTATIC_V <init>:(I)V@test.Logger, (T11, T4)
+6: PUTSTATIC_A T10, .log
+   --- 
+
+
+7: NEW T12, test.Dummy_Socket
+8: MOVE_A T13, T12
+9: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T13)
+10: PUTSTATIC_A T12, .socket
+11: MOVE_I R14, IConst: 0
+
+
+-------------------------
+BB3	(in: BB2, BB6, out: BB4, BB7)
+35: PHI R15, (R14, R19), { BB2, BB6 }
+24: IFCMP_I R15, IConst: 5, GE, BB7
+
+BB7	(in: BB3, out: BB1 (EXIT))
+30: RETURN_V
+
+BB1 (EXIT)	(in: BB7, out: <none>)
+
+BB4	(in: BB3, out: BB5, BB6)
+25: GETSTATIC_A T16, .socket
+27: MOVE_A T7, AConst: "test string"
+26: INVOKEVIRTUAL_I T6, send:(ILjava/lang/String;)I@test.Dummy_Socket, (T16, R15, T7)
+28: MOVE_I R17, T6
+29: IFCMP_I R17, IConst: 0, EQ, BB6
+
+BB5	(in: BB4, out: BB6)
+31: GETSTATIC_A T18, .log
+32: INVOKEVIRTUAL_V info:(I)V@test.Logger, (T18, R17)
+
+BB6	(in: BB4, BB5, out: BB3)
+33: ADD_I R19, R15, IConst: 1
+34: GOTO BB3
+
+Exception handlers: []
+Register factory: Registers: 20
+Chord run completed at: Jan 3, 2014 3:00:13 PM
+Total time: 00:00:05:984 hh:mm:ss:ms

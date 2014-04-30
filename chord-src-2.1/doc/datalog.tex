@@ -1,0 +1,258 @@
+\xname{datalog}
+\chapter{Datalog Analysis}
+\label{chap:datalog}
+
+A common way to rapidly prototype an analysis in Chord is using a declarative
+logic-programming language called Datalog.  This chapter describes all aspects
+of Datalog analyses in Chord.  Section \ref{sec:writing-datalog} explains how to
+write and run a Datalog analysis while Section \ref{sec:tuning-datalog} explains how
+to tune its performance.
+
+\section{Writing a Datalog Analysis}
+\label{sec:writing-datalog}
+
+A Datalog analysis declares a bunch of input/output program relations, each over
+one or more program domains, and provides a bunch of rules (constraints)
+specifying how to compute the output relations from the input relations.  It can
+be defined in any file with suffix {\tt .dlog} in any directory in the path
+specified by property \code{chord.dlog.analysis.path}.  An example Datalog
+analysis is shown below:
+
+\texonly{\newpage}
+
+\begin{framed}
+{\small
+\begin{verbatim}
+    # name=datarace-dlog
+
+    # Program domains
+    .include "E.dom"
+    .include "F.dom"
+    .include "T.dom"
+
+    # BDD variable order
+    .bddvarorder E0xE1_T0_T1_F0
+
+    # Input/intermediate/output program relations
+    field(e:E0,f:F0) input
+    write(e:E0) input
+    reach(t:T0,e:E0) input
+    alias(e1:E0,e2:E1) input
+    escape(e:E0) input
+    unguarded(t1:T0,e1:E0,t2:T1,e2:E1) input
+    hasWrite(e1:E0,e2:E1)
+    candidate(e1:E0,e2:E1) 
+    datarace(t1:T0,e1:E0,t2:T1,e2:E1) output
+
+    # Analysis constraints
+    hasWrite(e1,e2) :- write(e1).
+    hasWrite(e1,e2) :- write(e2).
+    candidate(e1,e2) :- field(e1,f), field(e2,f), hasWrite(e1,e2), e1 <= e2.
+    datarace(t1,e1,t2,e2) :- candidate(e1,e2), reach(t1,e1), reach(t2,e2), \
+        alias(e1,e2), escape(e1), escape(e2), unguarded(t1,e1,t2,e2).
+\end{verbatim}
+}
+\end{framed}
+
+Any line that begins with a ``{\tt \#}" is regarded a comment, except a
+line of the form ``\code{# name=<ANALYSIS_NAME>}'', which specifies the name
+\code{<ANALYSIS_NAME>} of the analysis.
+Each such analysis is expected to have exactly one such line.
+The above analysis is named {\tt datarace-dlog}.
+
+The ``\code{.include "<DOM_NAME>.dom"}'' lines specify each domain named
+\code{<DOM_NAME>} that is needed by the analysis, i.e., each domain over which
+any relation that is input/output by the analysis is defined. 
+The declaration of each such relation specifies the relation's schema:
+the list of domains over which the relation is defined.
+If the same domain appears multiple times in a relation's schema then
+distinct non-negative integers must be used to distinguish them; for instance,
+in the above example, {\tt candidate} is a binary relation, both of whose
+attributes have domain {\tt E}, and they are distinguished as {\tt E0} and {\tt E1}.
+
+Each relation is represented symbolically (as opposed to explicitly)
+using a graph-based data structure called a Binary Decision Diagram (BDD for short).
+Each domain containing N elements is assigned log2(N) BDD variables.
+The size of a BDD and the efficiency of operations that are performed on it when the above
+analysis runs depends heavily
+on the order of these BDD variables.
+The ``\code{.bddvarorder <BDD_VAR_ORDER>}'' line enables the 
+analysis writer to specify this order.
+It must list all domains along with their numerical suffixes, separated
+by `{\tt \_}' or `{\tt x}'.
+Using a `{\tt \_}' between two domains, such as {\tt T0\_T1}, means that the BDD variables assigned
+to domain {\tt T0} precede those assigned to domain {\tt T1} in the BDD variable
+order for this analysis.
+Using a `{\tt x}' between two domains, such as {\tt E0xE1}, means that the
+BDD variables assigned to domains {\tt E0} and {\tt E1}
+will be interleaved in the BDD variable order for this analysis.
+See Section \ref{sec:bdd} for more details on BDD representations.
+
+Each rule in the analysis is a Horn clause of the form
+``{\tt R(t) :- R1(t1), ..., Rn(tn)}"
+meaning that if relations {\tt R1}, ..., {\tt Rn} contain tuples {\tt t1}, ..., {\tt tn}
+respectively, then relation {\tt R} contains tuple {\tt t}.
+A backslash may be used at the end of a line to break long rules for readability.
+The BDD-based Datalog solver bddbddb used in Chord does not apply any
+sophisticated optimizations to simplify the rules; besides the BDD variable order,
+the manner in which these rules are expressed heavily affects the performance of
+the solver.  For instance, an important manual optimization involves breaking down
+long rules into multiple shorter rules communicating via intermediate relations.
+See Section \ref{sec:tuning-datalog} for hints on tuning the performance
+of Datalog analyses.
+
+Running a Datalog analysis is no different from running any other kind of
+analysis in Chord.  See Section \ref{sec:running-predefined} for an example of
+running a Datalog analysis predefined in Chord.  Also, see Chapter
+\ref{chap:running} for how to run an analysis in general, whether written in
+Java or in Datalog, and whether predefined or user-defined.
+
+Each program domain used in a Datalog analysis must be
+produced by an analysis written imperatively in Java (see Section
+\ref{sec:program-dom}).
+Likewise, each program relation declared as an input relation in a Datalog analysis must be
+produced either by another Datalog analysis (i.e., declared as an output relation
+of that analysis) or by an analysis written imperatively in Java (see Section
+\ref{sec:program-rel}).
+Running a Datalog analysis will result in a runtime error if any of the program
+domains used in the analysis or any of the program relations declared as input
+relations in the analysis are not produced by any other analysis.
+
+\section{Tuning Performance}
+\label{sec:tuning-datalog}
+
+There are several tricks analysis writers can try to improve the
+performance of bddbddb, the Datalog solver used by Chord, often
+by several orders of magnitude.
+Try these tricks by running the following command:
+
+\begin{framed}
+\begin{verbatim}
+ant -Ddlog.file=<FILE> -Dwork.dir=<DIR> solve
+\end{verbatim}
+\end{framed}
+
+where {\tt <FILE>} is the file defining the Datalog analysis
+to be tuned, and {\tt <DIR>} is the directory containing the
+program domains ({\tt *.dom} files) and program relations ({\tt *.bdd} files)
+consumed by the analysis (this is by default the
+\code{chord_output/bddbddb/} directory generated
+by a previous run of Chord.
+
+\begin{enumerate}
+
+\item
+
+Set properties \verb+noisy=yes+, \verb+tracesolve=yes+, and \verb+fulltracesolve=yes+
+on the above command line and observe which rule gets ``stuck" (i.e., takes several seconds to solve).
+\verb+fulltracesolve+ is seldom useful, but \verb+noisy+ and \verb+tracesolve+ are
+often very useful.  Once you identify the rule that is getting stuck, it
+will also tell you which relations and which domains used in that rule,
+and which operation on them, is taking a long time to solve.  Then try
+to fix the problem with that rule by doing either or both of the following:
+\begin{itemize}
+\item
+Break down the rule into multiple rules by creating intermediate relations (the more
+relations you have on the RHS of a rule the slower it generally takes to solve
+that rule).
+\item
+Change the relative order of the domains of those
+relations in the BDD variable order
+(note that you can use either `\_' or `x' between a pair of domains).
+\end{itemize}
+
+\item
+
+Once you have ensured that none of the rules is getting ``stuck",
+you will notice that some rules are applied too many times, and so
+although each application of the rule itself isn't taking too much
+time, the cumulative time for the rule is too much.  After finishing
+solving a Datalog analysis, bddbddb prints how long each rule took to
+solve (both in terms of the number of times it was applied and the
+cumulative time it took).  It sorts the rules in the order of the
+cumulative time.  You need to focus on the rules that took the most
+time to solve (they will be at the bottom of the list).  Assuming you
+removed the problem of rules getting ``stuck", the rules will roughly
+be in the order of the number of times they were applied.  Here is an
+example:
+
+\begin{framed}
+\begin{verbatim}
+OUT> Rule VH(u:V0,h:H0) :- VV(u:V0,v:V1), VH(v:V1,h:H0), VHfilter
+(u:V0,h:H0).
+OUT>    Updates: 2871
+OUT>    Time: 6798 ms
+OUT>    Longest Iteration: 0 (0 ms)
+OUT> Rule IM(i:I0,m:M0) :- reachableI(i:I0), specIMV(i:I0,m:M0,v:V0), VH(v:V0,_:H0).
+OUT>    Updates: 5031
+OUT>    Time: 6972 ms
+OUT>    Longest Iteration: 0 (0 ms)
+\end{verbatim}
+\end{framed}
+
+Notice that the second rule was applied 5031 times whereas the first
+was applied 2871 times.  More importantly, the second rule took 6972
+milliseconds in all, compared to 6798 for the first rule.  Hence, you
+should focus on the second rule first, and try to speed it up.  This
+means that you should focus only on relations IM, reachableI, specIMV,
+and VH, and the domains I0, M0, V0, and H0.  Any changes you make that
+do not affect these relations and domains are unlikely to make your
+solving faster.  In general, look at the last few rules, not just the
+last one, and try to identify the ``sub-analysis" of the Datalog analysis
+that seems problematic, and then focus on speeding up just that sub-
+analysis.
+
+\item
+
+You can add the \verb+.split+ keyword at the end of certain rules as a
+hint to bddbddb to decompose those rules into simpler ones that can be
+solved faster.  You can also set property \verb+split_all_rules=yes+ as shorthand
+for splitting all rules without adding the \verb+.split+ keyword to any of
+them, though I seldom find splitting all rules helpful.
+
+\item
+
+You can try to decompose a single Datalog analysis file into two separate Datalog analysis
+files.  Of course, you cannot separate mutually-recursive rules into two
+different analyses, but if you unnecessarily club
+together rules that could have gone into different analyses, then they
+can put conflicting demands on bddbddb (e.g., on the BDD variable order).
+So if rule 2 uses the result of rule 1 and rule 1 does not use the result of
+rule 2, then put rule 1 and rule 2 in separate Datalog analyses.
+
+\item
+
+Observe the sizes of the BDDs representing the relations that are
+input and output.  bddbddb prints both the number of tuples in each
+relation and the number of nodes in the BDD.  Try changing the
+BDD variable order for the domains of the relation, and observe how the
+number of nodes in the BDD for that relation change.  You will
+notice that some orders perform remarkably better than others.  Then
+note down these orders as invariants that you will not violate as
+you tweak other things.
+
+\item
+
+The relative order of values *within* domains (e.g.,
+in domains named \verb+M+, \verb+H+, \verb+C+, etc. in Chord) affects the
+performance of bddbddb, but
+I've never tried changing this and studying its effect.  It might be
+worth trying.  For instance, John Whaley's PLDI'04 paper describes a
+specific way in which he numbers contexts (in domain \verb+C+) and that it was
+fundamental to the speedup of his ``infinity"-CFA points-to analysis.
+
+\item
+
+Finally, it is worth emphasizing that BDDs are not magic.
+If your algorithm itself is fundamentally hard to scale, then BDDs are
+unlikely to help you a whole lot.  Secondly, many things are awkward to
+encode as integers (e.g., the abstract contexts in domain \verb+C+ 
+in Chord) or as Datalog rules.
+For instance, I've noticed that summary-based context-sensitive program
+analyses are hard to express in Datalog.  The may-happen-in-parallel
+analysis provided in Chord shows a relatively simple kind of summary-based
+analysis that uses the Reps-Horwitz-Sagiv tabulation algorithm.  But this
+is as far as I could get---more complicated summary-based algorithms are
+best written in Java itself instead of Datalog.
+\end{enumerate}
+

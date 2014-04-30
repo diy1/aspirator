@@ -1,0 +1,27 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=thread-reachableL-dlog
+
+.include "M.dom"
+.include "L.dom"
+
+.bddvarorder M0_L0
+
+###
+# Relations
+###
+
+threadReachableM(m:M0) input
+ML(m:M0,l:L0) input
+threadReachableL(l:L0) output
+
+###
+# Constraints
+###
+
+threadReachableL(l) :- threadReachableM(m), ML(m,l).
+

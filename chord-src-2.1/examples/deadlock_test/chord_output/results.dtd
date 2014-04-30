@@ -1,0 +1,45 @@
+<!ENTITY % Olist SYSTEM "Olist.dtd">
+<!ENTITY % Alist SYSTEM "Alist.dtd">
+<!ENTITY % Hlist SYSTEM "Hlist.dtd">
+<!ENTITY % Ilist SYSTEM "Ilist.dtd">
+<!ENTITY % Mlist SYSTEM "Mlist.dtd">
+<!ENTITY % Llist SYSTEM "Llist.dtd">
+<!ELEMENT results (deadlocklist, MMlist, Olist, Alist, Hlist, Ilist, Mlist, Llist)>
+<!ELEMENT deadlocklist (deadlock)*>
+<!ELEMENT deadlock EMPTY>
+<!ATTLIST deadlock
+	group	CDATA	#REQUIRED
+	T1id	IDREF	#REQUIRED
+	T2id	IDREF	#REQUIRED
+	M1id	IDREF	#REQUIRED
+	L1id	IDREF	#REQUIRED
+	O1id	IDREF	#REQUIRED
+	M2id	IDREF	#REQUIRED
+	L2id	IDREF	#REQUIRED
+	O2id	IDREF	#REQUIRED
+	M3id	IDREF	#REQUIRED
+	L3id	IDREF	#REQUIRED
+	O3id	IDREF	#REQUIRED
+	M4id	IDREF	#REQUIRED
+	L4id	IDREF	#REQUIRED
+	O4id	IDREF	#REQUIRED>
+<!ELEMENT MMlist (MM)*>
+<!ELEMENT MM (path)*>
+<!ATTLIST MM
+	M1id	IDREF	#REQUIRED
+	M2id	IDREF	#REQUIRED>
+<!ELEMENT path (truncated?, (elem)*)>
+<!ELEMENT elem EMPTY>
+<!ATTLIST elem
+	Iid		IDREF	#REQUIRED>
+<!ELEMENT truncated EMPTY>
+<!ATTLIST truncated
+	width	CDATA	#IMPLIED
+	depth	CDATA	#IMPLIED
+	limit	CDATA	#IMPLIED>
+%Olist;
+%Alist;
+%Hlist;
+%Ilist;
+%Mlist;
+%Llist;

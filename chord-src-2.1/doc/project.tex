@@ -1,0 +1,225 @@
+\xname{project}
+\chapter{A Chord Project: Tasks, Targets, and Dependencies}
+\label{chap:project}
+
+In order to facilitate heavy reuse and rapid prototyping, each analysis in Chord is
+written modularly, independent of other analyses, along with lightweight annotations
+specifying the inputs and outputs of the analysis.
+In each run, upon startup, Chord organizes all analyses and their inputs and outputs
+(collectively called analysis results) using a global entity
+called a {\it project}.  More concretely, a project consists of a set of
+analyses called {\it tasks}, a set of analysis results called {\it targets}, and
+a set of data/control dependencies between tasks and targets.
+
+The project built in a particular run is of either of the following two kinds,
+depending upon whether the value of property \code{chord.classic} is true or false, respectively.
+\begin{itemize}
+\item
+a {\it classic project}, represented as an object of
+class \javadoc{chord.project.ClassicProject}{chord/project/ClassicProject.html}.
+\item
+a {\it modern project}, represented as an object of
+class \javadoc{chord.project.ModernProject}{chord/project/ModernProject.html}.
+\end{itemize}
+The project representation can be obtained by calling static method \code{g()} of the
+corresponding class.
+A classic project is built by default.
+The two kinds of projects differ
+primarily in that the only kind of dependencies in a classic
+project are data dependencies whereas both data and control dependencies are
+allowed in a modern project.  The key advantage of a modern project is that it
+can schedule independent tasks in parallel whereas a classic project always
+runs tasks sequentially.  This chapter focusses on classic projects as the
+runtime for modern projects is still under development.
+We next explain how Chord builds a classic project
+(a set of tasks, a set of targets, and a set of dependencies between them).
+
+{\bf Tasks:}
+There are two kinds of tasks corresponding to the two broad kinds of analyses in
+Chord: those written imperatively in Java and those written declaratively in
+Datalog.  They are summarized in the following table:
+
+\begin{mytable}{|l||c|c|}
+\hline
+ Kind: & imperative (see Chapter \ref{chap:writing}) & declarative (see Chapter \ref{chap:datalog}) \\
+\hline
+ Location: &
+	\begin{tabular}{c}
+	a {\tt .class} file in the path denoted by property \\
+	\code{chord.java.analysis.path} compiled \\
+	from a \code{@Chord}-annotated class implementing \\
+	interface \javadoc{chord.project.ITask}{chord/project/ITask.html} 
+	\end{tabular} &
+	\begin{tabular}{c}
+	a {\tt .dlog} file in the path denoted by property \\
+	\code{chord.dlog.analysis.path}
+	\end{tabular} \\
+\hline
+ Name: & via stmt \verb+name="<NAME>"+ in {\tt @Chord} annotation & via line ``\verb+# name=<NAME>+'' in {\tt .dlog} file \\
+\hline
+ Form: &
+	an instance of the \code{@Chord}-annotated class &
+	\begin{tabular}{c}
+	an instance of class \\
+    \javadoc{chord.project.analyses.DlogAnalysis}{chord/project/analyses/DlogAnalysis.html}
+	\end{tabular}
+\T \\
+\hline
+\end{mytable}
+
+Each task in Chord is of the form ``\code{\{ C1, ..., Cn \} T \{ P1, ..., Pm \}}" where:
+\begin{itemize}
+\item
+{\tt T} is the code provided by the user to be executed when the task is executed,
+\item
+{\tt C1}, ..., {\tt Cn} are the names of zero or more targets specified by the user as being
+consumed by the task, and
+\item
+{\tt P1}, ..., {\tt Pm} are the names of zero or more targets specified by the user as being
+produced by the task.
+\end{itemize}
+The consumed targets may be produced by other tasks and, likewise, the produced
+targets may be consumed by other tasks.
+
+{\bf Targets:}
+The set of targets in a project includes each target that is specified as
+consumed/produced by some task in the project.  When defining tasks, the user implicitly or
+explicitly provides the class (type) of each target.
+Chord reports a runtime error if a target has no type or has multiple types.
+Otherwise, it creates a separate instance of that class to represent that target.
+
+{\bf Dependencies:}
+Chord computes a dependency graph as a directed graph whose
+nodes are all tasks and targets computed as above, and:
+\begin{itemize}
+\item
+There is an edge from a target C to a task T if the user has specified that T consumes C.
+\item
+There is an edge from a task T to a target P is the user has specified that T produces P.
+\end{itemize}
+
+We next present an example project to illustrate various concepts in the rest of
+this chapter:
+
+\begin{framed}
+\begin{verbatim}
+{} T1 { R1 }
+{} T2 { R1 }
+{ R4} T3 { R2 }
+{ R1, R2 } T4 { R3, R4 }
+\end{verbatim}
+\end{framed} 
+
+The set of tasks in this project is \{ {\tt T1}, {\tt T2}, {\tt T3}, {\tt T4} \}
+and the set of targets in the project is \{ {\tt R1}, {\tt R2}, {\tt R3}, {\tt R4} \}.
+The dependency graph is as follows:
+
+\begin{center}
+\includeimage{0.3}{dependency_graph.png}
+\end{center}
+
+Class \javadoc{chord.project.ClassicProject}{chord/project/ClassicProject.html}
+provides a rich API (in the form of public instance methods) for accessing tasks
+and targets in the project, for running tasks, and for resetting tasks and
+targets.  The most commonly used methods are as follows:
+
+\begin{mytable}{|l|l|}
+\hline
+\verb+ITask getTask(String name)+ & Representation of the task named {\tt name}. \\
+\hline
+\verb+Object getTrgt(String name)+ & Representation of the target named {\tt name}. \\
+\hline
+\verb+ITask runTask(String name)+ & Execute the task named {\tt name}. \\
+\hline
+\verb+boolean isTaskDone(String name)+ & Whether task named {\tt name} has alread been executed. \\
+\hline
+\verb+boolean isTrgtDone(String name)+ & Whether target named {\tt name} has already been computed. \\
+\hline
+\verb+void setTaskDone(String name)+ & Force task named {\tt name} to not be executed
+the next time it is demanded. \\
+\hline
+\verb+void setTrgtDone(String name)+ & Force target named {\tt name} to
+not be computed the next time it is demanded.  \\
+\hline
+\verb+void resetTaskDone(String name)+ & Force task named {\tt name} to be executed
+the next time it is demanded. \\
+\hline
+\verb+void resetTrgtDone(String name)+ & Force target named {\tt name} to
+be computed the next time it is demanded.  \T \\
+\hline
+\end{mytable}
+
+We next explain the above methods.
+
+The \code{getTask(name)} and \code{getTrgt(name)} methods provides the representation
+of the unique task or the unique target, respectively, with the specified name, if it exists,
+and a runtime error otherwise.
+
+A ``done'' bit, initialized to false, is kept with each task and each target in
+the project.  The operation of the remaining methods above involves this bit.
+
+The \code{runTask(name)} method runs the task with the specified name, if it exists,
+and reports a runtime error otherwise.  Running a task proceeds as follows.
+If the done bit of the task is true, no action is taken.  Otherwise, 
+suppose the task is of the form ``\code{\{ C1, ..., Cn \} T \{ P1, ..., Pm \}}''.  Then,
+the following two actions are taken in order:
+
+\begin{enumerate}
+\item
+For each of the consumed targets {\tt C1}, ..., {\tt Cn} 
+whose done bit is false, the unique task in the project producing that target 
+is run recursively.
+A runtime error is reported if no such task exists or if multiple such tasks exist.
+\item
+Once all consumed targets are computed, the code {\tt T} of this task itself is run.
+\item
+Finally, the done bit of this task as well as of each of its produced targets
+{\tt P1}, ..., {\tt Pn} is set to true.
+\end{enumerate}
+
+It is the user's responsibility to ensure termination in the case in which there are
+cycles in the dependency graph.  The \code{isTaskDone(name)} and \code{isTrgtDone(name)}
+methods can be used in the code {\tt T} of any task to enquire
+whether the done bit of the task or target with the specified name is set to true.
+Moreover, methods \code{setTaskDone(name)}, \code{setTrgtDone(name)} can be used to set
+the done bit of the task or target with the specified name to true, and likewise,
+methods \code{resetTaskDone(name)} and \code{resetTrgtDone(name)} can be used
+to set the done bit to false.
+
+It is possible to run tasks from the command-line of Chord by specifying the value of property
+\code{chord.run.analyses} as a comma-separated list of the names of tasks to be run in order
+(see Chapter \ref{chap:running}).
+
+We next illustrate the above concepts using the above example.
+Suppose Chord is run with the value of property \code{chord.run.analyses} as ``{\tt T4}''.
+This causes \code{runTask(T4)} to be called.  The done bit of task {\tt T4} is initialized to false.
+Hence, the done bit of its first consumed target {\tt R1} is checked.
+Since it is also initialized to false, the unique task producing
+target {\tt R1} is demanded.  However, multiple tasks {\tt T1} and {\tt T2} 
+producing target {\tt R1} are found in the project, resulting in a runtime error which
+reports the ambiguity between tasks {\tt T1} and {\tt T2}.
+
+To resolve the ambiguity (say in favor of task {\tt T1}), the user can
+specify the value of property \code{chord.run.analyses} as ``{\tt T1},{\tt T4}''.  This
+time, \code{runTask(T1)} is called followed by \code{runTask(T4)}.
+Since the done bit of task {\tt T1} is initialized to false and it has no consumed
+targets, \code{runTask(T1)} simply executes the code of task {\tt T1}, and sets
+the done bit of task {\tt T1} and of its only produced target {\tt R1} to true.
+Next, the call to \code{runTask(T4)} proceeds as described in the previous run
+above, but this time the done bit of target {\tt R1} consumed by task {\tt T4} is
+set to true.  Hence, the demand for the unique task producing target {\tt R1} (and
+the ensuing ambiguity runtime error) is averted.  However, this time a different
+problem occurs: the done bit of the other target {\tt R2} consumed by task {\tt T4} is
+initialized to false, which results in a call to \code{runTask(T3)}
+(since task {\tt T3} is the unique task that produces target {\tt R2}), which in turn
+results in a call to \code{runTask(T4)}.  The result is infinite 
+mutually-recursive calls to \code{runTask(T4)} and \code{runTask(T3)} unless the
+code of task {\tt T3} or {\tt T4} averts it by
+calling \code{setTaskDone} or \code{setTrgtDone} on some task or target
+in the cycle.
+This scenario resulting from a cycle in the dependence graph is rare in practice.
+It typically occurs in the case of iterative refinement-based client-driven analyses:
+the output of such an analysis in one iteration is fed as an input to the same analysis
+in a subsequent iteration.  The code of such an analysis must explicitly
+control execution as described above to avert infinite recursion.
+

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Main build file for Chord
+-->
+<project name="chord" default="compile">
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="lib/ant-contrib.jar"/>
+
+	<!--
+	==========================================================================
+		DESCRIPTION OF TARGETS
+	==========================================================================
+	-->
+
+	<target name="help">
+		<echo>
+		===============================================================
+		Primary Targets:
+		===============================================================
+		compile   Compile Chord sources and build chord.jar (default)
+		run       Run Chord
+		          Optional properties:
+		          - chord.main.class (main class of analyzed program)
+		          - chord.class.path (classpath of analyzed program)
+		          - chord.run.analyses (names of analyses to be run)
+		          - many more ... (see Chord user guide)
+		clean     Cleanup all generated binary files
+		===============================================================
+		Utility Targets:
+		===============================================================
+		solve     Run bddbddb (BDD-based Datalog solver)
+		          Required properties:
+		          - work.dir   (dir containing input/output BDD files)
+		          - dlog.file  (file specifying Datalog program)
+		          Optional properties:
+		          - max.heap   (default=2048m)
+		          - max.tuples (default=1000)
+		          - verbose    ([0..6]; default=4)
+		debug     Run bddbddb's interactive interpreter
+		          Required properties:
+		          - work.dir   (dir containing input/output BDD files)
+		          - dlog.file  (file specifying Datalog program)
+		          Optional properties:
+		          - max.heap   (default=2048m)
+		          - max.tuples (default=1000)
+		          - verbose    ([0..6]; default=4)
+		j2h_xref  Convert .java files to .html with cross-references
+		          Required properties:
+		          - java.dir (dir containing Java source files)
+		          - html.dir (dir to dump generated HTML files)
+		j2h_fast  Convert .java files to .html without cross-references
+		          Required properties:
+		          - java.dir (dir containing Java source files)
+		          - html.dir (dir to dump generated HTML files)
+		===============================================================
+		Documentation Targets:
+		===============================================================
+		javadoc   Generate javadoc for Chord's Java source code
+		htmldoc   Generate HTML user guide (needs hyperlatex)
+		pdfdoc    Generate PDF user guide (needs pdflatex)
+		cleandoc  Cleanup all generated javadoc/htmldoc/pdfdoc files
+		</echo>
+	</target>
+
+	<!--
+	==========================================================================
+		BUILD PROPERTIES
+	==========================================================================
+	-->
+
+	<!--
+		This target does the following things in order:
+		1. Loads file chord.properties from Chord's main/ directory
+		2. Sets properties chord.use.buddy and chord.use.jvmti to false unless they
+		   have been already set.
+		3. If either property chord.use.buddy or chord.use.jvmti is set to true then:
+			1. sets property chord.jdk_root to the root of the JDK installation
+			2. sets property chord.arch to '-m32' or '-m64'
+			3. sets property chord.make to 'make' on Linux and to 'gmake' on
+			   non-GNU operation systems
+	-->
+	<target name="props">
+		<property file="chord.properties"/>
+		<property name="chord.use.buddy" value="false"/>
+		<property name="chord.use.jvmti" value="false"/>
+		<if><or><equals arg1="${chord.use.buddy}" arg2="true"/>
+				<equals arg1="${chord.use.jvmti}" arg2="true"/>
+			</or>
+			<then>
+				<path id="jdk_root"><pathelement location="${java.home}/.."/></path>
+				<pathconvert targetos="unix" property="chord.jdk_root" refid="jdk_root"/>
+				<if><equals arg1="${os.name}" arg2="FreeBSD"/>
+					<then><property name="chord.make" value="gmake"/></then>
+					<else><property name="chord.make" value="make"/></else>
+				</if>
+				<if><equals arg1="${sun.arch.data.model}" arg2="32"/>
+					<then><property name="chord.arch" value="-m32"/></then>
+					<else><property name="chord.arch" value="-m64"/></else>
+				</if>
+			</then>
+		</if>
+	</target>
+
+	<!--
+	==========================================================================
+		COMPILE CHORD
+	==========================================================================
+	-->
+
+	<target name="compile" description="Compile Chord.">
+		<antcall target="compile-j-part"/>
+		<antcall target="compile-c-part"/>
+	</target>
+
+	<target name="compile-j-part">
+		<mkdir dir="classes"/>
+		<javac debug="true" debuglevel="source,lines,vars" includeAntRuntime="false"
+				source="1.5" target="1.5" destdir="classes" srcdir="src">
+			<classpath>
+				<pathelement location="lib/joeq.jar"/>
+				<pathelement location="lib/jwutil.jar"/>
+				<pathelement location="lib/jdom.jar"/>
+				<pathelement location="lib/bddbddb.jar"/>
+				<pathelement location="lib/javabdd-1.0b2.jar"/>
+				<pathelement location="lib/javassist.jar"/>
+				<pathelement location="lib/hj.jar"/>
+				<pathelement location="lib/CnCHj.jar"/>
+				<pathelement location="lib/trove-3.0.2.jar"/>
+				<pathelement location="lib/scannotation-1.0.2.jar"/>
+				<pathelement location="lib/j2h.jar"/>
+				<pathelement location="lib/saxon9.jar"/>
+				<pathelement location="lib/confspellcheck-0.1.jar"/>
+			</classpath>
+		</javac>
+		<jar destfile="chord.jar" basedir="classes" includes="**/*.class" duplicate="fail">
+            <zipfileset includes="**/*.class" src="lib/joeq.jar"/>
+            <zipfileset includes="**/*.class" src="lib/jwutil.jar"/>
+            <zipfileset includes="**/*.class" src="lib/jdom.jar"/>
+            <zipfileset includes="**/*.class" src="lib/bddbddb.jar"/>
+            <zipfileset includes="**/*.class" src="lib/javabdd-1.0b2.jar"/>
+            <zipfileset includes="**/*.class" src="lib/javassist.jar"/>
+            <zipfileset includes="**/*.class" src="lib/hj.jar"/>
+            <zipfileset includes="**/*.class" src="lib/CnCHj.jar"/>
+            <zipfileset includes="**/*.class" src="lib/trove-3.0.2.jar"/>
+            <zipfileset includes="**/*.class" src="lib/scannotation-1.0.2.jar"/>
+            <zipfileset includes="**/*.class" src="lib/j2h.jar"/>
+            <zipfileset includes="**/*.class" src="lib/saxon9.jar"/>
+            <zipfileset includes="**/*.class" src="lib/confspellcheck-0.1.jar"/>
+			<fileset dir=".">
+				<include name="web/*"/>
+			</fileset>
+			<file file="lib/options.dict"/>
+			<fileset dir="src">
+				<include name="**/*.txt"/>
+				<include name="**/*.dlog"/>
+				<include name="**/*.datalog"/>
+				<include name="**/*.xsl"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.dtd"/>
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="chord.project.Boot"/>
+				<attribute name="Premain-Class" value="chord.instr.OnlineTransformer"/>
+				<attribute name="Can-Retransform-Classes" value="true"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile-c-part">
+		<antcall target="compile-buddy"/>
+		<antcall target="compile-agent"/>
+	</target>
+
+	<target name="compile-buddy" depends="props">
+		<if><equals arg1="${chord.use.buddy}" arg2="true"/>
+			<then>
+				<exec executable="${chord.make}" dir="bdd">
+					<arg value="JDK_ROOT=${chord.jdk_root}"/>
+					<arg value="M32_FLAG=${chord.arch}"/>
+				</exec>
+			</then>
+		</if>
+	</target>
+
+	<target name="compile-agent" depends="props">
+		<if><equals arg1="${chord.use.jvmti}" arg2="true"/>
+			<then>
+				<exec executable="${chord.make}" dir="agent">
+					<arg value="JDK_ROOT=${chord.jdk_root}"/>
+					<arg value="M32_FLAG=${chord.arch}"/>
+				</exec>
+			</then>
+		</if>
+	</target>
+
+	<!--
+	==========================================================================
+		RUN CHORD
+	==========================================================================
+	-->
+
+	<target name="run" description="Run Chord.">
+		<java classname="chord.project.Boot" failonerror="true" classpath="chord.jar">
+			<syspropertyset>
+				<propertyref builtin="all"/>
+			</syspropertyset>
+		</java>
+	</target>
+
+	<!--
+	==========================================================================
+		JAVA TO HTML UTILS
+	==========================================================================
+	-->
+
+	<target name="j2h_xref" description="HTMLize Java source code with cross-referencing.">
+		<fail unless="java.dir"/>
+		<fail unless="html.dir"/>
+		<java classname="j2h" failonerror="true">
+			<arg value="-js"/>
+			<arg file="${java.dir}"/>
+			<arg value="-d"/>
+			<arg file="${html.dir}"/>
+			<arg value="-m"/>
+			<arg value="4"/>
+			<arg value="-t"/>
+			<arg value="4"/>
+			<classpath><pathelement location="lib/j2h.jar"/></classpath>
+		</java>
+	</target>
+  
+	<target name="j2h_fast" description="HTMLize Java source code without cross-referencing.">
+		<fail unless="java.dir"/>
+		<fail unless="html.dir"/>
+		<taskdef name="java2html" classname="de.java2html.anttasks.Java2HtmlTask">
+			<classpath><pathelement location="lib/java2html.jar"/></classpath>
+		</taskdef>
+		<java2html srcdir="${java.dir}" destdir="${html.dir}" includes="**/*.java"
+			style="eclipse" showLineNumbers="true" addLineAnchors="true" tabs="4"/>
+	</target>
+
+	<!--
+	==========================================================================
+		BDDBDDB UTILS
+	==========================================================================
+	-->
+
+	<target name="solve" description="Run bddbddb (BDD-based Datalog solver).">
+		<fail unless="work.dir"/>
+		<fail unless="dlog.file"/>
+		<property name="max.heap" value="2048m"/>
+		<property name="verbose" value="3"/>
+		<java classname="net.sf.bddbddb.Solver" fork="true" maxmemory="${max.heap}">
+			<classpath>
+				<pathelement location="lib/bddbddb.jar"/>
+				<pathelement location="lib/javabdd-1.0b2.jar"/>
+				<pathelement location="lib/jdom.jar"/>
+				<pathelement location="lib/jwutil.jar"/>
+			</classpath>
+			<sysproperty key="java.library.path" file="."/>
+			<sysproperty key="basedir" file="${work.dir}"/>
+			<sysproperty key="verbose" value="${verbose}"/>
+			<syspropertyset>
+				<propertyref builtin="commandline"/>
+			</syspropertyset>
+			<arg file="${dlog.file}"/>
+		</java>
+	</target>
+
+	<target name="debug" description="Run bddbddb's interactive interpreter.">
+		<fail unless="work.dir"/>
+		<fail unless="dlog.file"/>
+		<property name="max.heap" value="2048m"/>
+		<property name="verbose" value="3"/>
+		<java classname="net.sf.bddbddb.Interactive" fork="true" maxmemory="${max.heap}">
+			<classpath>
+				<pathelement location="lib/bddbddb.jar"/>
+				<pathelement location="lib/javabdd-1.0b2.jar"/>
+				<pathelement location="lib/jdom.jar"/>
+				<pathelement location="lib/jwutil.jar"/>
+			</classpath>
+			<sysproperty key="java.library.path" file="."/>
+			<sysproperty key="basedir" file="${work.dir}"/>
+			<sysproperty key="verbose" value="${verbose}"/>
+			<syspropertyset>
+				<propertyref builtin="commandline"/>
+			</syspropertyset>
+			<arg file="${dlog.file}"/>
+		</java>
+	</target>
+
+	<!--
+	==========================================================================
+		BUILD DOCUMENTATION
+	==========================================================================
+	-->
+
+	<target name="javadoc" depends="compile-j-part" description="Generate Javadoc.">
+		<javadoc destdir="javadoc" classpath="chord.jar" useexternalfile="true">
+			<fileset dir="src">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+		<copy todir="javadoc" flatten="true">
+			<fileset dir="src">
+				<include name="**/*.dlog"/>
+				<include name="**/*.datalog"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="htmldoc" description="Generate HTML user guide (needs Hyperlatex).">
+		<exec executable="hyperlatex" dir="doc">
+			<arg value="user_guide.tex"/>
+		</exec>
+	</target>
+
+	<target name="pdfdoc" description="Generate PDF user guide (needs pdflatex).">
+		<exec executable="pdflatex" dir="doc">
+			<arg value="user_guide.tex"/>
+		</exec>
+	</target>
+
+	<!--
+	==========================================================================
+		CLEAN UP
+	==========================================================================
+	-->
+
+	<target name="clean" depends="props" description="Clean all generated files.">
+		<delete dir="classes"/>
+		<delete file="chord.jar"/>
+		<if><equals arg1="${chord.use.buddy}" arg2="true"/>
+			<then>
+				<exec executable="${chord.make}" dir="bdd">
+					<arg value="clean"/>
+				</exec>
+			</then>
+		</if>
+		<if><equals arg1="${chord.use.jvmti}" arg2="true"/>
+			<then>
+				<exec executable="${chord.make}" dir="agent">
+					<arg value="clean"/>
+				</exec>
+			</then>
+		</if>
+	</target>
+
+	<target name="cleandoc" description="Clean generated Javadoc and user guide.">
+		<delete dir="javadoc"/>
+		<delete file="doc/user_guide.pdf"/>
+		<delete file="doc/user_guide.aux"/>
+		<delete file="doc/user_guide.log"/>
+		<delete file="doc/user_guide.out"/>
+		<delete file="doc/user_guide.dvi"/>
+	</target>
+</project>

@@ -1,0 +1,286 @@
+Chord run initiated at: Dec 19, 2013 9:07:14 PM
+ENTER: logsite-java at Thu Dec 19 21:07:15 EST 2013
+ENTER: cipa-0cfa-dlog at Thu Dec 19 21:07:15 EST 2013
+ENTER: T at Thu Dec 19 21:07:15 EST 2013
+ENTER: RTA
+Iteration: 0
+Iteration: 1
+Iteration: 2
+Iteration: 3
+Iteration: 4
+LEAVE: RTA
+Time: 00:00:05:907 hh:mm:ss:ms
+SAVING dom T size: 1895
+LEAVE: T
+Exclusive time: 00:00:05:965 hh:mm:ss:ms
+Inclusive time: 00:00:05:965 hh:mm:ss:ms
+ENTER: F at Thu Dec 19 21:07:21 EST 2013
+SAVING dom F size: 6049
+LEAVE: F
+Exclusive time: 00:00:00:095 hh:mm:ss:ms
+Inclusive time: 00:00:00:095 hh:mm:ss:ms
+ENTER: V at Thu Dec 19 21:07:21 EST 2013
+ENTER: M at Thu Dec 19 21:07:21 EST 2013
+SAVING dom M size: 9274
+LEAVE: M
+Exclusive time: 00:00:00:032 hh:mm:ss:ms
+Inclusive time: 00:00:00:032 hh:mm:ss:ms
+SAVING dom V size: 79604
+LEAVE: V
+Exclusive time: 00:00:00:256 hh:mm:ss:ms
+Inclusive time: 00:00:00:288 hh:mm:ss:ms
+ENTER: H at Thu Dec 19 21:07:21 EST 2013
+SAVING dom H size: 7596
+LEAVE: H
+Exclusive time: 00:00:00:064 hh:mm:ss:ms
+Inclusive time: 00:00:00:064 hh:mm:ss:ms
+ENTER: I at Thu Dec 19 21:07:22 EST 2013
+SAVING dom I size: 35216
+LEAVE: I
+Exclusive time: 00:00:00:115 hh:mm:ss:ms
+Inclusive time: 00:00:00:115 hh:mm:ss:ms
+ENTER: Z at Thu Dec 19 21:07:22 EST 2013
+SAVING dom Z size: 14
+LEAVE: Z
+Exclusive time: 00:00:00:039 hh:mm:ss:ms
+Inclusive time: 00:00:00:039 hh:mm:ss:ms
+ENTER: MmethArg at Thu Dec 19 21:07:22 EST 2013
+SAVING rel MmethArg size: 12674
+LEAVE: MmethArg
+Exclusive time: 00:00:00:716 hh:mm:ss:ms
+Inclusive time: 00:00:00:716 hh:mm:ss:ms
+ENTER: VT at Thu Dec 19 21:07:22 EST 2013
+SAVING rel VT size: 79620
+LEAVE: VT
+Exclusive time: 00:00:01:701 hh:mm:ss:ms
+Inclusive time: 00:00:01:701 hh:mm:ss:ms
+ENTER: virtIM at Thu Dec 19 21:07:24 EST 2013
+SAVING rel virtIM size: 19732
+LEAVE: virtIM
+Exclusive time: 00:00:00:358 hh:mm:ss:ms
+Inclusive time: 00:00:00:358 hh:mm:ss:ms
+ENTER: sub at Thu Dec 19 21:07:24 EST 2013
+SAVING rel sub size: 7443
+LEAVE: sub
+Exclusive time: 00:00:00:155 hh:mm:ss:ms
+Inclusive time: 00:00:00:155 hh:mm:ss:ms
+ENTER: IinvkRet at Thu Dec 19 21:07:25 EST 2013
+SAVING rel IinvkRet size: 14676
+LEAVE: IinvkRet
+Exclusive time: 00:00:00:349 hh:mm:ss:ms
+Inclusive time: 00:00:00:349 hh:mm:ss:ms
+ENTER: objNewInst-java at Thu Dec 19 21:07:25 EST 2013
+SAVING rel objNewInstIH size: 0
+SAVING rel objNewInstIM size: 0
+LEAVE: objNewInst-java
+Exclusive time: 00:00:00:040 hh:mm:ss:ms
+Inclusive time: 00:00:00:040 hh:mm:ss:ms
+ENTER: aryNewInstIH at Thu Dec 19 21:07:25 EST 2013
+SAVING rel aryNewInstIH size: 0
+LEAVE: aryNewInstIH
+Exclusive time: 00:00:00:018 hh:mm:ss:ms
+Inclusive time: 00:00:00:018 hh:mm:ss:ms
+ENTER: staticTM at Thu Dec 19 21:07:25 EST 2013
+SAVING rel staticTM size: 2101
+LEAVE: staticTM
+Exclusive time: 00:00:00:050 hh:mm:ss:ms
+Inclusive time: 00:00:00:050 hh:mm:ss:ms
+ENTER: staticTF at Thu Dec 19 21:07:25 EST 2013
+SAVING rel staticTF size: 3311
+LEAVE: staticTF
+Exclusive time: 00:00:00:059 hh:mm:ss:ms
+Inclusive time: 00:00:00:060 hh:mm:ss:ms
+ENTER: MgetStatFldInst at Thu Dec 19 21:07:25 EST 2013
+SAVING rel MgetStatFldInst size: 3007
+LEAVE: MgetStatFldInst
+Exclusive time: 00:00:00:185 hh:mm:ss:ms
+Inclusive time: 00:00:00:185 hh:mm:ss:ms
+ENTER: cha at Thu Dec 19 21:07:25 EST 2013
+SAVING rel cha size: 21596
+LEAVE: cha
+Exclusive time: 00:00:00:814 hh:mm:ss:ms
+Inclusive time: 00:00:00:814 hh:mm:ss:ms
+ENTER: HT at Thu Dec 19 21:07:26 EST 2013
+SAVING rel HT size: 7595
+LEAVE: HT
+Exclusive time: 00:00:00:110 hh:mm:ss:ms
+Inclusive time: 00:00:00:110 hh:mm:ss:ms
+ENTER: MgetInstFldInst at Thu Dec 19 21:07:26 EST 2013
+SAVING rel MgetInstFldInst size: 9869
+LEAVE: MgetInstFldInst
+Exclusive time: 00:00:00:495 hh:mm:ss:ms
+Inclusive time: 00:00:00:495 hh:mm:ss:ms
+ENTER: specIM at Thu Dec 19 21:07:27 EST 2013
+SAVING rel specIM size: 9729
+LEAVE: specIM
+Exclusive time: 00:00:00:175 hh:mm:ss:ms
+Inclusive time: 00:00:00:175 hh:mm:ss:ms
+ENTER: classT at Thu Dec 19 21:07:27 EST 2013
+SAVING rel classT size: 1289
+LEAVE: classT
+Exclusive time: 00:00:00:035 hh:mm:ss:ms
+Inclusive time: 00:00:00:035 hh:mm:ss:ms
+ENTER: MI at Thu Dec 19 21:07:27 EST 2013
+SAVING rel MI size: 35216
+LEAVE: MI
+Exclusive time: 00:00:00:529 hh:mm:ss:ms
+Inclusive time: 00:00:00:529 hh:mm:ss:ms
+ENTER: MobjValAsgnInst at Thu Dec 19 21:07:27 EST 2013
+SAVING rel MobjValAsgnInst size: 7595
+LEAVE: MobjValAsgnInst
+Exclusive time: 00:00:00:242 hh:mm:ss:ms
+Inclusive time: 00:00:00:242 hh:mm:ss:ms
+ENTER: clinitTM at Thu Dec 19 21:07:28 EST 2013
+SAVING rel clinitTM size: 314
+LEAVE: clinitTM
+Exclusive time: 00:00:00:033 hh:mm:ss:ms
+Inclusive time: 00:00:00:033 hh:mm:ss:ms
+ENTER: MobjVarAsgnInst at Thu Dec 19 21:07:28 EST 2013
+SAVING rel MobjVarAsgnInst size: 26051
+LEAVE: MobjVarAsgnInst
+Exclusive time: 00:00:00:811 hh:mm:ss:ms
+Inclusive time: 00:00:00:811 hh:mm:ss:ms
+ENTER: conNewInst-java at Thu Dec 19 21:07:29 EST 2013
+SAVING rel conNewInstIH size: 0
+SAVING rel conNewInstIM size: 0
+LEAVE: conNewInst-java
+Exclusive time: 00:00:00:061 hh:mm:ss:ms
+Inclusive time: 00:00:00:061 hh:mm:ss:ms
+ENTER: IinvkArg0 at Thu Dec 19 21:07:29 EST 2013
+SAVING rel IinvkArg0 size: 32753
+LEAVE: IinvkArg0
+Exclusive time: 00:00:00:602 hh:mm:ss:ms
+Inclusive time: 00:00:00:602 hh:mm:ss:ms
+ENTER: IinvkArg at Thu Dec 19 21:07:29 EST 2013
+SAVING rel IinvkArg size: 49592
+LEAVE: IinvkArg
+Exclusive time: 00:00:01:061 hh:mm:ss:ms
+Inclusive time: 00:00:01:061 hh:mm:ss:ms
+ENTER: MmethRet at Thu Dec 19 21:07:30 EST 2013
+SAVING rel MmethRet size: 3488
+LEAVE: MmethRet
+Exclusive time: 00:00:00:171 hh:mm:ss:ms
+Inclusive time: 00:00:00:171 hh:mm:ss:ms
+ENTER: clsForNameIT at Thu Dec 19 21:07:30 EST 2013
+SAVING rel clsForNameIT size: 0
+LEAVE: clsForNameIT
+Exclusive time: 00:00:00:017 hh:mm:ss:ms
+Inclusive time: 00:00:00:017 hh:mm:ss:ms
+ENTER: MputInstFldInst at Thu Dec 19 21:07:30 EST 2013
+SAVING rel MputInstFldInst size: 3790
+LEAVE: MputInstFldInst
+Exclusive time: 00:00:00:260 hh:mm:ss:ms
+Inclusive time: 00:00:00:261 hh:mm:ss:ms
+ENTER: MputStatFldInst at Thu Dec 19 21:07:31 EST 2013
+SAVING rel MputStatFldInst size: 1138
+LEAVE: MputStatFldInst
+Exclusive time: 00:00:00:092 hh:mm:ss:ms
+Inclusive time: 00:00:00:092 hh:mm:ss:ms
+ENTER: statIM at Thu Dec 19 21:07:31 EST 2013
+SAVING rel statIM size: 5755
+LEAVE: statIM
+Exclusive time: 00:00:00:098 hh:mm:ss:ms
+Inclusive time: 00:00:00:098 hh:mm:ss:ms
+Starting command: 'java -ea -Xmx1024m -cp /Users/ding/Research/software/chord-src-2.1/chord.jar -Dverbose=1 -Dbdd=j -Dbasedir=/Users/ding/Research/software/chord-src-2.1/examples/hello_world2/chord_output/bddbddb net.sf.bddbddb.Solver /Users/ding/Research/software/chord-src-2.1/examples/hello_world2/chord_output/dlog/chord_analyses_alias_cipa_0cfa.dlog '
+Relation IHM: 310884 nodes, 1.0011678E7 elements (I0,M0,H0)
+Relation reachableT: 65 nodes, 25.0 elements (T0)
+Relation VHfilter: 52506 nodes, 5.0482255E7 elements (V0,H0)
+Relation VH: 598 nodes, 497.0 elements (V0,H0)
+Relation FH: 153 nodes, 9.0 elements (H0,F0)
+Relation HFH: 211 nodes, 37.0 elements (H0,F0,H1)
+Relation rootM: 62 nodes, 10.0 elements (M0)
+Relation reachableI: 141 nodes, 84.0 elements (I0)
+Relation reachableM: 126 nodes, 55.0 elements (M0)
+Relation IM: 692 nodes, 80.0 elements (I0,M0)
+Relation MM: 600 nodes, 73.0 elements (M0,M1)
+Finished command: 'java -ea -Xmx1024m -cp /Users/ding/Research/software/chord-src-2.1/chord.jar -Dverbose=1 -Dbdd=j -Dbasedir=/Users/ding/Research/software/chord-src-2.1/examples/hello_world2/chord_output/bddbddb net.sf.bddbddb.Solver /Users/ding/Research/software/chord-src-2.1/examples/hello_world2/chord_output/dlog/chord_analyses_alias_cipa_0cfa.dlog '
+LEAVE: cipa-0cfa-dlog
+Exclusive time: 00:00:04:092 hh:mm:ss:ms
+Inclusive time: 00:00:19:903 hh:mm:ss:ms
+Ding: Rel.java.load: d: I0
+Ding: Rel.java.load: d: M0
+Ding: LogSiteAnalysis: call instruction at line: 597@java/lang/AbstractStringBuilder.java is to target: expandCapacity:(I)V@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 593@java/lang/AbstractStringBuilder.java is to target: stringSizeOfInt:(I)I@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 593@java/lang/AbstractStringBuilder.java is to target: stringSizeOfInt:(I)I@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 390@java/lang/AbstractStringBuilder.java is to target: expandCapacity:(I)V@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 114@java/lang/Double.java is to target: getPrimitiveClass:(Ljava/lang/String;)Ljava/lang/Class;@java.lang.Class
+Ding: LogSiteAnalysis: call instruction at line: 113@java/lang/Float.java is to target: getPrimitiveClass:(Ljava/lang/String;)Ljava/lang/Class;@java.lang.Class
+Ding: LogSiteAnalysis: call instruction at line: 56@java/lang/Integer.java is to target: getPrimitiveClass:(Ljava/lang/String;)Ljava/lang/Class;@java.lang.Class
+Ding: LogSiteAnalysis: call instruction at line: 598@java/lang/AbstractStringBuilder.java is to target: getChars:(II[C)V@java.lang.Integer
+Ding: LogSiteAnalysis: call instruction at line: 44@java/lang/AbstractStringBuilder.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 590@java/lang/AbstractStringBuilder.java is to target: append:(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 111@java/lang/Class.java is to target: registerNatives:()V@java.lang.Class
+Ding: LogSiteAnalysis: call instruction at line: 774@java/lang/Double.java is to target: doubleToRawLongBits:(D)J@java.lang.Double
+Ding: LogSiteAnalysis: call instruction at line: 803@java/lang/Math.java is to target: doubleToLongBits:(D)J@java.lang.Double
+Ding: LogSiteAnalysis: call instruction at line: 680@java/lang/Float.java is to target: floatToRawIntBits:(F)I@java.lang.Float
+Ding: LogSiteAnalysis: call instruction at line: 802@java/lang/Math.java is to target: floatToIntBits:(F)I@java.lang.Float
+Ding: LogSiteAnalysis: call instruction at line: 32@java/lang/RuntimeException.java is to target: <init>:()V@java.lang.Exception
+Ding: LogSiteAnalysis: call instruction at line: 43@java/lang/RuntimeException.java is to target: <init>:(Ljava/lang/String;)V@java.lang.Exception
+Ding: LogSiteAnalysis: call instruction at line: 24@java/lang/Object.java is to target: registerNatives:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 36@java/lang/IllegalArgumentException.java is to target: <init>:(Ljava/lang/String;)V@java.lang.RuntimeException
+Ding: LogSiteAnalysis: call instruction at line: 37@java/lang/IndexOutOfBoundsException.java is to target: <init>:(Ljava/lang/String;)V@java.lang.RuntimeException
+Ding: LogSiteAnalysis: call instruction at line: 36@java/lang/NullPointerException.java is to target: <init>:()V@java.lang.RuntimeException
+Ding: LogSiteAnalysis: call instruction at line: 202@java/lang/String.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 1209@java/lang/String.java is to target: <init>:(Ljava/lang/String$1;)V@java.lang.String$CaseInsensitiveComparator
+Ding: LogSiteAnalysis: call instruction at line: 211@java/lang/String.java is to target: <init>:(I)V@java.lang.StringIndexOutOfBoundsException
+Ding: LogSiteAnalysis: call instruction at line: 207@java/lang/String.java is to target: <init>:(I)V@java.lang.StringIndexOutOfBoundsException
+Ding: LogSiteAnalysis: call instruction at line: 204@java/lang/String.java is to target: <init>:(I)V@java.lang.StringIndexOutOfBoundsException
+Ding: LogSiteAnalysis: call instruction at line: 29@java/lang/Exception.java is to target: <init>:()V@java.lang.Throwable
+Ding: LogSiteAnalysis: call instruction at line: 41@java/lang/Exception.java is to target: <init>:(Ljava/lang/String;)V@java.lang.Throwable
+Ding: LogSiteAnalysis: call instruction at line: 68@java/lang/StringBuilder.java is to target: <init>:(I)V@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 212@java/lang/StringBuilder.java is to target: append:(I)Ljava/lang/AbstractStringBuilder;@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 119@java/lang/StringBuilder.java is to target: append:(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;@java.lang.AbstractStringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 50@java/lang/StringIndexOutOfBoundsException.java is to target: <init>:(Ljava/lang/String;)V@java.lang.IndexOutOfBoundsException
+Ding: LogSiteAnalysis: call instruction at line: 1211@java/lang/String.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 1071@java/lang/System.java is to target: <init>:()V@java.lang.NullPointerException
+Ding: LogSiteAnalysis: call instruction at line: 1078@java/lang/System.java is to target: <init>:()V@java.lang.NullPointerException
+Ding: LogSiteAnalysis: call instruction at line: 430@java/lang/StringBuilder.java is to target: <init>:([CII)V@java.lang.String
+Ding: LogSiteAnalysis: call instruction at line: 180@java/lang/Throwable.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 195@java/lang/Throwable.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 1211@java/lang/String.java is to target: <init>:()V@java.lang.String$CaseInsensitiveComparator
+Ding: LogSiteAnalysis: call instruction at line: 55@java/lang/StringBuilder.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 50@java/lang/StringIndexOutOfBoundsException.java is to target: <init>:()V@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 50@java/lang/StringIndexOutOfBoundsException.java is to target: append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 50@java/lang/StringIndexOutOfBoundsException.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 50@java/lang/StringIndexOutOfBoundsException.java is to target: toString:()Ljava/lang/String;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 1068@java/lang/System.java is to target: currentTimeMillis:()J@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 1075@java/lang/System.java is to target: currentTimeMillis:()J@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 55@java/lang/System.java is to target: nullInputStream:()Ljava/io/InputStream;@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 82@java/lang/System.java is to target: nullPrintStream:()Ljava/io/PrintStream;@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 96@java/lang/System.java is to target: nullPrintStream:()Ljava/io/PrintStream;@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 42@java/lang/System.java is to target: registerNatives:()V@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 181@java/lang/Throwable.java is to target: fillInStackTrace:()Ljava/lang/Throwable;@java.lang.Throwable
+Ding: LogSiteAnalysis: call instruction at line: 196@java/lang/Throwable.java is to target: fillInStackTrace:()Ljava/lang/Throwable;@java.lang.Throwable
+Ding: LogSiteAnalysis: call instruction at line: 100@java/lang/AbstractStringBuilder.java is to target: copyOf:([CI)[C@java.util.Arrays
+Ding: LogSiteAnalysis: call instruction at line: 215@java/lang/String.java is to target: copyOfRange:([CII)[C@java.util.Arrays
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: <init>:(Ljava/lang/String;)V@java.lang.IllegalArgumentException
+Ding: LogSiteAnalysis: call instruction at line: 2883@java/util/Arrays.java is to target: min:(II)I@java.lang.Math
+Ding: LogSiteAnalysis: call instruction at line: 3210@java/util/Arrays.java is to target: min:(II)I@java.lang.Math
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: <init>:()V@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 3208@java/util/Arrays.java is to target: toString:()Ljava/lang/String;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 2883@java/util/Arrays.java is to target: arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 3210@java/util/Arrays.java is to target: arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V@java.lang.System
+Ding: LogSiteAnalysis: call instruction at line: 6@test/Logger.java is to target: <init>:()V@java.lang.Object
+Ding: LogSiteAnalysis: call instruction at line: 8@test/Logger.java is to target: <init>:()V@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: <init>:()V@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 8@test/Logger.java is to target: append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 8@test/Logger.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 8@test/Logger.java is to target: toString:()Ljava/lang/String;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 12@test/Logger.java is to target: toString:()Ljava/lang/String;@java.lang.StringBuilder
+Ding: LogSiteAnalysis: call instruction at line: 9@test/HelloWorld2.java is to target: <init>:(I)V@test.Logger
+Ding: LogSiteAnalysis: call instruction at line: 10@test/HelloWorld2.java is to target: info:()V@test.Logger
+Ding: LogSiteAnalysis: call instruction at line: 11@test/HelloWorld2.java is to target: debug:()V@test.Logger
+Ding: LogSiteAnalysis: call instruction at line: 22@test/Logger.java is to target: print:(Ljava/lang/String;)V@test.Logger
+Ding: LogSiteAnalysis: call instruction at line: 17@test/Logger.java is to target: print:(Ljava/lang/String;)V@test.Logger
+LEAVE: logsite-java
+Exclusive time: 00:00:00:044 hh:mm:ss:ms
+Inclusive time: 00:00:19:947 hh:mm:ss:ms
+Chord run completed at: Dec 19, 2013 9:07:35 PM
+Total time: 00:00:20:930 hh:mm:ss:ms

@@ -1,0 +1,13 @@
+# name=checkExcludedH-dlog
+
+.include "M.dom"
+.include "H.dom"
+
+.bddvarorder H0_M0
+
+checkExcludedM(m:M0) input
+MH(m:M0,h:H0) input
+checkExcludedH(h:H0) output
+
+checkExcludedH(h) :- MH(m,h), checkExcludedM(m).
+

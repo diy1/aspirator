@@ -1,0 +1,24 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=datarace-escaping-exclude-dlog
+
+.include "H.dom"
+.include "E.dom"
+.include "V.dom"
+
+.bddvarorder E0_V0_H0
+
+###
+# Relations
+###
+
+VH(v:V0,h:H0) input
+EV(e:E0,v:V0) input
+EH(e:E0,h:H0) output
+
+EH(e,h) :- EV(e,v), VH(v,h).
+

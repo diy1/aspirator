@@ -1,0 +1,106 @@
+\documentclass[openany]{book}
+\usepackage{hyperlatex}
+\usepackage{hyperref}
+\texonly{
+	\usepackage{graphicx}
+	\usepackage{framed}
+}
+
+\texonly{
+% put borders around figures
+	%\usepackage{float}
+	%\floatstyle{boxed} 
+	%\restylefloat{figure}
+% set dimensions of page/text
+	\parindent=0in
+	\parskip=10pt
+	\oddsidemargin=-0.3in
+	\evensidemargin=-0.3in
+	\textwidth=7in
+	\textheight=8.0in
+% redefine certain commands
+	\renewcommand\code[1]{\path{#1}}
+	\renewcommand\xlink[2]{\href{#2}{#1}}
+}
+
+\htmlonly{
+	\newcommand\code[1]{{\tt #1}}
+	\newcommand\url[1]{\xlink{#1}{#1}}
+	\newenvironment{framed}
+		{\xmlattributes*{table}{border=1 frame=box rules=none cellpadding=8 bgcolor=CCFFFF width=100%
+		}\begin{tabular}{l}}{\end{tabular}}
+}
+
+\newcommand\javadoc[2]{\xlink{\code{#1}}{http://chord.stanford.edu/javadoc/#2}}
+
+\newenvironment{mytable}[1]{\htmlattributes*{table}{border=1 cellpadding=10}\begin{tabular}{#1}}{\end{tabular}}
+
+\newcommand\includeimage[2]{\texonly{\includegraphics[scale=#1]{#2}}\htmlonly{{\htmlimg{#2}}}}
+
+\newcommand\bh{{\bf h}}
+\newcommand\bi{{\bf i}}
+\newcommand\bo{{\bf o}}
+\newcommand\bt{{\bf t}}
+\newcommand\bm{{\bf m}}
+\newcommand\be{{\bf e}}
+\newcommand\bg{{\bf f}}
+\newcommand\bb{{\bf b}}
+\newcommand\bl{{\bf l}}
+\newcommand\bp{{\bf p}}
+\newcommand\br{{\bf r}}
+
+\newcommand\bsdlicense{\xlink{New BSD License}{http://www.opensource.org/licenses/bsd-license.php}}
+\newcommand\chordweb{\url{http://jchord.googlecode.com/}}
+\newcommand\buddy{\xlink{BuDDy}{http://buddy.sourceforge.net/}}
+\newcommand\bddbddb{\xlink{bddbddb}{http://bddbddb.sourceforge.net/}}
+\newcommand\ibmjvm{\xlink{IBM J9}{http://www.ibm.com/developerworks/java/jdk/}}
+\newcommand\sunjvm{\xlink{Oracle HotSpot}{http://www.oracle.com/technetwork/java/javase/downloads/index.html}}
+\newcommand\chordbinfile{\xlink{chord-bin-2.0.tar.gz}{http://jchord.googlecode.com/files/chord-bin-2.0.tar.gz}}
+\newcommand\chordsrcfile{\xlink{chord-src-2.0.tar.gz}{http://jchord.googlecode.com/files/chord-src-2.0.tar.gz}}
+\newcommand\chordlibfile{\xlink{chord-libsrc-2.0.tar.gz}{http://jchord.googlecode.com/files/chord-libsrc-2.0.tar.gz}}
+\newcommand\ant{\xlink{Apache Ant}{http://ant.apache.org/}}
+\newcommand\javassist{\xlink{Javassist}{http://www.javassist.org/}}
+\newcommand\joeq{\xlink{Joeq}{http://joeq.sourceforge.net/}}
+
+\setcounter{htmldepth}{3}
+\setcounter{htmlautomenu}{4}
+
+\htmltitle{Chord}
+\htmladdress{mhn@cs.stanford.edu}
+
+\title{Chord: A Versatile Platform for Program Analysis}
+\author{Mayur Naik}
+\date{\today}
+\begin{document}
+\maketitle
+
+%\texonly{\tableofcontents}
+
+\xname{preface}
+\part{Preface}
+
+\input{organization}
+\input{acks}
+
+\xname{enduser_guide}
+\part{Guide for End-Users}
+
+\input{whatis}
+\input{start}
+\input{properties}
+\input{setup}
+\input{scope}
+\input{predefined}
+
+\xname{developer_guide}
+\part{Guide for Developers}
+
+\input{arch}
+\input{program}
+\input{project}
+\input{writing}
+\input{running}
+\input{dynamic}
+\input{datalog}
+
+\end{document}

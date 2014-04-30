@@ -1,0 +1,158 @@
+\xname{running}
+\chapter{Running an Analysis}
+\label{chap:running}
+
+This chapter describes how to run an analysis in Chord.  Broadly, there are two
+kinds of analyses in Chord: those written imperatively in Java and those written
+declaratively in Datalog. They are summarized in the following table:
+
+\begin{mytable}{|l||c|c|}
+\hline
+Kind:
+	& imperative (see Chapter \ref{chap:writing})
+	& declarative (see Chapter \ref{chap:datalog}) \\
+\hline
+Location:
+	& \begin{tabular}{c}
+	  a {\tt .class} file in the path denoted by property \\
+      \code{chord.java.analysis.path} compiled \\
+      from a \code{@Chord}-annotated class implementing \\
+      interface \javadoc{chord.project.ITask}{chord/project/ITask.html}
+      \end{tabular}
+	& \begin{tabular}{c}
+      a {\tt .dlog} file in the path denoted by property \\
+      \code{chord.dlog.analysis.path}
+      \end{tabular} \\
+\hline
+Name:
+	& via stmt \verb+name="<NAME>"+ in {\tt @Chord} annotation
+	& via line ``\verb+# name=<NAME>+'' in {\tt .dlog} file \T \\
+\hline
+\end{mytable}
+
+In its most general form, the command for running an analysis is as follows:
+
+\begin{framed}
+\begin{verbatim}
+ant -Dchord.work.dir=<WORK_DIR> -Dchord.run.analyses=<ANALYSIS_NAME> \
+    -Dchord.dlog.analysis.path=<DLOG_ANALYSIS_PATH> \
+    -Dchord.java.analysis.path=<JAVA_ANALYSIS_PATH> run
+\end{verbatim}
+\end{framed}
+
+where:
+\begin{itemize}
+\item
+\code{<WORK_DIR>} is a directory containing a file named
+\code{chord.properties} that defines various properties of the Java program to be
+analyzed that might be needed by the analysis being run, such as the program's
+main class, the program's application classpath, etc.
+(see Chapter \ref{chap:setup}).
+\item
+\code{<ANALYSIS_NAME>} is the name of the analysis to run.  More generally, it
+can be a comma-separated list of names of analyses to run in order.
+\item
+\code{<JAVA_ANALYSIS_PATH>} is a path specifying all imperative analyses written
+in Java that might be needed to run the desired analysis.
+\item
+\code{<DLOG_ANALYSIS_PATH>} is a path specifying all declarative analyses
+written in Datalog that might be needed to run the desired analysis.
+\end{itemize}
+
+Each analysis in Chord is written modularly, independent of other analyses,
+along with lightweight annotations specifying the inputs and outputs of the
+analysis.  Chord's runtime automatically computes dependencies between analyses
+(e.g., determines which analysis produces as output a result that is needed as
+input by another analysis).  Before running the desired analysis named
+\code{<ANALYSIS_NAME>}, Chord recursively runs other analyses until the inputs
+to the desired analysis have been computed; it finally runs the desired analysis
+to produce the outputs of that analysis.  Chapter \ref{chap:project} explains
+this process in detail.  Each of these analyses must occur in the path denoted
+by \code{<JAVA_ANALYSIS_PATH>} or \code{<DLOG_ANALYSIS_PATH>}, depending upon
+whether the analysis is written imperatively in Java or declaratively in
+Datalog, respectively.
+
+Chord provides shorthand ways for specifying analysis paths by means of the
+following six properties:
+
+\begin{mytable}{|c|l|l|l|}
+\hline
+Analysis Kind
+	& \multicolumn{1}{c|}{Predefined}
+	& \multicolumn{1}{c|}{User-defined}
+	& \multicolumn{1}{c|}{All} \\
+\hline
+imperative
+	& \code{chord.std.java.analysis.path}
+	& \code{chord.ext.java.analysis.path}
+	& \code{chord.java.analysis.path} \\
+\hline
+declarative
+	& \code{chord.std.dlog.analysis.path}
+	& \code{chord.ext.dlog.analysis.path}
+	& \code{chord.dlog.analysis.path}
+\T \\
+\hline
+\end{mytable}
+
+The paths specified by the \code{chord.std.*.analysis.path} properties
+conventionally include all ``standard'' analyses: analyses that are predefined
+in Chord.  The default value of each of these properties is the absolute path
+of file \code{chord.jar}.  Normally, users must not change the value of these
+properties.
+
+The paths specified by the \code{chord.ext.*.analysis.path} properties
+conventionally include all ``external'' analyses: analyses that are written by
+users.  The default value of each of these properties is the empty path.
+
+The paths specified by the \code{chord.*.analysis.path} properties include
+{\it all} analyses: both standard and external ones.  The default value of each
+of these properties is simply the concatenation of the values of the
+corresponding two properties above that specify the paths of standard and
+external analyses.  Normally, users must not change the value of these
+properties.
+
+Running the above command can cause Chord to report a runtime error in the
+following scenarios:
+
+\begin{itemize}
+\item
+Either no included analysis or multiple included analyses are named
+\code{<ANALYSIS_NAME>}.
+\item
+A result declared as consumed by the analysis named \code{<ANALYSIS_NAME>}
+(or by some analysis on which the specified analysis is dependent directly or
+transitively) is either not declared as produced by any included analysis or
+is declared as produced by multiple included analyses.
+\end{itemize}
+
+To fix the error resulting from the ``missing analysis'' case in both the above
+scenarios, simply include the missing analysis in the path specified by
+properties \code{chord.*.analysis.path}.
+
+To fix the error resulting from the ``ambiguous analysis'' case in both the
+above scenarios, the names {\tt A1}, ..., {\tt An} of all analyses that were
+involved in the ambiguity are provided in the error report.  Suppose {\tt Ai}
+is the desired analysis from this set.  Then, one way to fix the error is to
+exclude all analyses in that set except analysis {\tt Ai} from the path
+specified by properties \code{chord.*.analysis.path}.  A better way is to
+specify the names of {\it multiple} analyses in the value of property
+\code{chord.run.analyses} (recall that this property allows a comma-separated
+list of names of analyses to be run in order).  Specifically, the value of
+this property must specify the name of the desired analysis {\tt Ai}
+{\it before} the name of the analysis that caused the ambiguity error.
+
+The above command is for users who have defined their own analyses and wish
+to run them.  The following simpler command that uses the default values for
+properties \code{chord.*.analysis.path} suffices for users who only wish to run
+analyses predefined in Chord:
+
+\begin{framed}
+\begin{verbatim}
+ant -Dchord.work.dir=<WORK_DIR> -Dchord.run.analyses=<ANALYSIS_NAME> run
+\end{verbatim}
+\end{framed}
+
+Section \ref{sec:running-predefined} illustrates this command using an example
+predefined analysis in Chord.
+

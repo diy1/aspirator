@@ -1,0 +1,54 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=threadIM-dlog
+
+.include "M.dom"
+.include "V.dom"
+.include "H.dom"
+.include "Z.dom"
+.include "I.dom"
+.include "T.dom"
+
+.bddvarorder M0xM1xI0xI1_T0_V0xV1_T1_H0xH1_Z0
+
+###
+# Relations
+###
+
+IinvkArg(i:I0,z:Z0,v:V1) input
+cha(m:M1,t:T1,n:M0) input
+VH(v:V0,h:H0) input
+HT(h:H0,t:T1) input
+threadAllocI(i:I0) input
+threadStartI(i:I0) input
+excludeThreadStartI(i:I0) input
+
+runCHA(h:H0,m:M0)
+threadRunM(m:M0)
+threadAllocIH0(i:I0,h:H0)
+threadAllocIH1(i:I0,h:H0)
+threadStartIH0(i:I0,h:H0)
+
+threadIM(i:I0,m:M0) output
+nonMainThreadM(m:M0) output
+
+###
+# Constraints
+###
+
+runCHA(h,n) :- cha("run:()V@java.lang.Runnable",t,n), HT(h,t).
+
+threadRunM("run:()V@java.lang.Thread").
+
+threadAllocIH0(i,h) :- threadAllocI(i), IinvkArg(i,0,v), VH(v,h).
+threadAllocIH1(i,h) :- threadAllocI(i), IinvkArg(i,1,v), VH(v,h).
+threadAllocIH1(i,h) :- threadAllocI(i), IinvkArg(i,2,v), VH(v,h).
+threadStartIH0(i,h) :- threadStartI(i), IinvkArg(i,0,v), VH(v,h), !excludeThreadStartI(i).
+
+threadIM(i,m) :- threadStartIH0(i,h), runCHA(h,m), !threadRunM(m).
+threadIM(i,n) :- threadStartIH0(i,h), runCHA(h,m), threadRunM(m), threadAllocIH0(i2,h), threadAllocIH1(i2,h2), runCHA(h2,n).
+nonMainThreadM(m) :- threadIM(_,m).

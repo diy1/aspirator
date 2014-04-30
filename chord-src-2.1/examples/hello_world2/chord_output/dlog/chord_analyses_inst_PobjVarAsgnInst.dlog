@@ -1,0 +1,23 @@
+# name=PobjVarAsgnInst-dlog
+
+.include "Z.dom"
+.include "V.dom"
+.include "P.dom"
+
+.bddvarorder P0_V0xV1_Z0
+
+### Relations
+
+PobjVarMoveInst(p:P0,l:V0,r:V1) input
+PobjVarCastInst(p:P0,l:V0,r:V1) input
+objPhiSrc(p:P0,z:Z0,v:V0) input
+objPhiDst(p:P0,v:V0) input
+
+PobjVarAsgnInst(p:P0,l:V0,r:V1) output
+
+### Constraints
+
+PobjVarAsgnInst(p,l,r) :- PobjVarMoveInst(p,l,r).
+PobjVarAsgnInst(p,l,r) :- PobjVarCastInst(p,l,r).
+PobjVarAsgnInst(p,l,r) :- objPhiDst(p,l), objPhiSrc(p,_,r).
+

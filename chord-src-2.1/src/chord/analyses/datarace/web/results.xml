@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE results SYSTEM "results.dtd" [
+  <!ENTITY dataracelist SYSTEM "dataracelist.xml">
+  <!ENTITY TElist SYSTEM "TElist.xml">
+  <!ENTITY Olist SYSTEM "Olist.xml">
+  <!ENTITY Alist SYSTEM "Alist.xml">
+  <!ENTITY Hlist SYSTEM "Hlist.xml">
+  <!ENTITY Ilist SYSTEM "Ilist.xml">
+  <!ENTITY Mlist SYSTEM "Mlist.xml">
+  <!ENTITY Elist SYSTEM "Elist.xml">
+  <!ENTITY Flist SYSTEM "Flist.xml">
+  <!ENTITY Llist SYSTEM "Llist.xml">
+]>
+<results>
+&dataracelist;
+&TElist;
+&Olist;
+&Alist;
+&Hlist;
+&Ilist;
+&Mlist;
+&Elist;
+&Flist;
+&Llist;
+</results>

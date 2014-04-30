@@ -1,0 +1,106 @@
+\xname{setup}
+\chapter{Setting up a Java Program for Analysis}
+\label{chap:setup}
+
+This chapter describes how to setup a Java program for analysis using Chord.
+Suppose the program has the following directory structure:
+
+\begin{framed}
+\begin{verbatim}
+example/
+    src/
+        foo/
+            Main.java
+            ...
+    classes/
+        foo/
+            Main.class
+            ...
+    lib/
+        src/
+            taz/
+                ...
+        jar/
+            taz.jar
+    chord.properties
+\end{verbatim}
+\end{framed}
+
+The above structure is typical: the program's Java source
+files are under {\tt src/}, its class files are under {\tt classes/},
+and the source and jar files of the libraries used by the program are
+under \code{lib/src/} and \code{lib/jar/}, respectively.  The
+purpose of the \code{chord.properties} file is explained below.
+
+The only way to specify inputs to Chord, including the program
+to be analyzed, is via system properties.
+Section \ref{sec:properties-setting} describes various ways by which
+properties can be passed to Chord.  Here, we describe the
+simplest approach, in which all properties of the program to be analyzed
+that might be needed by Chord are defined in a file named \code{chord.properties} 
+that is located in the top-level directory of the program (directory \code{example/} above).
+Then, Chord can be applied to the program by running the following command:
+
+\begin{framed}
+\begin{verbatim}
+ant -Dchord.work.dir=<WORK_DIR> run
+\end{verbatim}
+\end{framed}
+
+This command instructs Chord to run in the directory denoted by \code{<WORK_DIR>}, where it searches for a file
+named \code{chord.properties} and
+loads all properties defined in that file, if it exists.
+Thus, for the above program, \code{<WORK_DIR>} must be the absolute or relative path of the
+\code{example/} directory.  A sample \code{chord.properties} file for the above program is as follows:
+
+\begin{framed}
+\begin{verbatim}
+chord.main.class=foo.Main
+chord.class.path=classes:lib/jar/taz.jar
+chord.src.path=src:lib/src
+chord.run.ids=0,1
+chord.args.0="-thread 1 -n 10"
+chord.args.1="-thread 2 -n 50"
+\end{verbatim}
+\end{framed}
+
+Each relative file/directory name in the value of any property
+defined in this file (e.g., the \code{lib/src} directory name in the value of
+property \code{chord.src.path} above) is treated relative to the directory
+specified by property \code{chord.work.dir}, whose default value
+is the current directory.
+Section \ref{sec:program-props} presents all program properties that are
+recognized by Chord.  Here, we only describe those that are most commonly
+used, namely, those defined in the above sample properties file:
+
+\begin{itemize}
+\item
+\code{chord.main.class} specifies the fully-qualified name of the main
+class of the program.
+\item
+\code{chord.class.path} specifies the application classpath
+of the program (the JDK standard library classpath is implicitly
+included).
+\item
+\code{chord.src.path} specifies the Java source path of the program.
+All analyses in Chord operate on Java bytecode.  The only use
+of this property is to HTMLize the Java source files of the program so
+that the results of analyses can be reported at the Java
+source code level.
+\item
+\code{chord.run.ids} specifies a list of IDs to identify runs of the
+program.  It is used by dynamic analyses to determine how many
+times the program must be run.  An additional use of this property is
+to allow specifying the command-line arguments to use in the run
+having ID {\tt <id>} via property \code{chord.args.<id>}, as
+illustrated by properties \code{chord.args.0} and \code{chord.args.1}
+above.
+\end{itemize}
+
+The above command does not do much beyond making Chord load the above
+properties file.  For Chord to do something interesting,
+additional properties must be set that specify the function(s)
+Chord must perform.  All functions are summarized in Section \ref{sec:func-props}.
+The most common function is to run one or more analyses on the input program;
+it is described in Chapter \ref{chap:running}.
+

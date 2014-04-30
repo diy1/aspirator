@@ -1,0 +1,31 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=retCopy-dlog
+
+.include "I.dom"
+.include "M.dom"
+.include "V.dom"
+.include "Z.dom"
+
+.bddvarorder I0xM0_V0xV1_Z0
+
+###
+# Relations
+###
+
+IM(i:I,m:M) input
+IinvkRet(i:I0,n:Z0,v:V0) input
+MmethRet(m:M0,n:Z0,v:V1) input
+
+retCopy(i:I0,u:V0,m:M0,v:V1) output
+
+###
+# Constraints
+###
+
+retCopy(i,u,m,v) :- IM(i,m), IinvkRet(i,z,u), MmethRet(m,z,v).
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:chord="http://chord.stanford.edu/" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Datarace Reports (Grouped By Field)</title>
+      <link rel="stylesheet" href="style.css" type="text/css" />
+   </head>
+   <body>
+      <table class="summary">
+         <colgroup>
+            <col width="6%" />
+            <col width="15%" />
+            <col width="32%" />
+            <col width="15%" />
+            <col width="32%" />
+         </colgroup>
+         <tr>
+            <td colspan="5" class="head1">Datarace Reports (Grouped By Field)</td>
+         </tr>
+         <tr>
+            <td class="head2center" rowspan="2">Details</td>
+            <td class="head2center" colspan="2">Trace 1</td>
+            <td class="head2center" colspan="2">Trace 2</td>
+         </tr>
+         <tr>
+            <td class="head2center">Thread</td>
+            <td class="head2center">Memory Access</td>
+            <td class="head2center">Thread</td>
+            <td class="head2center">Memory Access</td>
+         </tr>
+         <tr>
+            <td class="head3" colspan="5">1. Dataraces on
+               				<a href="test/A.java.html#0">test.A.af</a></td>
+         </tr>
+         <tr>
+            <td><a href="race_TE0_TE1.html">1.1</a></td>
+            <td><a href="test/T.java.html#0">test.T.main(java.lang.String[])</a></td>
+            <td><a href="test/A.java.html#17">test.A.get()</a>
+               	(Rd)
+               
+            </td>
+            <td><a href="test/T.java.html#0">test.T.run()</a></td>
+            <td><a href="test/A.java.html#20">test.A.set(int)</a>
+               	(Wr)
+               
+            </td>
+         </tr>
+         <tr>
+            <td><a href="race_TE2_TE1.html">1.2</a></td>
+            <td><a href="test/T.java.html#0">test.T.main(java.lang.String[])</a></td>
+            <td><a href="test/A.java.html#20">test.A.set(int)</a>
+               	(Wr)
+               
+            </td>
+            <td><a href="test/T.java.html#0">test.T.run()</a></td>
+            <td><a href="test/A.java.html#20">test.A.set(int)</a>
+               	(Wr)
+               
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>

@@ -1,0 +1,213 @@
+Chord run initiated at: Dec 18, 2013 10:35:23 AM
+ENTER: cicg2dot-java at Wed Dec 18 10:35:24 EST 2013
+ENTER: cicg-java at Wed Dec 18 10:35:24 EST 2013
+ENTER: cipa-0cfa-dlog at Wed Dec 18 10:35:24 EST 2013
+ENTER: T at Wed Dec 18 10:35:24 EST 2013
+ENTER: RTA
+Iteration: 0
+Iteration: 1
+Iteration: 2
+Iteration: 3
+Iteration: 4
+LEAVE: RTA
+Time: 00:00:05:729 hh:mm:ss:ms
+SAVING dom T size: 1894
+LEAVE: T
+Exclusive time: 00:00:05:782 hh:mm:ss:ms
+Inclusive time: 00:00:05:782 hh:mm:ss:ms
+ENTER: F at Wed Dec 18 10:35:30 EST 2013
+SAVING dom F size: 6048
+LEAVE: F
+Exclusive time: 00:00:00:098 hh:mm:ss:ms
+Inclusive time: 00:00:00:098 hh:mm:ss:ms
+ENTER: V at Wed Dec 18 10:35:30 EST 2013
+ENTER: M at Wed Dec 18 10:35:30 EST 2013
+SAVING dom M size: 9270
+LEAVE: M
+Exclusive time: 00:00:00:026 hh:mm:ss:ms
+Inclusive time: 00:00:00:026 hh:mm:ss:ms
+SAVING dom V size: 79582
+LEAVE: V
+Exclusive time: 00:00:00:273 hh:mm:ss:ms
+Inclusive time: 00:00:00:299 hh:mm:ss:ms
+ENTER: H at Wed Dec 18 10:35:30 EST 2013
+SAVING dom H size: 7594
+LEAVE: H
+Exclusive time: 00:00:00:065 hh:mm:ss:ms
+Inclusive time: 00:00:00:065 hh:mm:ss:ms
+ENTER: I at Wed Dec 18 10:35:30 EST 2013
+SAVING dom I size: 35203
+LEAVE: I
+Exclusive time: 00:00:00:109 hh:mm:ss:ms
+Inclusive time: 00:00:00:109 hh:mm:ss:ms
+ENTER: Z at Wed Dec 18 10:35:30 EST 2013
+SAVING dom Z size: 14
+LEAVE: Z
+Exclusive time: 00:00:00:044 hh:mm:ss:ms
+Inclusive time: 00:00:00:044 hh:mm:ss:ms
+ENTER: MmethArg at Wed Dec 18 10:35:30 EST 2013
+SAVING rel MmethArg size: 12669
+LEAVE: MmethArg
+Exclusive time: 00:00:00:687 hh:mm:ss:ms
+Inclusive time: 00:00:00:687 hh:mm:ss:ms
+ENTER: VT at Wed Dec 18 10:35:31 EST 2013
+SAVING rel VT size: 79598
+LEAVE: VT
+Exclusive time: 00:00:01:706 hh:mm:ss:ms
+Inclusive time: 00:00:01:706 hh:mm:ss:ms
+ENTER: virtIM at Wed Dec 18 10:35:33 EST 2013
+SAVING rel virtIM size: 19724
+LEAVE: virtIM
+Exclusive time: 00:00:00:384 hh:mm:ss:ms
+Inclusive time: 00:00:00:384 hh:mm:ss:ms
+ENTER: sub at Wed Dec 18 10:35:33 EST 2013
+SAVING rel sub size: 7440
+LEAVE: sub
+Exclusive time: 00:00:00:161 hh:mm:ss:ms
+Inclusive time: 00:00:00:161 hh:mm:ss:ms
+ENTER: IinvkRet at Wed Dec 18 10:35:33 EST 2013
+SAVING rel IinvkRet size: 14671
+LEAVE: IinvkRet
+Exclusive time: 00:00:00:345 hh:mm:ss:ms
+Inclusive time: 00:00:00:345 hh:mm:ss:ms
+ENTER: objNewInst-java at Wed Dec 18 10:35:33 EST 2013
+SAVING rel objNewInstIH size: 0
+SAVING rel objNewInstIM size: 0
+LEAVE: objNewInst-java
+Exclusive time: 00:00:00:044 hh:mm:ss:ms
+Inclusive time: 00:00:00:044 hh:mm:ss:ms
+ENTER: aryNewInstIH at Wed Dec 18 10:35:34 EST 2013
+SAVING rel aryNewInstIH size: 0
+LEAVE: aryNewInstIH
+Exclusive time: 00:00:00:015 hh:mm:ss:ms
+Inclusive time: 00:00:00:015 hh:mm:ss:ms
+ENTER: staticTM at Wed Dec 18 10:35:34 EST 2013
+SAVING rel staticTM size: 2101
+LEAVE: staticTM
+Exclusive time: 00:00:00:052 hh:mm:ss:ms
+Inclusive time: 00:00:00:052 hh:mm:ss:ms
+ENTER: staticTF at Wed Dec 18 10:35:34 EST 2013
+SAVING rel staticTF size: 3310
+LEAVE: staticTF
+Exclusive time: 00:00:00:058 hh:mm:ss:ms
+Inclusive time: 00:00:00:058 hh:mm:ss:ms
+ENTER: MgetStatFldInst at Wed Dec 18 10:35:34 EST 2013
+SAVING rel MgetStatFldInst size: 3004
+LEAVE: MgetStatFldInst
+Exclusive time: 00:00:00:170 hh:mm:ss:ms
+Inclusive time: 00:00:00:170 hh:mm:ss:ms
+ENTER: cha at Wed Dec 18 10:35:34 EST 2013
+SAVING rel cha size: 21586
+LEAVE: cha
+Exclusive time: 00:00:00:800 hh:mm:ss:ms
+Inclusive time: 00:00:00:800 hh:mm:ss:ms
+ENTER: HT at Wed Dec 18 10:35:35 EST 2013
+SAVING rel HT size: 7593
+LEAVE: HT
+Exclusive time: 00:00:00:098 hh:mm:ss:ms
+Inclusive time: 00:00:00:098 hh:mm:ss:ms
+ENTER: MgetInstFldInst at Wed Dec 18 10:35:35 EST 2013
+SAVING rel MgetInstFldInst size: 9869
+LEAVE: MgetInstFldInst
+Exclusive time: 00:00:00:521 hh:mm:ss:ms
+Inclusive time: 00:00:00:521 hh:mm:ss:ms
+ENTER: specIM at Wed Dec 18 10:35:35 EST 2013
+SAVING rel specIM size: 9724
+LEAVE: specIM
+Exclusive time: 00:00:00:196 hh:mm:ss:ms
+Inclusive time: 00:00:00:196 hh:mm:ss:ms
+ENTER: classT at Wed Dec 18 10:35:35 EST 2013
+SAVING rel classT size: 1288
+LEAVE: classT
+Exclusive time: 00:00:00:029 hh:mm:ss:ms
+Inclusive time: 00:00:00:029 hh:mm:ss:ms
+ENTER: MI at Wed Dec 18 10:35:35 EST 2013
+SAVING rel MI size: 35203
+LEAVE: MI
+Exclusive time: 00:00:00:520 hh:mm:ss:ms
+Inclusive time: 00:00:00:520 hh:mm:ss:ms
+ENTER: MobjValAsgnInst at Wed Dec 18 10:35:36 EST 2013
+SAVING rel MobjValAsgnInst size: 7593
+LEAVE: MobjValAsgnInst
+Exclusive time: 00:00:00:220 hh:mm:ss:ms
+Inclusive time: 00:00:00:220 hh:mm:ss:ms
+ENTER: clinitTM at Wed Dec 18 10:35:36 EST 2013
+SAVING rel clinitTM size: 314
+LEAVE: clinitTM
+Exclusive time: 00:00:00:026 hh:mm:ss:ms
+Inclusive time: 00:00:00:026 hh:mm:ss:ms
+ENTER: MobjVarAsgnInst at Wed Dec 18 10:35:36 EST 2013
+SAVING rel MobjVarAsgnInst size: 26048
+LEAVE: MobjVarAsgnInst
+Exclusive time: 00:00:00:807 hh:mm:ss:ms
+Inclusive time: 00:00:00:807 hh:mm:ss:ms
+ENTER: conNewInst-java at Wed Dec 18 10:35:37 EST 2013
+SAVING rel conNewInstIH size: 0
+SAVING rel conNewInstIM size: 0
+LEAVE: conNewInst-java
+Exclusive time: 00:00:00:035 hh:mm:ss:ms
+Inclusive time: 00:00:00:035 hh:mm:ss:ms
+ENTER: IinvkArg0 at Wed Dec 18 10:35:37 EST 2013
+SAVING rel IinvkArg0 size: 32740
+LEAVE: IinvkArg0
+Exclusive time: 00:00:00:549 hh:mm:ss:ms
+Inclusive time: 00:00:00:549 hh:mm:ss:ms
+ENTER: IinvkArg at Wed Dec 18 10:35:38 EST 2013
+SAVING rel IinvkArg size: 49573
+LEAVE: IinvkArg
+Exclusive time: 00:00:01:069 hh:mm:ss:ms
+Inclusive time: 00:00:01:069 hh:mm:ss:ms
+ENTER: MmethRet at Wed Dec 18 10:35:39 EST 2013
+SAVING rel MmethRet size: 3488
+LEAVE: MmethRet
+Exclusive time: 00:00:00:162 hh:mm:ss:ms
+Inclusive time: 00:00:00:162 hh:mm:ss:ms
+ENTER: clsForNameIT at Wed Dec 18 10:35:39 EST 2013
+SAVING rel clsForNameIT size: 0
+LEAVE: clsForNameIT
+Exclusive time: 00:00:00:023 hh:mm:ss:ms
+Inclusive time: 00:00:00:023 hh:mm:ss:ms
+ENTER: MputInstFldInst at Wed Dec 18 10:35:39 EST 2013
+SAVING rel MputInstFldInst size: 3790
+LEAVE: MputInstFldInst
+Exclusive time: 00:00:00:258 hh:mm:ss:ms
+Inclusive time: 00:00:00:258 hh:mm:ss:ms
+ENTER: MputStatFldInst at Wed Dec 18 10:35:39 EST 2013
+SAVING rel MputStatFldInst size: 1137
+LEAVE: MputStatFldInst
+Exclusive time: 00:00:00:107 hh:mm:ss:ms
+Inclusive time: 00:00:00:107 hh:mm:ss:ms
+ENTER: statIM at Wed Dec 18 10:35:39 EST 2013
+SAVING rel statIM size: 5755
+LEAVE: statIM
+Exclusive time: 00:00:00:104 hh:mm:ss:ms
+Inclusive time: 00:00:00:104 hh:mm:ss:ms
+Starting command: 'java -ea -Xmx1024m -cp /Users/ding/Research/software/chord-src-2.1/chord.jar -Dverbose=1 -Dbdd=j -Dbasedir=/Users/ding/Research/software/chord-src-2.1/examples/hello_world/chord_output/bddbddb net.sf.bddbddb.Solver /Users/ding/Research/software/chord-src-2.1/examples/hello_world/chord_output/dlog/chord_analyses_alias_cipa_0cfa.dlog '
+Relation IHM: 310840 nodes, 1.0000102E7 elements (I0,M0,H0)
+Relation reachableT: 62 nodes, 24.0 elements (T0)
+Relation VHfilter: 52488 nodes, 5.0459383E7 elements (V0,H0)
+Relation VH: 555 nodes, 446.0 elements (V0,H0)
+Relation FH: 134 nodes, 8.0 elements (H0,F0)
+Relation HFH: 210 nodes, 35.0 elements (H0,F0,H1)
+Relation rootM: 62 nodes, 10.0 elements (M0)
+Relation reachableI: 143 nodes, 71.0 elements (I0)
+Relation reachableM: 115 nodes, 51.0 elements (M0)
+Relation IM: 643 nodes, 68.0 elements (I0,M0)
+Relation MM: 538 nodes, 63.0 elements (M0,M1)
+Finished command: 'java -ea -Xmx1024m -cp /Users/ding/Research/software/chord-src-2.1/chord.jar -Dverbose=1 -Dbdd=j -Dbasedir=/Users/ding/Research/software/chord-src-2.1/examples/hello_world/chord_output/bddbddb net.sf.bddbddb.Solver /Users/ding/Research/software/chord-src-2.1/examples/hello_world/chord_output/dlog/chord_analyses_alias_cipa_0cfa.dlog '
+LEAVE: cipa-0cfa-dlog
+Exclusive time: 00:00:04:601 hh:mm:ss:ms
+Inclusive time: 00:00:20:146 hh:mm:ss:ms
+LEAVE: cicg-java
+Exclusive time: 00:00:00:000 hh:mm:ss:ms
+Inclusive time: 00:00:20:146 hh:mm:ss:ms
+Ding: Rel.java.load: d: M0
+Ding: Rel.java.load: d: M0
+Ding: Rel.java.load: d: M1
+Ding: Rel.java.load: d: I0
+Ding: Rel.java.load: d: M0
+LEAVE: cicg2dot-java
+Exclusive time: 00:00:20:287 hh:mm:ss:ms
+Inclusive time: 00:00:20:287 hh:mm:ss:ms
+Chord run completed at: Dec 18, 2013 10:35:44 AM
+Total time: 00:00:21:251 hh:mm:ss:ms

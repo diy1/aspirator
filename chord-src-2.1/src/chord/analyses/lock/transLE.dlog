@@ -1,0 +1,29 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=transLE-dlog
+
+.include "E.dom"
+.include "L.dom"
+
+.bddvarorder L0xL1_E0
+
+###
+# Relations
+###
+
+LE(l:L0,e:E0) input
+LL(l1:L0,l2:L1) input
+
+transLE(l:L0,e:E0) output
+
+###
+# Constraints
+###
+
+transLE(l,e) :- LE(l,e).
+transLE(l,e) :- LL(l,l2), transLE(l2,e).
+

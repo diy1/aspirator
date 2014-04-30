@@ -1,0 +1,291 @@
+\xname{scope}
+\chapter{Analysis Scope Construction}
+\label{chap:scope}
+
+A pre-requisite to analyzing a Java program using any program analysis framework,
+including Chord, is to compute the {\it analysis scope}: which parts of the
+program to analyze.  Several scope construction algorithms (so-called
+call-graph algorithms) exist in the literature that differ in scalability (i.e.,
+how large a program they can handle with the available resources) and precision (i.e., 
+how much of the program they deem is reachable).
+
+Chord implements several standard scope construction algorithms.  Besides scalability and precision,
+an additional metric of these algorithms in Chord that can be controlled by users is usability,
+which concerns aspects such as excluding certain code from being analyzed even if it
+is reachable, and modeling Java features such as reflection, dynamic class loading, and native methods.
+These features affect which code are
+reachable but, in general, they cannot be modeled soundly by any program analysis framework.  The best
+a framework can do is
+ provide stubs for commonly-used native methods in the standard JDK library (e.g., the \code{arraycopy}
+method of class \code{java.lang.System}), 
+offer users a range of options on how to resolve reflection (e.g.,
+an option might be running the program and observing how reflection is resolved), etc.
+
+Chord computes the analysis scope of the given
+program either if property \code{chord.build.scope} is set to {\tt true} or if some other task
+(e.g., a program analysis specified via property \code{chord.run.analyses}) demands it.
+The following sections describe Chord's analysis scope 
+computation in detail.  Section \ref{sec:scope-reuse} describes how to reuse the analysis scope
+computed in a previous run of Chord for a given program.  Section \ref{sec:scope-algos} describes
+Chord's analysis scope construction algorithms.  Finally, Section \ref{sec:scope-exclude} describes how users
+can exclude certain classes from the analysis scope.
+
+%Users can set the following properties to control scope computation:
+%
+%\begin{itemize}
+%\item \code{chord.main.class}
+%\item \code{chord.class.path}
+%\item \code{chord.reuse.scope}
+%\item \code{chord.methods.file}
+%\item \code{chord.reflect.file}
+%\item \code{chord.scope.kind}
+%\item \code{chord.ch.kind}
+%\item \code{chord.reflect.kind}
+%\item \code{chord.std.scope.exclude}
+%\item \code{chord.ext.scope.exclude}
+%\item \code{chord.scope.exclude}
+%\end{itemize}
+%
+%The meaning of these properties is explained on demand in
+
+\section{Scope Reuse}
+\label{sec:scope-reuse}
+
+If property \code{chord.reuse.scope} has value {\tt true} and both
+files specified by properties \code{chord.methods.file} and
+\code{chord.reflect.file} exist, then Chord regards those files as
+specifying which methods to consider reachable and how to resolve
+reflection, respectively.
+
+The format of the file specified by property \code{chord.methods.file}
+is a list of zero or more lines, where each line is of the form
+\code{mname:mdesc@cname}
+specifying the method's name {\tt mname}, the method's descriptor
+{\tt mdesc}, and the method's declaring class {\tt cname} (e.g.,
+\code{main:([Ljava/lang/String;)V@foo.bar.Main}).
+
+The format of the file specified by property \code{chord.reflect.file}
+is of the form:
+
+\begin{framed}
+\begin{verbatim}
+# resolvedClsForNameSites
+...
+# resolvedObjNewInstSites
+...
+# resolvedConNewInstSites
+...
+# resolvedAryNewInstSites
+...
+\end{verbatim}
+\end{framed}
+
+where each of the above ``{\tt ...}'' is a list of zero or more lines, where
+each line is of the form
+\code{bci!mname:mdesc@cname->type1,type2,...typeN}
+meaning the call site at bytecode offset {\tt bci} in the
+method denoted by {\tt mname:mdesc@cname} may resolve to any of
+reference types {\tt type1}, {\tt type2}, ..., {\tt typeN}.
+The meaning of the above four sections is as follows.
+\begin{itemize}
+\item {\tt resolvedClsForNameSites} lists
+each call to static method {\tt forName(String)} defined in class
+\code{java.lang.Class}, along with a list of the types of the named
+classes.
+\item {\tt resolvedObjNewInstSites} lists
+each call to instance method {\tt newInstance()} defined in class
+\code{java.lang.Class}, along with a list of the types of the
+instantiated classes.
+\item {\tt resolvedConNewInstSites} lists
+each call to instance method {\tt newInstance(Object[])} defined in class
+\code{java.lang.reflect.Constructor}, along with a list of the types of the
+instantiated classes.
+\item {\tt resolvedAryNewInstSites} lists
+each call to instance method {\tt newInstance(Class,int)} defined in class
+\code{java.lang.reflect.Array}, along with a list of the types of the
+instantiated classes.
+\end{itemize}
+The default value of property \code{chord.reuse.scope} is {\tt false}.
+The default value of properties \code{chord.methods.file} and
+\code{chord.reflect.file} is \code{[chord.out.dir]/methods.txt} and
+\code{[chord.out.dir]/reflect.txt}, respectively.
+Property \code{chord.out.dir} denotes the output directory of Chord;
+its default value is \code{[chord.work.dir]/chord_output/}.
+Property \code{chord.work.dir} denotes the working directory during
+Chord's execution; its default value is the current directory.
+
+\section{Scope Construction Algorithms}
+\label{sec:scope-algos}
+
+If property \code{chord.reuse.scope} has value {\tt false} or the
+files specified by properties \code{chord.methods.file} or
+\code{chord.reflect.file} do not exist, then Chord computes analysis
+scope using the algorithm specified by property
+\code{chord.scope.kind} and then writes the list of methods deemed
+reachable and the reflection resolved by that algorithm to the files
+specified by properties \code{chord.methods.file} and
+\code{chord.reflect.file}, respectively.
+
+The possible values of property \code{chord.scope.kind} are
+[\code{rta}$|$\code{cha}$|$\code{dynamic}] (the default value is {\tt rta}).
+The following subsections describe the scope construction algorithm
+that Chord runs in each of these three cases.
+In each case, Chord at
+least expects properties \code{chord.main.class} and
+\code{chord.class.path} to be set to the fully-qualified name of the
+program's main class (e.g., \code{com.example.Main}) and the
+program's application classpath, respectively.
+
+\subsection{Rapid Type Analysis}
+
+If property \code{chord.scope.kind} has value {\tt rta}, then Chord
+computes analysis scope statically using Rapid Type Analysis (RTA).
+RTA is an iterative fixed-point algorithm.  It maintains a set of
+reachable methods $M$.  The initial iteration starts by assuming that
+only the main method in the main class is reachable (Chord also
+handles class initializer methods but we ignore them here for brevity;
+we also ignore the set of reachable classes maintained besides the set
+of reachable methods).  All object allocation sites $H$ contained in
+methods in $M$ are deemed reachable (i.e., control-flow within method
+bodies is ignored).  Whenever a dynamically-dispatching method call
+site (i.e., an invokevirtual or invokeinterface site) with receiver of
+static type $t$ is encountered in a method in $M$, only subtypes of
+$t$ whose objects are allocated at some site in $H$ are considered to
+determine the possible target methods, and each such target method is
+added to $M$.  The process terminates when no more methods can be
+added.
+
+%RTA is a relatively inexpensive and precise algorithm in practice.
+%Its key shortcoming is that it makes no attempt to resolve
+%reflection, which is rampant in real-world Java programs, and can
+%therefore be unsound (i.e., underestimate the set of reachable
+%classes and methods).  The next option attempts to overcome this
+%problem.  \item The \code{rta_reflect} value instructs Chord to
+%compute analysis scope statically using Rapid Type Analysis and,
+%moreover, to resolve a common reflection
+%pattern: \begin{quote} \begin{verbatim} String s = ...; Class c =
+%Class.forName(s); Object o = c.newInstance(); T t = (T)
+%o; \end{verbatim} \end{quote} This analysis is identical to RTA
+%except that it additionally inspects every cast statement in the
+%program, such as the last statement in the above snippet, and queries
+%the class hierarchy to find all concrete classes that subclass
+%\code{T} (if \code{T} is a class) or that implement \code{T} (if
+%\code{T} is an interface).  Chord allows users to control which
+%classes are included in the class hierarchy (see Section
+%\ref{sec:cha}).
+
+\subsection{Class Hierarchy Analysis}
+
+If property \code{chord.scope.kind} has value {\tt cha}, then Chord
+computes analysis scope statically using Class Hierarchy Analysis (CHA).
+The key difference between CHA and RTA is that for invokevirtual and
+invokeinterface sites with receiver of static type $t$, CHA considers
+{\it all} subtypes of $t$ in the class hierarchy to determine the
+possible target methods, whereas RTA restricts them to types of
+objects allocated in methods deemed reachable so far.  As a result,
+CHA is highly imprecise in practice, and also expensive since it
+grossly overestimates the set of reachable classes and methods.
+Nevertheless, Chord allows users to control which classes are
+included in the class hierarchy, and thereby control the
+precision and cost of CHA, by setting property \code{chord.ch.kind},
+whose possible values are [\code{static}$|$\code{dynamic}] (the default
+value is {\tt static}).
+
+Chord first constructs the entire classpath of the given program by
+concatenating in order the following classpaths:
+
+\begin{enumerate}
+\item
+The boot classpath, specified by property \code{sun.boot.class.path}.
+\item
+The library extensions classpath, comprising all jar files in
+directory \code{[java.home]/lib/dir/}.
+\item
+The application classpath of the given program, specified by property \code{chord.class.path},
+which is empty by default.
+\end{enumerate}
+
+All classes in the entire classpath (resulting from items 1--3 above)
+are included in the class hierarchy with the following exceptions:
+\begin{itemize}
+\item
+Duplicate classes, i.e., classes with the same name occurring in more
+than one classpath element; in this case, all occurrences except the
+first are excluded.
+\item
+Any class whose name's prefix is specified in the value of property
+\code{chord.scope.exclude} (see Section \ref{sec:scope-exclude}).
+\item
+If property \code{chord.ch.kind} has value {\tt dynamic}, then
+Chord runs the given program and observes the set of all classes the
+JVM loads; any class not in this set is excluded.
+\item
+If the superclass of a class C is missing or if an interface
+implemented/extended by a class/interface C is missing, where
+``missing" means that it is either not in the classpath resulting from
+items 1--3 above or it is excluded by one of these rules, then C
+itself is excluded.  Note that this rule is recursive, e.g., if C has
+superclass B which in turn has superclass A, and A is missing, then
+both B and C are excluded.
+\end{itemize}
+
+\subsection{Dynamic Analysis}
+
+If property \code{chord.scope.kind} has value {\tt dynamic}, then Chord
+computes analysis scope
+dynamically, by running the program and observing the
+classes that are loaded at run-time.  The number of times the program
+is run and the command-line arguments to be supplied to the program in
+each run is specified by properties \code{chord.run.ids} and
+\code{chord.args.<id>} for each run ID {\tt <id>}.  By default, the
+program is run only once, using run ID {\tt 0}, and without any
+command-line arguments.  Only classes loaded in some run are regarded
+as reachable but {\it all} methods of each loaded class are regarded
+as reachable regardless of whether they were invoked in the run.  The
+rationale behind this decision is to both reduce the run-time instrumentation
+overhead and increase the predictive power of program analyses
+performed using the computed analysis scope.
+
+\section{Scope Exclusion}
+\label{sec:scope-exclude}
+
+Chord can be instructed to exclude certain classes in a given program 
+from being analyzed.
+This functionality might be desirable, for instance, if the given program
+contains a larger framework (e.g., Hadoop or Android) which
+must not be analyzed.
+Chord provides three properties for this purpose.
+The value of each of these properties is a comma-separated list of prefixes
+of names of classes.  Chord treats the body of each method defined in
+each such class as a no-op.
+
+\begin{itemize}
+\item
+Property \code{chord.std.scope.exclude} is intended to specify
+classes to be excluded from the scope of {\it all} programs to be
+analyzed, e.g., classes in the JDK standard library.  Its default
+value is the empty list.
+\item
+Property \code{chord.ext.scope.exclude} is intended to specify
+classes to be excluded from the scope of specific programs to be
+analyzed.  Its default value is the empty list.
+\item
+Property \code{chord.scope.exclude} specifies the final list of
+classes to be excluded from scope.  Its default value is
+\code{[chord.std.scope.exclude],[chord.ext.scope.exclude]}.
+\end{itemize}
+
+{\bf Note:} The value of each of the above properties is a list of {\it prefixes},
+not {\it regular expressions}.  A valid value is ``\code{java.,com.sun.}",
+but not ``\code{java.*,com.sun.*}".
+
+%\begin{tabular}
+%chord.scope.kind,chord.ch.dynamic & runs program? & \# reachable classes & \# reachable methods & running time \\
+%dynamic,-         & yes &    314 &  4,491 &   25s \\
+%cha,true          & yes &    427 &  1,532 &   28s \\
+%rta,-             &  no &    849 &  4,836 &    9s \\
+%rta_reflect,true  & yes &    849 &  4,836 &   34s \\
+%rta_reflect,false &  no &  9,871 & 58,726 &  7m6s \\
+%cha,false         &  no & 14,121 & 74,613 & 4m11s
+%\end{tabular}
+

@@ -1,0 +1,28 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=LE-dlog
+
+.include "E.dom"
+.include "L.dom"
+.include "P.dom"
+
+.bddvarorder P0_L0xL1_E0
+
+###
+# Relations
+###
+
+LP(l:L0,p:P0) input
+PE(p:P0,e:E0) input
+LE(l:L0,e:E0) output
+
+###
+# Constraints
+###
+
+LE(l,e) :- LP(l,p), PE(p,e).
+

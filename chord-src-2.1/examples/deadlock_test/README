@@ -1,0 +1,14 @@
+To run this example:
+
+1. Run the following command in the current directory:
+
+   ant
+
+   This will compile the Java source code of the example.
+
+2. Run the following command in Chord's main directory:
+
+   java -cp chord.jar -Dchord.work.dir=examples/deadlock_test -Dchord.run.analyses=deadlock-java chord.project.Boot
+
+   This will produce file deadlocks.html in directory examples/deadlock_test/chord_output/.
+   For reference, this file is provided in the web/ sub-directory of the current directory.

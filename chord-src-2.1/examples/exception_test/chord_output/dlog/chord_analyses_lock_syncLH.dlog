@@ -1,0 +1,35 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=syncLH-dlog
+
+.include "H.dom"
+.include "M.dom"
+.include "V.dom"
+.include "L.dom"
+
+.bddvarorder L0_M0_V0_H0
+
+###
+# Relations
+###
+
+VH(v:V0,h:H0) input
+thisMV(m:M0,v:V0) input
+syncLM(l:L0,m:M0) input
+syncLV(l:L0,v:V0) input
+
+syncLH(l:L0,h:H0) output
+
+###
+# Constraints
+###
+
+#syncLH(l,o) :- syncLM(l,m), statM(m), TM(t,m), clsTF(t,f), FC(f,o).
+
+syncLH(l,h) :- syncLM(l,m), thisMV(m,v), VH(v,h).
+syncLH(l,h) :- syncLV(l,v), VH(v,h).
+

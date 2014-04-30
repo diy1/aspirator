@@ -1,0 +1,57 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Adaptor of context-insensitive may-alias/call-graph analysis
+# to a trivial context-sensitive one.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=cspa-0cfa-dlog
+
+.include "F.dom"
+.include "H.dom"
+.include "I.dom"
+.include "M.dom"
+.include "V.dom"
+.include "C.dom"
+
+.bddvarorder I0xM0xM1_V0_H0xC0_F0_H1xC1
+
+###
+# Relations
+###
+
+CH(c:C0,h:H0) input
+VH(v:V0,h:H0) input
+FH(f:F0,h:H0) input
+HFH(h1:H0,f:F0,h2:H1) input
+rootM(m:M0) input
+reachableI(i:I0) input
+reachableM(m:M0) input
+IM(i:I0,m:M0) input
+MM(m:M0,n:M1) input
+
+CVC(c1:C0,v:V0,c2:C1) output
+FC(f:F0,c:C0) output
+CFC(c1:C0,f:F0,c2:C1) output
+rootCM(c:C,m:M) output
+reachableCI(c:C0,i:I0) output
+reachableCM(c:C0,m:M0) output
+CICM(c:C0,i:I0,d:C1,m:M0) output
+CMCM(c:C0,m:M0,d:C1,n:M1) output
+
+###
+# Constraints
+###
+
+reachableCI(0,i) :- reachableI(i).
+reachableCM(0,m) :- reachableM(m).
+
+CVC(0,v,o) :- VH(v,h), CH(o,h).
+FC(f,o) :- FH(f,h), CH(o,h).
+CFC(o1,f,o2) :- HFH(h1,f,h2), CH(o1,h1), CH(o2,h2).
+rootCM(0,m) :- rootM(m).
+CICM(0,i,0,m) :- IM(i,m).
+CMCM(0,m,0,n) :- MM(m,n).
+

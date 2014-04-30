@@ -1,0 +1,170 @@
+\xname{start}
+\chapter{Getting Started}
+\label{chap:start}
+
+This chapter describes how to download, install, and run Chord.  Section
+\ref{sec:downloading-binaries} describes how to obtain pre-built binaries of
+Chord.  Section \ref{sec:downloading-sources} describes how to obtain the source
+code of Chord and Section \ref{sec:downloading-sources} explains how to build
+it.  Finally, Section \ref{sec:running-chord} describes how to run Chord.
+
+\section{Downloading Binaries}
+\label{sec:downloading-binaries}
+
+To obtain Chord's pre-built binaries, download and uncompress file
+\chordbinfile.  It includes the following files:
+
+\begin{enumerate}
+\item
+\code{chord.jar}, which contains the class files of Chord and of libraries used
+by Chord.
+\item
+\code{libbuddy.so}, \code{buddy.dll}, and \code{libbuddy.dylib}: you can keep
+one of these files depending upon whether you intend to run Chord on Linux,
+Windows/Cygwin, or MacOS, respectively.  These files are needed only if you want
+BDD library \buddy\ to be used when the BDD-based Datalog solver \bddbddb\ in
+Chord runs analyses written in Datalog.
+\item
+\code{libchord_instr_agent.so}: this file is needed only if you want the
+JVMTI-based bytecode instrumentation agent to be used when Chord runs dynamic
+analyses.
+\end{enumerate}
+
+Novice users can ignore items (2) and (3) until they become more familiar with
+Chord.  The binaries mentioned in items (2) and (3) might not be compatible with
+your machine, in which case you can either forgo using them (with hardly any
+noticeable difference in functionality), or you can download the sources (see
+Section \ref{sec:downloading-sources}) and build them yourself (see Section
+\ref{sec:compiling-sources}).
+
+\section{Downloading Source Code}
+\label{sec:downloading-sources}
+
+To obtain Chord's source code, download and uncompress the following files:
+
+\begin{itemize}
+\item
+Mandatory: file
+\chordsrcfile, which contains Chord's source code and jars of libraries used by
+Chord.
+\item
+Optional: file \chordlibfile, which contains the source code of libraries used
+by Chord (e.g., joeq, javassist, bddbddb, etc.)
+\end{itemize}
+
+Alternatively, you can obtain the latest development snapshot from the SVN
+repository by running the following command:
+
+\begin{framed}
+\begin{verbatim}
+svn checkout http://jchord.googlecode.com/svn/trunk/ chord
+\end{verbatim}
+\end{framed}
+
+Instead of checking out the entire \code{trunk/}, which contains several
+sub-directories, you can check out specific sub-directories:
+
+\begin{itemize}
+\item
+\code{main/} contains Chord's source code and jars of libraries used by Chord.
+\item
+\code{libsrc/} contains the source code of libraries used by Chord (e.g., joeq,
+javassist, bddbddb, etc.).
+\item
+\code{test/} contains Chord's regression tests.
+\item
+many more; these might eventually move under \code{main/}.
+\end{itemize}
+
+Files \code{chord-2.0-src.tar.gz} and \code{chord-2.0-libsrc.tar.gz} mentioned
+above are essentially stable releases of the \code{main/} and \code{libsrc/}
+directories, respectively.
+
+\section{Compiling the Source Code}
+\label{sec:compiling-sources}
+
+Compiling Chord's source code requires the following software:
+
+\begin{itemize}
+\item
+JVM supporting Java 5 or higher, e.g. \ibmjvm\ or \sunjvm.
+\item
+\ant, a Java build tool.
+\end{itemize}
+
+Chord's main directory contains a file named {\tt build.xml} which is
+interpreted by Apache Ant.  To see the various possible targets, simply run
+command ``{\tt ant}" in that directory.
+
+To compile Chord, run command ``{\tt ant compile}" in the same directory.  This
+will compile Chord's Java sources from \code{src/} to class files in
+\code{classes/}, as well as build a jar file \code{chord.jar} that contains
+these class files as well as those in the jars of libraries that are used by
+Chord and are provided under \code{lib/} (e.g., \code{joeq.jar},
+\code{javassist.jar}, \code{bddbddb.jar}, etc.).  Additionally:
+
+\begin{itemize}
+\item
+
+If system property \code{chord.use.buddy} is set to \code{true}, then the C
+source code of BDD library \buddy\ from directory \code{bdd/} will be compiled
+to a shared library named (\code{libbuddy.so} on Linux, \code{buddy.dll} on
+Windows, and \code{libbuddy.dylib} on MacOS; this library is used by BDD-based
+Datalog solver \bddbddb\ in Chord for running analyses written in Datalog.
+
+\item
+
+If system property \code{chord.use.jvmti} is set to \code{true}, then the C++
+source code of the JVMTI-based bytecode instrumentation agent from directory
+\code{agent/} will be compiled to a shared library named
+\code{libchord_instr_agent.so} on all architectures; this agent is used in Chord
+for computing analysis scope dynamically and for running dynamic analyses.
+\end{itemize}
+
+Properties \code{chord.use.buddy} and \code{chord.use.jvmti} are defined in a
+file named \code{chord.properties} in Chord's main directory.  The default value
+of both these properties is \code{false}.  If you set either of them to
+\code{true}, then you will also need a utility like GNU Make (to run the
+\code{Makefile}'s in directories \code{bdd/} and \code{agent/}) and a C++
+compiler (to build the above shared libraries).
+
+\section{Running Chord}
+\label{sec:running-chord}
+
+Running Chord requires a JVM supporting Java 5 or higher.  There are two
+equivalent commands to run Chord.
+
+One command, which is available in the source and binary installations of
+Chord, is:
+
+\begin{framed}
+\begin{verbatim}
+java -cp <CHORD_MAIN_DIR>/chord.jar -D<key1>=<val1> ... -D<keyN>=<valN> chord.project.Boot
+\end{verbatim}
+\end{framed}
+
+where \code{<CHORD_MAIN_DIR>} denotes the directory containing file
+\code{chord.jar}; that directory is also expected to contain any shared
+libraries in Chord's installation (e.g., \code{libbuddy.so} and
+\code{libchord_instr_agent.so}).
+
+The alternate command, which is available only in the source installation of
+Chord, is:
+
+\begin{framed}
+\begin{verbatim}
+ant -f <CHORD_MAIN_DIR>/build.xml -D<key1>=<val1> ... -D<keyN>=<valN> run
+\end{verbatim}
+\end{framed}
+
+This command requires \ant\ (a Java build tool) to be installed on your
+machine.  This command is used throughout this guide.  Also, the
+``\code{-f <CHORD_MAIN_DIR>/build.xml}" argument in the command is omitted
+for brevity.
+
+Each ``\code{-D<key>=<val>}" argument in either of the above commands sets the
+system property named \code{<key>} to the value denoted by \code{<val>}.  The
+only way to specify inputs to Chord is via system properties; there is no
+command-line argument processing.  Chapter \ref{chap:properties} describes all
+system properties recognized by Chord.
+

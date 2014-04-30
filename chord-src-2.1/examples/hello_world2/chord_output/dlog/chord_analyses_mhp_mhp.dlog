@@ -1,0 +1,101 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=mhp-dlog
+
+.include "A.dom"
+.include "I.dom"
+.include "M.dom"
+.include "P.dom"
+.include "V.dom"
+.include "Z.dom"
+
+.bddvarorder A0xA1xA2_I0xM0xM1xP0xP1xP2
+
+###
+# Relations
+###
+
+PP(p:P,q:P) input
+MPhead(m:M,p:P) input
+MPtail(m:M,p:P) input
+PI(p:P,i:I) input
+IM(i:I,m:M) input
+threadAM(t:A,m:M) input
+threadRunAM(t:A,m:M)
+threadIM(i:I,m:M) input
+threadStartI(i:I) input
+
+threadPM(p:P,m:M) output
+threadPH(p:P,q:P) output
+simpleIM(i:I,m:M) output
+simplePM(p:P,m:M) output
+simplePH(p:P,q:P) output
+simplePT(p:P,q:P) output
+
+# Path edge from dataflow fact (this,sThat) at the entry point of a method to dataflow fact
+# (this,tThat) at point p contained in that method.  It means:
+# If thread 'this' starts executing the method containing p while thread 'sThat' runs in parallel,
+# then it may finish executing that method with thread 'tThat' running in parallel.
+PathEdge(p:P,this:A,sThat:A,tThat:A) output
+
+# Defined only for ordinary calls p (not thread start calls)
+SummEdge(p:P,this:A,sThat:A,tThat:A) output
+
+# Thread t1 may reach point p while thread t2 runs in parallel.
+mhp(p:P,t1:A,t2:A) output
+
+###
+# Constraints
+###
+
+simpleIM(i,m) :- IM(i,m), !threadStartI(i).
+simplePM(p,m) :- simpleIM(i,m), PI(p,i).
+simplePH(p,h) :- simplePM(p,m), MPhead(m,h).
+simplePT(p,t) :- simplePM(p,m), MPtail(m,t).
+threadPM(p,m) :- threadIM(i,m), PI(p,i).
+threadPH(p,h) :- threadPM(p,m), MPhead(m,h).
+
+threadRunAM(t,m) :- threadAM(t,m), m!=0.
+threadRunAH(t,h) :- threadRunAM(t,m), MPhead(m,h).
+
+# Main thread (this=1) starts executing entry point of main method (p=0) with no thread
+# (sThat=tThat=0) in parallel. 
+
+PathEdge(0,1,0,0).
+
+# If t starts executing method of p with t1 in parallel, reaches p with t2 in parallel,
+# and q follows p in that method, then t may reach q with t2 in parallel.
+
+PathEdge(q,t,t1,t2) :- PathEdge(p,t,t1,t2), PP(p,q).
+
+### ordinary (non thread-starting) calls
+
+PathEdge(q,t,t1,t2) :- simplePH(p,q), PathEdge(p,t,_ ,t2), t1=t2.
+SummEdge(p,t,t1,t2) :- simplePT(p,q), PathEdge(q,t,t1,t2).
+PathEdge(r,t,t1,t3) :- SummEdge(p,t,t2,t3), PathEdge(p,t,t1,t2), PP(p,r).
+
+### thread-starting calls
+
+# when a thread t spawns a thread t2, then t may execute with t2 in parallel.
+
+PathEdge(r,t,t1,t2) :- threadPM(p,m), PathEdge(p,t,t1,_), PP(p,r), threadRunAM(t2,m).
+
+# following two rules: when a thread t1 spawns a thread x, then x may execute with t1 running in
+# parallel and any threads already running in parallel with t1 (denoted by t3 below).
+
+PathEdge(h,x,t1,t2) :- threadPH(p,h), PathEdge(p,t1,_,_), threadRunAH(x,h), t2=t1. split
+PathEdge(h,x,t3,t2) :- threadPH(p,h), PathEdge(p,_,_,t3), threadRunAH(x,h), t2=t3. split
+
+# when a thread x spawns a thread t2, and t3 is already running in parallel with x, then t3 may
+# execute with t2 running in parallel.
+
+PathEdge(h,t3,t1,t2) :- threadPM(p,m), PathEdge(p,_,_,t3), threadRunAH(t3,h), threadRunAM(t2,m), t2=t1. split
+
+# compute mhp
+
+mhp(p,t1,t2) :- PathEdge(p,t1,_,t2), t1!=0, t2!=0.
+

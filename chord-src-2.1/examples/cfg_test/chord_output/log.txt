@@ -1,0 +1,111 @@
+Chord run initiated at: Jan 6, 2014 5:03:54 PM
+ENTER: dflow-test-java at Mon Jan 06 17:03:55 EST 2014
+Read line: [a, b, 3, R14]
+After parsing input: methodname = null; bbIdx: 0; isTemp: false; rIdx: 0
+methodname doesn't match: <clinit>:()V@java.lang.Object
+Quad: 1: INVOKESTATIC_V registerNatives:()V@java.lang.Object, ()
+Quad: 2: RETURN_V
+methodname doesn't match: main:([Ljava/lang/String;)V@test.CFG_test
+Quad: 1: NEW T13, test.Logger
+Quad: 2: MOVE_A T14, T13
+Quad: 4: MOVE_I T3, IConst: 5
+Quad: 3: INVOKESTATIC_V <init>:(I)V@test.Logger, (T14, T3)
+Quad: 5: PUTSTATIC_A T13, .log
+Quad: 6: NEW T15, test.Dummy_Socket
+Quad: 7: MOVE_A T16, T15
+Quad: 8: INVOKESTATIC_V <init>:()V@test.Dummy_Socket, (T16)
+Quad: 9: PUTSTATIC_A T15, .socket
+Quad: 10: MOVE_I R17, IConst: 0
+Quad: 57: PHI R18, (R17, R29), { BB2, BB6 }
+Quad: 35: IFCMP_I R18, IConst: 10, GE, BB7
+Quad: 52: RETURN_V
+Quad: 36: GETSTATIC_A T19, .socket
+Quad: 37: NEW T20, java.lang.StringBuilder
+Quad: 38: MOVE_A T21, T20
+Quad: 39: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T21)
+Quad: 41: MOVE_A T22, AConst: "test string"
+Quad: 40: INVOKEVIRTUAL_A T23, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T20, T22)
+Quad: 42: GETSTATIC_A T24, .socket
+Quad: 44: MOVE_I T8, IConst: 1
+Quad: 45: MOVE_I T9, IConst: 1
+Quad: 43: INVOKEVIRTUAL_I T7, test_dataflow:(III)I@test.Dummy_Socket, (T24, R18, T9, T8)
+Quad: 46: INVOKEVIRTUAL_A T25, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T23, T7)
+Quad: 47: INVOKEVIRTUAL_A T26, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T25)
+Quad: 48: INVOKEVIRTUAL_V send:(ILjava/lang/String;)V@test.Dummy_Socket, (T19, R18, T26)
+Quad: 49: GETSTATIC_A T27, .socket
+Quad: 50: GETFIELD_I T12, T27, .return_status
+Quad: 51: IFCMP_I T12, IConst: 0, EQ, BB6
+Quad: 53: GETSTATIC_A T28, .log
+Quad: 54: INVOKEVIRTUAL_V info:()V@test.Logger, (T28)
+Quad: 55: ADD_I R29, R18, IConst: 1
+Quad: 56: GOTO BB3
+methodname doesn't match: <init>:(I)V@test.Logger
+Quad: 1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0)
+Quad: 2: PUTFIELD_I R0, .global_int, R1
+Quad: 3: GETSTATIC_A T2, .out
+Quad: 4: NEW T5, java.lang.StringBuilder
+Quad: 5: MOVE_A T6, T5
+Quad: 6: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T6)
+Quad: 8: MOVE_A T7, AConst: "Logger constructor with a = "
+Quad: 7: INVOKEVIRTUAL_A T8, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T5, T7)
+Quad: 9: INVOKEVIRTUAL_A T9, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T8, R1)
+Quad: 10: INVOKEVIRTUAL_A T10, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T9)
+Quad: 11: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T2, T10)
+Quad: 12: RETURN_V
+methodname doesn't match: <init>:()V@test.Dummy_Socket
+Quad: 1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0)
+Quad: 2: PUTFIELD_I R0, .return_status, IConst: 1
+Quad: 3: RETURN_V
+methodname doesn't match: test_dataflow:(III)I@test.Dummy_Socket
+Quad: 1: ADD_I T8, R1, R2
+Quad: 2: MOVE_I R9, T8
+Quad: 3: ADD_I T10, R3, IConst: 1
+Quad: 4: MOVE_I R6, T10
+Quad: 5: ADD_I T11, R9, R6
+Quad: 6: MOVE_I R12, T11
+Quad: 7: GETFIELD_I T7, R0, .return_status
+Quad: 8: ADD_I T13, R12, T7
+Quad: 9: MOVE_I R14, T13
+Quad: 10: RETURN_I R14
+methodname doesn't match: send:(ILjava/lang/String;)V@test.Dummy_Socket
+Quad: 1: GETSTATIC_A T3, .out
+Quad: 2: NEW T6, java.lang.StringBuilder
+Quad: 3: MOVE_A T7, T6
+Quad: 4: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T7)
+Quad: 6: MOVE_A T8, AConst: "socket send: socket number: "
+Quad: 5: INVOKEVIRTUAL_A T9, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T6, T8)
+Quad: 7: INVOKEVIRTUAL_A T10, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T9, R1)
+Quad: 9: MOVE_A T11, AConst: ", message: "
+Quad: 8: INVOKEVIRTUAL_A T12, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T10, T11)
+Quad: 10: INVOKEVIRTUAL_A T13, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T12, R2)
+Quad: 11: INVOKEVIRTUAL_A T14, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T13)
+Quad: 12: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T3, T14)
+Quad: 13: RETURN_V
+methodname doesn't match: info:()V@test.Logger
+Quad: 1: MOVE_A T3, R0
+Quad: 2: GETFIELD_I T4, T3, .global_int
+Quad: 3: ADD_I T5, T4, IConst: 1
+Quad: 4: PUTFIELD_I R0, .global_int, T5
+Quad: 6: MOVE_A T6, AConst: "info"
+Quad: 5: INVOKESTATIC_V print:(Ljava/lang/String;)V@test.Logger, (R0, T6)
+Quad: 7: RETURN_V
+methodname doesn't match: print:(Ljava/lang/String;)V@test.Logger
+Quad: 1: GETSTATIC_A T2, .out
+Quad: 2: NEW T6, java.lang.StringBuilder
+Quad: 3: MOVE_A T7, T6
+Quad: 4: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T7)
+Quad: 6: MOVE_A T8, AConst: "Logger."
+Quad: 5: INVOKEVIRTUAL_A T9, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T6, T8)
+Quad: 7: INVOKEVIRTUAL_A T10, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T9, R1)
+Quad: 9: MOVE_A T11, AConst: ", global_int = "
+Quad: 8: INVOKEVIRTUAL_A T12, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T10, T11)
+Quad: 10: GETFIELD_I T5, R0, .global_int
+Quad: 11: INVOKEVIRTUAL_A T13, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T12, T5)
+Quad: 12: INVOKEVIRTUAL_A T14, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T13)
+Quad: 13: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T2, T14)
+Quad: 14: RETURN_V
+LEAVE: dflow-test-java
+Exclusive time: 00:00:00:179 hh:mm:ss:ms
+Inclusive time: 00:00:00:179 hh:mm:ss:ms
+Chord run completed at: Jan 6, 2014 5:03:56 PM
+Total time: 00:00:01:147 hh:mm:ss:ms

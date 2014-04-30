@@ -1,0 +1,30 @@
+# name=modMF-dlog
+
+.include "M.dom"
+.include "E.dom"
+.include "F.dom"
+.include "I.dom"
+
+.bddvarorder E0_M0xM1xM2xI0_F0
+
+writeE(e:E0) input
+instF(f:F0) input
+ME(m:M0,e:E0) input
+MI(m:M0,i:I0) input
+IM(i:I0,m:M0) input
+EF(e:E0,f:F0) input
+reachMM(m1:M0,m2:M1)
+callsMM(m1:M0,m2:M1)
+writeEF(e:E0,f:F0)
+
+# relation containing each (m,f) such that f is an instance field (cannot be array element or static field)
+# and some method reachable from m writes to f
+modMF(m:M0,f:F0) output
+
+callsMM(m1,m2) :- MI(m1,i), IM(i,m2).
+reachMM(m,m2) :- m=m2.
+reachMM(m,m3) :- reachMM(m,m2), callsMM(m2,m3). split
+
+writeEF(e,f) :- writeE(e), EF(e,f), instF(f).
+modMF(m,f) :- reachMM(m,m2), ME(m2,e), writeEF(e,f).
+

@@ -1,0 +1,96 @@
+Chord run initiated at: Jan 8, 2014 9:17:14 AM
+*** Class: test.Logger
+Method: <init>:(I)V@test.Logger
+	1#1
+	6#2
+	9#3
+	12#4
+	15#5
+	16#6
+	21#8
+	21#7
+	25#9
+	28#10
+	31#11
+	34#12
+Control flow graph for <init>:(I)V@test.Logger:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB1 (EXIT))
+1: INVOKESTATIC_V <init>:()V@java.lang.Object, (R0)
+2: PUTFIELD_I R0, .global_int, R1
+3: GETSTATIC_A T2, .out
+4: NEW T5, java.lang.StringBuilder
+5: MOVE_A T6, T5
+6: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T6)
+8: MOVE_A T7, AConst: "Logger constructor with a = "
+7: INVOKEVIRTUAL_A T8, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T5, T7)
+9: INVOKEVIRTUAL_A T9, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T8, R1)
+10: INVOKEVIRTUAL_A T10, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T9)
+11: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T2, T10)
+12: RETURN_V
+
+BB1 (EXIT)	(in: BB2, out: <none>)
+
+Exception handlers: []
+Register factory: Registers: 11
+Method: info:(I)V@test.Logger
+	1#1
+	2#2
+	6#3
+	7#4
+	10#5
+	13#6
+	16#7
+	17#8
+	22#10
+	22#9
+	26#11
+	29#12
+	32#13
+	35#14
+Control flow graph for info:(I)V@test.Logger:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB1 (EXIT))
+1: MOVE_A T6, R0
+2: GETFIELD_I T7, T6, .global_int
+3: ADD_I T8, T7, IConst: 1
+4: PUTFIELD_I R0, .global_int, T8
+5: GETSTATIC_A T4, .out
+6: NEW T9, java.lang.StringBuilder
+7: MOVE_A T10, T9
+8: INVOKESTATIC_V <init>:()V@java.lang.StringBuilder, (T10)
+10: MOVE_A T11, AConst: "info "
+9: INVOKEVIRTUAL_A T12, append:(Ljava/lang/String;)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T9, T11)
+11: INVOKEVIRTUAL_A T13, append:(I)Ljava/lang/StringBuilder;@java.lang.StringBuilder, (T12, R1)
+12: INVOKEVIRTUAL_A T14, toString:()Ljava/lang/String;@java.lang.StringBuilder, (T13)
+13: INVOKEVIRTUAL_V println:(Ljava/lang/String;)V@java.io.PrintStream, (T4, T14)
+14: RETURN_V
+
+BB1 (EXIT)	(in: BB2, out: <none>)
+
+Exception handlers: []
+Register factory: Registers: 15
+Method: newLogger:(I)Ltest/Logger;@test.Logger
+	0#1
+	3#2
+	5#3
+	8#4
+	10#5
+Control flow graph for newLogger:(I)Ltest/Logger;@test.Logger:
+BB0 (ENTRY)	(in: <none>, out: BB2)
+
+BB2	(in: BB0 (ENTRY), out: BB1 (EXIT))
+1: NEW T1, test.Logger
+2: MOVE_A T2, T1
+3: INVOKESTATIC_V <init>:(I)V@test.Logger, (T2, R0)
+4: MOVE_A R3, T1
+5: RETURN_A R3
+
+BB1 (EXIT)	(in: BB2, out: <none>)
+
+Exception handlers: []
+Register factory: Registers: 4
+Chord run completed at: Jan 8, 2014 9:17:20 AM
+Total time: 00:00:05:852 hh:mm:ss:ms

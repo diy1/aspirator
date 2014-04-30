@@ -1,0 +1,42 @@
+# Copyright (c) 2008-2010, Intel Corporation.
+# Copyright (c) 2006-2007, The Trustees of Stanford University.
+# All rights reserved.
+# Licensed under the terms of the New BSD License.
+
+# Author: Mayur Naik (mhn@cs.stanford.edu)
+# name=flowins-thresc-dlog
+
+.include "M.dom"
+.include "V.dom"
+.include "H.dom"
+.include "P.dom"
+.include "Z.dom"
+.include "F.dom"
+.include "E.dom"
+
+.bddvarorder E0_M0xP0_V0_H0_F0_H1_Z0
+
+###
+# Relations
+###
+
+VH(v:V0,h:H0) input
+FH(f:F,h:H) input
+HFH(h1:H0,f:F0,h2:H1) input
+MmethArg(m:M,z:Z,v:V) input
+MV(m:M,v:V) input
+MP(m:M,p:P) input
+EV(e:E,v:V) input
+escH(o:H) output
+escPVH(p:P,v:V,h:H) output
+
+###
+# Constraints
+###
+
+escH(h) :- FH(_,h).
+escH(h) :- MmethArg(1,0,v), VH(v,h).
+escH(h2) :- HFH(h1,_,h2), escH(h1).
+
+escPVH(p,v,h) :- VH(v,h), MV(m,v), MP(m,p), escH(h). split
+
