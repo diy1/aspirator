@@ -33,9 +33,9 @@ import chord.project.Config;
   *  
   *  TODO: 
   *  1. Differentiate the errors thrown during clean_up and close phases
-  *  2. In each warning, also include the statements that reached there
+  *  2. In each warning, also include the statements that reached there (right 
+  *       now this information is outside of the warning block).
   *  3. Indicate about the over-catching cases..
-  *  4. Fix false positive bugs
   *  
   *  @author Ding Yuan
   */
