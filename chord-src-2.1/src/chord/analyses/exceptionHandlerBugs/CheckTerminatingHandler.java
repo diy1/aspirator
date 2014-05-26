@@ -249,7 +249,7 @@ public class CheckTerminatingHandler extends JavaAnalysis {
                             }
 	    					
 	    					try {
-	    						printer.printCode(startingLine, endingLine, srcFile);
+	    						printer.printCode(startingLine, endingLine, srcFile, true);
 	    					} catch (IOException ioe) {
 	    						System.out.println("printCode failed with file: " + srcFile 
 	    								+ ", line: " + startingLine + "-" + endingLine);

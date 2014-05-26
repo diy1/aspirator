@@ -261,7 +261,7 @@ public class CheckUnhandledExceptions extends JavaAnalysis {
 	    					}
 	    					try {
 	    						if (endingLine == 0) {endingLine = startingLine;}
-	    						printer.printCode(startingLine, endingLine, m.getDeclaringClass().getSourceFileName());
+	    						printer.printCode(startingLine, endingLine, m.getDeclaringClass().getSourceFileName(), true);
 	    					} catch (IOException ioe) {
 	    						System.out.println("printCode failed with file: " + m.getDeclaringClass().getSourceFileName() 
 	    								+ ", line: " + startingLine + "-" + endingLine);
