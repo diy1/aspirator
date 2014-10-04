@@ -653,6 +653,8 @@ public class CheckEmptyHandler extends JavaAnalysis {
 
         Program program = Program.g();
         HashMap<String, Integer> warningMap = new HashMap<String, Integer>();
+        String[] ignoredMethods = Config.ignoredMethods.split(",");
+        String[] ignoredExceptions = Config.ignoredExceptions.split(",");
 
         printer = new CodePrinting();
 
@@ -721,11 +723,19 @@ public class CheckEmptyHandler extends JavaAnalysis {
                                 System.out.println("DEBUG: Invoke: " + q 
                                         + " target: " + methodStr);
                             }
-                            if (methodStr.contains("close") || 
-                                  methodStr.contains("cleanup") ||
-                                  methodStr.contains("stop") ||
-                                  methodStr.contains("shutdown")) {
+                            boolean ignoreMethod = false;
+                            for (String ignoredMethodName : ignoredMethods) {
+                            	if (methodStr.contains(ignoredMethodName)) {
+                            		ignoreMethod = true;
+                            		break;
+                            	}
+                            }
+                            if (ignoreMethod == true) {
                                 // Prune false positive: ignore the exceptions thrown by close or cleanup
+                            	if (Config.verbose > 1) {
+                                    System.out.println("DEBUG: Exception thrown by method is ignored: " + q 
+                                            + " target: " + methodStr);
+                                }
                                 continue; 
                             }
                                 
@@ -773,8 +783,19 @@ public class CheckEmptyHandler extends JavaAnalysis {
                         System.out.println("DEBUG: Found handler for " + handledEx.toString() + ", BB: " + bb 
                                 + "@line: " + bb.getLastQuad().getLineNumber() + ", File: " + srcFile);
                         
-                        if (handledEx.toString().equals("java.io.FileNotFoundException")) {
+                        boolean ignoreException = false;
+                        for (String ignoredExceptionName : ignoredExceptions) {
+                        	if (handledEx.toString().equals(ignoredExceptionName)) {
+                                // Ignore this exception
+                                ignoreException = true;
+                                break;
+                            }
+                        }
+                        if (ignoreException == true) {
                             // Ignore this exception
+                        	if (Config.verbose > 1) {
+                                System.out.println("DEBUG: Exception is ignored per user config:" + handledEx.toString());
+                            }
                             continue;
                         }
 
@@ -882,99 +903,4 @@ public class CheckEmptyHandler extends JavaAnalysis {
 	    } // for (BasicBlock nextbb: 
     } // if (nextbbs != null
     return false; // not compared. not a false positive.
-} */
-
-/*			
-	
-	if (nextq.getOperator() instanceof Operator.Putfield) {
-		// The return value is assigned to a class field, so could be false positive.
-		if (Config.verbose > 1) {
-			System.out.println("DEBUG: Quad: " + nextq + " is a putfield quad, therefore could be a FP");
-		}
-		checkedLater = true;
-		break; // break out of the iteration of each quad in the try bb
-	}    			
-	regToTrack = getModifiedReg(nextq);
-	if (regToTrack == null) {
-        System.out.println("INFO [handledByVarValue]: Quad: " + nextq + ", at LINE: " + q.getLineNumber()
-                + "has no modified registers! Data-flow is lost!"); 
-        return false; // The data-flow trace is lost, so this is NOT a false positive
-	}
-	if (Config.verbose > 1) {
-		System.out.println("DEBUG [handledByVarValue]: Quad: " + nextq + " modified register: " + regToTrack);
-	}
-	if (regToTrack.getRegister().isTemp() == false) {
-		// Needs to further track this register. 
-		if (Config.verbose > 1) {
-			System.out.println("DEBUG [handledByVarValue]: Register:  " + regToTrack
-					+ "; isGuard? " + regToTrack.getRegister().isGuard()
-					+ "; isTemp? " + regToTrack.getRegister().isTemp()
-					+ "; isSSA? " + regToTrack.getRegister().isSSA()
-					+ "; isPhysical? " + regToTrack.getRegister().isSSA()
-					+ "; getType: " + regToTrack.getRegister());
-		}
-		if (regCheckedAfterCatch(eh, trybb, regToTrack, false) == true) {
-			// Then possibly an FP; 
-			checkedLater = true;
-			break; // break out of the iteration of each quad in the try bb
-		}
-		// This register is not further checked! Definitely not an FP!
-		return false; // not false positive. 
-
-	}
-}
-} // for (int qIdx = exceptionQID 		
-
-    	
-    	
-    	
-    	boolean isThisInitChecked = false;
-    	// First, let's see if the return value of the <init> is assigned to a field;
-    	// We use a heuristic: in the same line, there should be a putfield with the
-    	//  same line number:
-    	// This for loop is to iterate through each quad to find the putfield instruction
-    	for (int qIdx = exceptionQID + 1; qIdx < bbsize; qIdx++) {
-    		Quad nextq = (Quad) trybb.getQuad(qIdx); // the next quad;
-            if (nextq.getLineNumber() != q.getLineNumber()) {
-            	// search is over, we haven't found putfield! this will return false below!
-            	break;
-            }
-            if (nextq.getOperator() instanceof Operator.Putfield) {
-            	Operand dstField = Operator.Putfield.getField(nextq);
-            	
-            	if (Config.verbose > 1) {
-            		System.out.println("DEBUG [handledByVarValue]: putfield field: " + dstField);
-            	}
-				if (regCheckedAfterCatch(eh, trybb, dstField, true) == true) {
-					// The field is further checked after the catch block, 
-					// It is an FP. But we cannot return true right now, because there may
-					// be other quads may throw exceptions that are not checked!
-					if (Config.verbose > 1) {
-                		System.out.println("DEBUG [handledByVarValue]: field: " + dstField
-                				+ " is checked after the catch block!");
-                		isThisInitChecked = true;
-                	}
-					break;
-				}
-            }
-    	}
-    	
-    	if (isThisInitChecked == true) {
-    		// this qid is a false positive, we continue the outer loop to check other qids
-    		checkedLater = true;
-    	    continue;
-    	}
-    	// hasPutField == false, can't even find a putfiled,  
-    	// then not a false positive! return false below
-     }
-} catch (Exception e) {
-	// getMethod can thrown weird exception, if so, return false (not false positive).
-}
-return false; // not a false positive!
-}
-
-}
-
-}
-
 } */

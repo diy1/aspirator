@@ -26,6 +26,8 @@ public class Config {
     public final static String mainClassName = System.getProperty("chord.main.class");
     public final static String userClassPathName = System.getProperty("chord.class.path");
     public final static String srcPathName = System.getProperty("chord.src.path");
+    public final static String ignoredExceptions = System.getProperty("chord.ignore.exceptions", "java.io.FileNotFoundException");
+    public final static String ignoredMethods = System.getProperty("chord.ignore.methods", "close,cleanup,stop,shutdown");
     public final static String runIDs = System.getProperty("chord.run.ids", "0");
     public final static String runtimeJvmargs = System.getProperty("chord.runtime.jvmargs", "-ea -Xmx1024m");
 
