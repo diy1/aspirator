@@ -1,8 +1,21 @@
 ==============
-Simplex: A Simple checker for exception handler bugs
+Aspirator: A simple checker for exception handler bugs
 ==============
+- Aspirator is a tool that checks for trivial bug patterns in exception
+  handlers for Java or JVM compatible programs. Specifically, it reports
+  a warning if an important exception is ignored, system aborts on 
+  over-caught exceptions, or the exception handler contains "TODO" or
+  "FIXME" in the comments. These trivial bugs in exception handlers have
+  been shown to have caused a significant number of deadly failures for
+  distributed systems. See more details in the paper:
 
-- Simplex is built on Chord. The later part of this documents describes
+  Simple Testing Can Prevent Most Critical Failures: An Analysis of 
+  Production Failures in Distributed Data-intensive Systems, 
+  Ding Yuan, Yu Luo, Xin Zhuang, Guilherme Rodrigues, Xu Zhao, Yongle Zhang, 
+  Pranay U. Jain, and Michael Stumm. In the Proceedings of the 11th USENIX 
+  Symposium on Operating Systems Design and Implementation (OSDI'14), October 2014.   
+
+- Aspirator is built on Chord. The later part of this documents describes
   how to install and run chord. A copy of the Chord source is included 
   here.
 
@@ -37,7 +50,7 @@ Simplex: A Simple checker for exception handler bugs
       "exception-todo-in-handler-java". 
 
     - chord.extraclasses.file: contains a list of classes to be analyzed.
-      Simplex will only analyze these classes. The reason for us to add
+      aspirator will only analyze these classes. The reason for us to add
       this option is that by default, chord automatically discovers which
       classes to analyze (see Chapter 7 in chord's user guide). However,
       there are two problems with this default approach: first, it
@@ -48,7 +61,7 @@ Simplex: A Simple checker for exception handler bugs
       analyze, thus we found a large amount of the target code is not
       analyzed by chord simply because they couldn't be reached; second,
       it will also analyze all the library bytecode, such as java.lang.
-      By using this file, it tells simplex exactly which classes we are 
+      By using this file, it tells aspirator exactly which classes we are 
       interested to analyze, and you do not have to provide a main class.
   
       We also provided an example class file, "classNames.txt", that 
@@ -58,7 +71,7 @@ Simplex: A Simple checker for exception handler bugs
  
     - All other properties do not need to be modified. 
 
-- Note: when running simplex, you should set "chord.verbose", the verbosity 
+- Note: when running aspirator, you should set "chord.verbose", the verbosity 
   level, to 0, otherwise there will be huge amount of debugging information
   printed.
 
@@ -79,7 +92,7 @@ There are log messages..
 192:             logger.warn("CassandraAuthorizer failed to revoke all permissions of {}: {}", droppedUser, e);
 193:         }
 ==========================================
-  Simplex will report whether the exception handler is logged or not. In 
+  Aspirator will report whether the exception handler is logged or not. In 
   addition, the exception-throwing line is highlighted by repeating itself 
   (e.g., line 188 in this example). 
  
