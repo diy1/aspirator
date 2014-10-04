@@ -1,53 +1,89 @@
 ==============
-Simplex: A Simple checker for exception handler bugs
+Aspirator: A simple checker for exception handler bugs
 ==============
+- Aspirator is a tool that checks for trivial bug patterns in exception
+  handlers for Java or JVM compatible programs. Specifically, it reports
+  a warning if an important exception is ignored, system aborts on 
+  over-caught exceptions, or the exception handler contains "TODO" or
+  "FIXME" in the comments. These trivial bugs in exception handlers have
+  been shown to have caused a significant number of deadly failures for
+  distributed systems. See more details in the paper:
 
-- Simplex is built on Chord. The later part of this documents describes
-  how to install and run chord. A copy of the Chord source is included here.
+  Simple Testing Can Prevent Most Critical Failures: An Analysis of 
+  Production Failures in Distributed Data-intensive Systems, 
+  Ding Yuan, Yu Luo, Xin Zhuang, Guilherme Rodrigues, Xu Zhao, Yongle Zhang, 
+  Pranay U. Jain, and Michael Stumm. In the Proceedings of the 11th USENIX 
+  Symposium on Operating Systems Design and Implementation (OSDI'14), October 2014.   
+
+- Aspirator is built on Chord. The later part of this documents describes
+  how to install and run chord. A copy of the Chord source is included 
+  here.
 
 - After Chord is installed, the following three analysis can be used to
   detect bugs in exception handling code: 
     - exception-empty-handler-java: detecting empty exception handler
-    - terminating-handler-java: detecting unexpected abort in exception overcatch
-    - exception-todo-in-handler-java: detecting "TODO" and "FIXME" in exception handler
+    - terminating-handler-java: detecting unexpected abort in exception 
+      overcatch
+    - exception-todo-in-handler-java: detecting "TODO" and "FIXME" in
+      exception handler
 
-- You will need to read the user guide of Chord to understand how to run an analysis.
+- You will need to read the user guide of Chord to understand how to 
+  run an analysis.
 
-- We also extended Chord to easier analyze big real-world project by adding a few
-  more options. As an example, in the example/cassandra directory, there is a
-  chord.properties file showing how to run the "exception-empty-hanler-java" analysis
-  on Cassandra. Here is a brief overview of the required options:
-    - chord.class.path: paths to .jar files containing the bytecode of the target
-      software to analyze. Normally you can find them in the "build/" or "target/"
-      directories in the target software's source directory after you compiled it. 
-    - chord.src.path: paths to the java source files. The source files are used by
-      the "exception-todo-in-handler-java" analysis to analyze the comments; they
-      are also used to print the analysis result.  
+- We also extended Chord to easier analyze big real-world project by adding 
+  a few more options. As an example, in the example/cassandra directory, 
+  there is a chord.properties file showing how to run the 
+  "exception-empty-hanler-java" analysis on Cassandra. Here is a brief 
+  overview of the required options:
+
+    - chord.class.path: paths to .jar files containing the bytecode of the
+      target software to analyze. Normally you can find them in the
+      "build/" or "target/" directories in the target software's source
+      directory after you compiled it. 
+
+    - chord.src.path: paths to the java source files. The source files are
+      used by the "exception-todo-in-handler-java" analysis to analyze the 
+      comments; they are also used to print the analysis result.  
+
     - chord.run.analyses: the value should be one of the followings: 
       "exception-empty-handler-java", "terminating-handler-java", or
       "exception-todo-in-handler-java". 
+
     - chord.extraclasses.file: contains a list of classes to be analyzed.
-      Simplex will only analyze these classes. The reason for us to add this
-      option is that by default, chord automatically discovers which classes
-      to analyze (see Chapter 7 in chord's user guide). However, there are 
-      two problems with this default approach: 1st, it requires user to specify
-      a main class, which contains the main method, and then analyze all the
-      classes that can be reached by this main class. For large projects, it
-      is hard to find the appropriate main classes that can be used to reach all
-      the code we want to analyze, thus we found a large amount of the target
-      code is not analyzed by chord simply because they couldn't be reached;
-      2nd, it will also analyze all the library bytecode, such as java.lang.
-      By using this file, it tells simplex exactly which classes we are 
+      aspirator will only analyze these classes. The reason for us to add
+      this option is that by default, chord automatically discovers which
+      classes to analyze (see Chapter 7 in chord's user guide). However,
+      there are two problems with this default approach: first, it
+      requires user to specify a main class, which contains the main
+      method, and then analyze all the classes that can be reached by this
+      main class. For large projects, it is hard to find the appropriate
+      main classes that can be used to reach all the code we want to
+      analyze, thus we found a large amount of the target code is not
+      analyzed by chord simply because they couldn't be reached; second,
+      it will also analyze all the library bytecode, such as java.lang.
+      By using this file, it tells aspirator exactly which classes we are 
       interested to analyze, and you do not have to provide a main class.
   
-      We also provided an example class file, "classNames.txt", that contains
-      all the classes in cassandra. You can easily generate this file by 
-      scripting over the .jar file, which contains all the class names. 
- 
+      We also provided an example class file, "classNames.txt", that 
+      contains all the classes in cassandra. You can easily generate this 
+      file by scripting over the .jar file, which contains all the names 
+      of classes.
+
+    - chord.ignore.exceptions: an optional list of exceptions, separated by comma,
+      that aspirator will not report a warning if their handlers are empty. 
+      This is to reduce the false positives of aspirator. By default, 
+      aspirator ignores "FileNotFoundException". 
+
+    - chord.ignore.methods: an optional list of exceptions, separated by comma,
+      that aspirator will not report a warning if the exceptions thrown by them
+      are not handled. This is to reduce the false positives of aspirator. By 
+      default, aspirator ignores exceptions thrown by methods whose names
+      contain "close", "cleanup", "stop", and "shutdown". 
+
     - All other properties do not need to be modified. 
 
-- Note: when running simplex, you should set "chord.verbose", the verbosity 
-  level, to 0, otherwise there will be huge amount of debugging information 
+- Note: when running aspirator, you should set "chord.verbose", the verbosity 
+  level, to 0, otherwise there will be huge amount of debugging information
   printed.
 
 - After the analysis, the output is in the chord_output/log.txt file. Each
@@ -67,9 +103,9 @@ There are log messages..
 192:             logger.warn("CassandraAuthorizer failed to revoke all permissions of {}: {}", droppedUser, e);
 193:         }
 ==========================================
-  Simplex will report whether the exception handler is logged or not. In addition, 
-  the exception-throwing line is highlighted by repeating itself (e.g., line 188
-  in this example). 
+  Aspirator will report whether the exception handler is logged or not. In 
+  addition, the exception-throwing line is highlighted by repeating itself 
+  (e.g., line 188 in this example). 
  
 ===============
 OBTAINING CHORD
